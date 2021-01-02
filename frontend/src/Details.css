@@ -1,0 +1,47 @@
+.Details{
+}
+.ListOfBookingTimes{
+    display: flex;
+    flex-flow: column;
+}
+.trash{
+    height: 100%;
+    width: auto;
+    background-color: red;
+    border-radius: 5px;
+}
+.rawInfo{
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    margin-top: 5px;
+    height: 40px;
+    width: 100%;
+    background-color:#b5b5b5;
+    border-radius: 5px;
+}
+.imageFromList{
+    width: auto;
+    height: 80px;
+}
+.GeneralInfo{
+    background-color:#91c383;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 1%;
+}
+.NameAndAddress{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+}
+.rightArrow{
+    width: 50px;
+    height: 50px;
+}
+.leftArrow{
+    width: 50px;
+    height: 50px;
+    transform: rotate(180deg);
+}
