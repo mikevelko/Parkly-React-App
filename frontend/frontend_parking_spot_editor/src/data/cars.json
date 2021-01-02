@@ -1,0 +1,51 @@
+[
+    {
+        "name": "Toyota Yaris",
+        "pricePerDay": 500,
+        "seats": 5,
+        "doors": 4,
+        "image": "https://www.pngitem.com/pimgs/m/173-1733891_transparent-toyota-png-toyota-yaris-2012-hb-png.png"
+    },
+    {
+        "name": "Toyota Aygo",
+        "pricePerDay": 300,
+        "seats": 3,
+        "doors": 2,
+        "image": "https://img-optimize.toyota-europe.com/resize/ccis/680x680/zip/pl/product-token/8e183be2-5fa8-4b05-94a6-21fdeae169c6/vehicle/42f0b9c5-3f0a-486c-9ec3-ab72669ef3ed/image-quality/70/day-exterior-4_8y5.png"
+    },
+    {
+        "name": "Buick Skylark",
+        "pricePerDay": 1500,
+        "seats": 2,
+        "doors": 2,
+        "image": "https://www.nicepng.com/png/detail/246-2462468_buick-skylark-1953-png.png"
+    },
+    {
+        "name": "Ford galaxy",
+        "pricePerDay": 870,
+        "seats": 7,
+        "doors": 5,
+        "image": "https://nawigacje.eu/wp-content/uploads/2018/04/galaxy.png"
+    },
+    {
+        "name": "Pontiac Catalina",
+        "pricePerDay": 120,
+        "seats": 5,
+        "doors": 4,
+        "image": "https://static.wixstatic.com/media/f88402_304a251996654df1ab673ea640eb60f1~mv2.png/v1/fill/w_1183,h_786,al_c/f88402_304a251996654df1ab673ea640eb60f1~mv2.png"
+    },
+    {
+        "name": "Ford Transit",
+        "pricePerDay": 2300,
+        "seats": 2,
+        "doors": 3,
+        "image": "https://www.rewo.pl/wp-content/uploads/2018/09/ford-transit-eu-BR-16x9-768x432-double-cab.png.renditions.extra-large.png"
+    },
+    {
+        "name": "Optimus Prajm",
+        "pricePerDay": 15000,
+        "seats": 2,
+        "doors": 4,
+        "image": "https://www.rewo.pl/wp-content/uploads/2018/09/ford-transit-eu-BR-16x9-768x432-double-cab.png.renditions.extra-large.png"
+    }
+]
