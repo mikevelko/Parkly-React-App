@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -31,6 +32,6 @@ public class ParkingSpot implements Serializable {
     private String latitude;
 
     @OneToMany(mappedBy="parkingSpot")
-    private transient Set<Booking> bookings;
+    private transient List<Booking> bookings;
 }
 
