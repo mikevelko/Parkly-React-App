@@ -5,7 +5,9 @@ import ParkingSpotEditor from './ParkingSpotEditor';
 
 function App() {
   return (
-    <ParkingSpotEditor/>
+    <div id="all">
+      <ParkingSpotEditor/>
+    </div>
   );
 }
 

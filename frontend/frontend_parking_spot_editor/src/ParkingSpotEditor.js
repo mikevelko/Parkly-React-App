@@ -5,13 +5,42 @@ import ListItem from './ListItem'
 const PicturesList = [
     'https://www.pngitem.com/pimgs/m/173-1733891_transparent-toyota-png-toyota-yaris-2012-hb-png.png',
 
-
     'https://img-optimize.toyota-europe.com/resize/ccis/680x680/zip/pl/product-token/8e183be2-5fa8-4b05-94a6-21fdeae169c6/vehicle/42f0b9c5-3f0a-486c-9ec3-ab72669ef3ed/image-quality/70/day-exterior-4_8y5.png',
 
+    'https://www.nicepng.com/png/detail/246-2462468_buick-skylark-1953-png.png',
+
+    'https://www.nicepng.com/png/detail/246-2462468_buick-skylark-1953-png.png',
+
+    'https://nawigacje.eu/wp-content/uploads/2018/04/galaxy.png',
+
+    'https://nawigacje.eu/wp-content/uploads/2018/04/galaxy.png',
+
+    'https://www.rewo.pl/wp-content/uploads/2018/09/ford-transit-eu-BR-16x9-768x432-double-cab.png.renditions.extra-large.png',
+
+    'https://www.nicepng.com/png/detail/246-2462468_buick-skylark-1953-png.png',
+
+    'https://nawigacje.eu/wp-content/uploads/2018/04/galaxy.png',
+
+    'https://www.rewo.pl/wp-content/uploads/2018/09/ford-transit-eu-BR-16x9-768x432-double-cab.png.renditions.extra-large.png',
+
+    'https://www.nicepng.com/png/detail/246-2462468_buick-skylark-1953-png.png',
+
+    'https://nawigacje.eu/wp-content/uploads/2018/04/galaxy.png',
+
+    'https://www.nicepng.com/png/detail/246-2462468_buick-skylark-1953-png.png',
 
     'https://www.nicepng.com/png/detail/246-2462468_buick-skylark-1953-png.png',
 
 ];
+
+const ImageGridView = (props) => {
+  
+    const images = props.images.map((pic) => {
+      return <img  src={pic} />;
+    });
+    
+    return <div className="image-list">{images}</div>;
+  };
 
 
 export default class ParkingSpotEditor extends Component {
@@ -40,8 +69,7 @@ export default class ParkingSpotEditor extends Component {
                 <div
                 style={{
                     backgroundColor: '#e0f5bc'
-                }}
-                >
+                }}>
                     <input name="InputFiled1" placeholder="name" onChange={this.handleNameChange}
                     />
 
@@ -60,19 +88,12 @@ export default class ParkingSpotEditor extends Component {
                     <button onClick={this.onAddPictureClick}> Add Picture</button>
 
 
-                    {this.state.cachedPictures.map((pic) =>
-                        <ListItem url={pic} />
-                    )
-                    }
+                    <ImageGridView images={this.state.cachedPictures}/>
                 </div>
             )
         else
             return (
-                <div
-                style={{
-                    backgroundColor: '#e0f5bc'
-                }}
-                >
+                <div>
                     <input name="InputFiled1" placeholder="name" onChange={this.handleNameChange}
                     />
 
