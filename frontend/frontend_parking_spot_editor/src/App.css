@@ -1,33 +1,3 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
 .image-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -45,11 +15,95 @@
   background-color:#e0f5bc;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.overview-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin: 10px 20px 10px 20px;
+}
+
+.overview-search {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: lightgray;
+}
+
+.overview-buttons-flex {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.overview-button {
+  width: calc(100% / 5.5);
+  border: none;
+  height: 30px;
+  background-color: lightgray;
+  color: black;
+  cursor: pointer;
+}
+
+.overview-item-flex {
+  display: grid;
+  align-items: center;
+  width: 100%;
+  height: 6rem;
+  gap: 1rem;
+  grid-template-columns: 25% 25% 1fr;
+  background-color: lightgray;
+}
+
+.App {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.Details{
+}
+.ListOfBookingTimes{
+    display: flex;
+    flex-flow: column;
+}
+.trash{
+    height: 100%;
+    width: auto;
+    background-color: red;
+    border-radius: 5px;
+}
+.rawInfo{
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    margin-top: 5px;
+    height: 40px;
+    width: 100%;
+    background-color:#b5b5b5;
+    border-radius: 5px;
+}
+.imageFromList{
+    width: auto;
+    height: 80px;
+}
+.GeneralInfo{
+    background-color:#91c383;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 1%;
+}
+.NameAndAddress{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+}
+.rightArrow{
+    width: 50px;
+    height: 50px;
+}
+.leftArrow{
+    width: 50px;
+    height: 50px;
+    transform: rotate(180deg);
 }

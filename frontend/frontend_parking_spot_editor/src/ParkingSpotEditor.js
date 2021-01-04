@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Pictrues from './data/cars.json'
 import ListItem from './ListItem'
+import { Redirect, Link } from "react-router-dom";
 
 const PicturesList = [
     'https://www.pngitem.com/pimgs/m/173-1733891_transparent-toyota-png-toyota-yaris-2012-hb-png.png',
@@ -80,8 +81,8 @@ export default class ParkingSpotEditor extends Component {
 
                     <br />
 
-                    <button onClick={this.onSaveClick}> Save and add</button>
-                    <button onClick={this.onCancelClick}> Cancel</button>
+                    <Link className="overview-button" onClick={() => this.onSaveClick(this.props)} to="/Overview"> Save and add</Link>
+                    <Link className="overview-button" to="/Overview"> Cancel</Link>
 
                     <br />
 
@@ -170,26 +171,22 @@ export default class ParkingSpotEditor extends Component {
         
     }
 
-    onSaveClick() {
+    onSaveClick(props) {
         // TODO: add backend here (easiest way: remove previous entry for this parking spot from DB and add current saved version to DB)
+        props.redirectTo("/Overview");
     }
 
     onCancelClick() {
         // TODO: open some other view.
-        // TODO 2: reset state
+
+
     }
 
     onAddPictureClick() {
-        this.setState(prev => {
-            return {
-                name: prev.name,
-                address: prev.address,
-                cachedPictures: prev.cachedPictures,
-                addingPicture: true,
-                pictureURL: prev.pictureURL,
-                validURL: prev.validURL
-            }
-        });
+        this.setState(prev => ({
+            ...prev,
+                addingPicture: true
+        }));
     }
 
     validURL(str) {
