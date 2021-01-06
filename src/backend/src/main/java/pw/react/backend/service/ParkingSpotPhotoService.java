@@ -41,7 +41,12 @@ class ParkingSpotPhotoService implements PhotoService {
                 throw new InvalidFileException("Sorry! Filename contains invalid path sequence " + fileName);
             }
 
-            var parkingSpotPhoto = new ParkingSpotPhoto(fileName, file.getContentType(), parkingSpotId, file.getBytes());
+            var parkingSpotPhoto = new ParkingSpotPhoto(fileName,
+                    file.getContentType(),
+                    parkingSpotId,
+                    file.getBytes(),
+                    file.getSize());
+
             return repository.save(parkingSpotPhoto);
         } catch (IOException ex) {
             throw new InvalidFileException("Could not store file " + fileName + ". Please try again!", ex);

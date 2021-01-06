@@ -1,18 +1,23 @@
 package pw.react.backend.controller;
 
+import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pw.react.backend.appException.ResourceNotFoundException;
 import pw.react.backend.dao.ParkingSpotPhotoRepository;
 import pw.react.backend.dao.ParkingSpotRepository;
 import pw.react.backend.model.ParkingSpot;
+import pw.react.backend.model.ParkingSpotPhoto;
 import pw.react.backend.service.ParkingSpotService;
 import pw.react.backend.service.PhotoService;
 import pw.react.backend.web.UploadFileResponse;
@@ -31,11 +36,13 @@ public class ParkingSpotController {
 
     @Autowired
     public ParkingSpotController(ParkingSpotRepository repository,
+                                 ParkingSpotPhotoRepository photoRepository,
                                  ParkingSpotService parkingSpotService,
                                  PhotoService photoService){
         this.repository = repository;
         this.parkingSpotService = parkingSpotService;
         this.photoService = photoService;
+        this.photoRepository = photoRepository;
     }
     @PostMapping(path = "")
     public ResponseEntity<Long> createParkingSpot(@RequestBody ParkingSpot parkingSpot){
@@ -60,21 +67,57 @@ public class ParkingSpotController {
         }
         return ResponseEntity.ok(result);
     }
+    @GetMapping("/{parkingSpotId}/photos/{photoName}")
+    public ResponseEntity<Resource> getPhoto(@PathVariable Long parkingSpotId, @PathVariable String photoName){
+        var photos = photoRepository.findByParkingSpotId(parkingSpotId);
+        var photo = photos.stream().filter(x -> x.getFileName().equals(photoName)).findFirst();
+        if(photo.isPresent() == false)
+            throw new ResourceNotFoundException("not found");
+
+        var data = photo.get().getData();
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(photo.get().getFileType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + photo.get().getFileName() + "\"")
+                .body(new ByteArrayResource(data));
+    }
+//TODO: przeniesc do serwisu jakiegos
+    private String buildDownloadUri(ParkingSpotPhoto photo){
+        return  ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/parkingSpots/" + photo.getParkingSpotId() + "/photos/")
+                .path(photo.getFileName())
+                .toUriString();
+    }
+
     @PostMapping("/{parkingSpotId}/photos")
     public ResponseEntity<UploadFileResponse> uploadPhoto(@PathVariable Long parkingSpotId,
-                                                         @RequestParam("file") MultipartFile file){
-        var photo = photoService.storePhoto(parkingSpotId, file);
+                                                         @RequestParam("image") MultipartFile image){
+        var photo = photoService.storePhoto(parkingSpotId, image);
 
-        return ResponseEntity.ok(new UploadFileResponse());
+        String fileDownloadUri = buildDownloadUri(photo);
+        return ResponseEntity.ok(new UploadFileResponse(
+                photo.getFileName(), fileDownloadUri, image.getContentType(), image.getSize()
+        ));
     }
+
     @GetMapping(value = "/{parkingSpotId}/photos")
-    public ResponseEntity<Collection<byte[]>> getPhotos(@PathVariable Long parkingSpotId){
+    public ResponseEntity<Collection<UploadFileResponse>> getPhotos(@PathVariable Long parkingSpotId){
         var photos = photoService.getParkingSpotPhotos(parkingSpotId);
-        return ResponseEntity.ok(photos.stream().map(p -> p.getData()).collect(Collectors.toList()));
+
+        return ResponseEntity.ok(photos.stream().map(p ->
+            new UploadFileResponse(
+                    p.getFileName(), buildDownloadUri(p), p.getFileType(), p.getSize()
+            )
+        ).collect(Collectors.toList()));
     }
-    @DeleteMapping(value = "/{parkingSpotId}/photos/{photoId}")
-    public ResponseEntity<String> deletePhoto(@PathVariable String photoId){
-        photoRepository.deleteById(photoId);
-        return ResponseEntity.ok(String.format("Photo with id %s deleted.", photoId));
+    @DeleteMapping("/{parkingSpotId}/photos/{photoName}")
+    public ResponseEntity<String> deletePhoto(@PathVariable long parkingSpotId, @PathVariable String photoName){
+        var photos = photoRepository.findByParkingSpotId(parkingSpotId);
+        var photo = photos.stream().filter(x -> x.getFileName().equals(photoName)).findFirst();
+
+        if(photo.isPresent() == false)
+            throw new ResourceNotFoundException("not found");
+
+        photoRepository.deleteById(photo.get().getId());
+        return ResponseEntity.ok(String.format("Photo with id %s deleted.", photo.get().getId()));
     }
 }
