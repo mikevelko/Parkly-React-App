@@ -14,7 +14,7 @@ import java.util.Collection;
 @Repository
 public interface ParkingSpotRepository extends JpaRepository<ParkingSpot, Long> {
     Page<ParkingSpot> findByNameContaining(String name, Pageable pageable);
-    Page<ParkingSpot> findByIsBookedAndNameContaining(Boolean isBooked, String name, Pageable pageable);
-    Page<ParkingSpot> findByIsBooked(Boolean isBooked, Pageable pageable);
-    int countByIsBooked(boolean isBooked);
+    Page<ParkingSpot> findByBookedAndNameContaining(Boolean booked, String name, Pageable pageable);
+    Page<ParkingSpot> findByBooked(Boolean booked, Pageable pageable);
+    int countByBooked(boolean booked);
 }

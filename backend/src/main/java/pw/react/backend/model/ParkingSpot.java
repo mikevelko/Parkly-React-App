@@ -31,7 +31,7 @@ public class ParkingSpot implements Serializable {
     @Column
     private String latitude;
     @Column
-    private boolean isBooked;
+    private boolean booked;
 
     @OneToMany(mappedBy="parkingSpot")
     private transient List<Booking> bookings;

@@ -60,7 +60,7 @@ public class ParkingSpotController {
     }
     @GetMapping(path = "")
     public ResponseEntity<PagedResponse<Collection<ParkingSpot>>> getAllParkingSpots(@RequestParam(required = false) String name,
-                                                                      @RequestParam(required = false, defaultValue = "null") Boolean booked,
+                                                                      @RequestParam(required = false) Boolean booked,
                                                                       @RequestParam(defaultValue = "true") boolean sortAscending,
                                                                       @RequestParam(defaultValue = "0") int page,
                                                                       @RequestParam(defaultValue = "10") int size){
@@ -68,11 +68,11 @@ public class ParkingSpotController {
         Pageable paging = PageRequest.of(page, size, sortAscending? Sort.by("name").ascending() : Sort.by("name").descending());
         Page<ParkingSpot> pageResult;
         if(name != null && booked != null){
-            pageResult = repository.findByIsBookedAndNameContaining(booked, name, paging);
+            pageResult = repository.findByBookedAndNameContaining(booked, name, paging);
         }else if(name != null){
             pageResult = repository.findByNameContaining(name, paging);
         }else if(booked != null){
-            pageResult = repository.findByIsBooked(booked, paging);
+            pageResult = repository.findByBooked(booked, paging);
         }else{
             pageResult = repository.findAll(paging);
         }
@@ -82,8 +82,8 @@ public class ParkingSpotController {
         return ResponseEntity.ok(response);
     }
     @GetMapping(path = "/bookedCount")
-    public ResponseEntity<Integer> getBookedCount(@RequestParam boolean isBooked){
-        return ResponseEntity.ok(repository.countByIsBooked(isBooked));
+    public ResponseEntity<Integer> getBookedCount(@RequestParam boolean booked){
+        return ResponseEntity.ok(repository.countByBooked(booked));
     }
 
     @PutMapping(path = "/{parkingSpotId}")
