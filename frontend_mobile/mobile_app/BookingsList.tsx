@@ -25,7 +25,7 @@ const DATA = [
 
 
 const BookingsList = () => {
-  const renderItem = ({ item }) => <BookingsListItem title={item.title} />;
+  const renderItem = ({ item }) => <BookingsListItem/>;
 
   return (
     <SafeAreaView style={styles.container}>

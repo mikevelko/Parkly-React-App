@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   SafeAreaView,
   View,
@@ -6,33 +6,29 @@ import {
   StyleSheet,
   Text,
   StatusBar,
+  Button,
 } from "react-native";
-import Swipeout from "react-native-swipeout";
+import Swipeout from 'react-native-swipeout';
+class BookingsListItem extends Component {
 
-const BookingsListItem = ({ title }) => {
-    const swipeSettings = {
-        autoClose: true,
-        onClose: (secId, rowId,direction) =>{
-    
-        },
-        onOpen: (secId, rowId,direction) =>{
-    
-        },
-        right: [
-            {
-                onPress: () =>{
-                    
-                },
-                text: "Delete",type: 'delete'
-            }
-        ],
-        
-    };
-    return(
-        <View style={styles.item}>
-          <Text style={styles.title}>{title}</Text>
-        </View>
+  Delete(itemId) {
+    console.log('Click happened');
+  }
+  render() {
+    return (
+      <View style={styles.item}>
+        <Text style={styles.title}>Time: from - to</Text>
+
+
+        <Button
+          onPress={() => this.Delete(1)}
+          title="Delete"
+          color="red"
+
+        />
+      </View>
     )
+  }
 }
 const styles = StyleSheet.create({
   container: {
@@ -44,9 +40,11 @@ const styles = StyleSheet.create({
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   title: {
-    fontSize: 32,
+    fontSize: 15,
   },
 });
 export default BookingsListItem;
