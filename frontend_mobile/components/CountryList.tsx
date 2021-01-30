@@ -17,9 +17,10 @@ import CountryListItem from './CountryListItem';
 
 function CountryList({ navigation }) {
 	const [isLoading, setLoading] = useState(true);
-	const [countries, setCountries] = useState([]);
+	const [parkingSpots, setParkingSpots] = useState([]);
 	const [searchString, setSearchString] = useState('');
-	const defaultUrlToFetch = 'https://restcountries.eu/rest/v2/all';
+	const [overviewInfo, setOverviewInfo] = useState('');
+	const defaultUrlToFetch = 'http://localhost:8080/parkingSpots?name=parking&page=0&size=4';
 	const [urlToFetch, setUrlToFetch] = useState(defaultUrlToFetch);
 
 	enum SearchFilterType{
@@ -35,7 +36,6 @@ function CountryList({ navigation }) {
 		setSearchFilter(SearchFilterType.All);
 		setCurrentPage(1);
 	}
-
 	const onPressAvailable = () => {
 		setSearchFilter(SearchFilterType.Available);
 		setCurrentPage(1);
@@ -59,9 +59,12 @@ function CountryList({ navigation }) {
 		setLoading(true);
 		fetch(urlToFetch)
 			.then((response) => response.json())
-			.then((json) => setCountries(json))
+			.then((json) => { setOverviewInfo(json); 
+							  console.log(json) } )
 			.catch((error) => console.error(error))
 			.finally(() => setLoading(false));
+		setParkingSpots(overviewInfo["data"]);
+		console.log(parkingSpots);
 	};
 	useEffect(() => {
 		fetchData();
@@ -71,30 +74,22 @@ function CountryList({ navigation }) {
 		return (
 			<CountryListItem
 				item={item}
-				onPress={() => navigation.navigate('Details', { item })}
+				onPress={() => navigation.navigate('SpotInfo', { item })}
 			/>
 		);
 	};
 
-	function handleSearch(text: string): void {
-		setSearchString(text);
-		console.log(searchString);
-		if (text.length >= 3) {
-			setUrlToFetch(`https://restcountries.eu/rest/v2/name/${text}`);
-		}
-	}
-
-	const handleRefresh = () => {
-		if(searchString.length === 0)
-		{
-			setUrlToFetch(`https://restcountries.eu/rest/v2/all`);
-		}
-		else
-		{
-			setUrlToFetch(`https://restcountries.eu/rest/v2/name/${searchString}`);
-		}
-		fetchData();
-	};
+	// const handleRefresh = () => {
+	// 	if(searchString.length === 0)
+	// 	{
+	// 		setUrlToFetch(`https://restcountries.eu/rest/v2/all`);
+	// 	}
+	// 	else
+	// 	{
+	// 		setUrlToFetch(`https://restcountries.eu/rest/v2/name/${searchString}`);
+	// 	}
+	// 	fetchData();
+	// };
 	
 	return (
 		<SafeAreaView style={styles.container}>
@@ -139,10 +134,10 @@ function CountryList({ navigation }) {
 				<View>
 					<FlatList
 						// data={countries.slice(0, countries.length)}
-						data={countries.slice(0, 4)}
+						data={parkingSpots}
 						renderItem={renderItem}
 						keyExtractor={(item) => item.name}
-						onRefresh={handleRefresh}
+						//onRefresh={handleRefresh}
 						refreshing={isLoading}
 					/>
 					{/* buttons at the end:

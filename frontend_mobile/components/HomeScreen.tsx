@@ -14,6 +14,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import CountryList from './CountryList';
 import DetailsScreen from './DetailsScreen';
+import DetailedView from './DetailedView';
+import SpotInfo from './SpotInfo';
 
 const HomeScreen = () => {
 	const Stack = createStackNavigator();
@@ -26,7 +28,7 @@ const HomeScreen = () => {
 					component={CountryList}
 					options={{ title: 'Welcome' }}
 				/>
-				<Stack.Screen name='Details' component={DetailsScreen} />
+				<Stack.Screen name='SpotInfo' component={SpotInfo} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
