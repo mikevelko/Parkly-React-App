@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pw.react.backend.appException.ResourceNotFoundException;
 import pw.react.backend.dao.ParkingSpotPhotoRepository;
 import pw.react.backend.dao.ParkingSpotRepository;
+import pw.react.backend.model.Booking;
 import pw.react.backend.model.ParkingSpot;
 import pw.react.backend.model.ParkingSpotPhoto;
 import pw.react.backend.service.ParkingSpotService;
@@ -24,7 +25,9 @@ import pw.react.backend.service.PhotoService;
 import pw.react.backend.utils.PagedResponse;
 import pw.react.backend.web.UploadFileResponse;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -79,6 +82,9 @@ public class ParkingSpotController {
 
         PagedResponse<Collection<ParkingSpot>> response =
                 new PagedResponse<>(pageResult.getContent(),page, size, pageResult.getTotalPages());
+        for(ParkingSpot spot : response.getData()) {
+            spot.setBookings(new ArrayList<Booking>());
+        }
         return ResponseEntity.ok(response);
     }
     @GetMapping(path = "/bookedCount")
@@ -147,5 +153,15 @@ public class ParkingSpotController {
 
         photoRepository.deleteById(photo.get().getId());
         return ResponseEntity.ok(String.format("Photo with id %s deleted.", photo.get().getId()));
+    }
+    @GetMapping(path = "/{parkingSpotId}/bookings")
+    public ResponseEntity<Collection<Booking>> getParkingSpotBookings(@PathVariable Long parkingSpotId)
+    {
+        ParkingSpot spot = repository.findById(parkingSpotId).orElseGet(() -> null);
+        if(spot != null){
+            return ResponseEntity.ok(spot.getBookings());
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
 }

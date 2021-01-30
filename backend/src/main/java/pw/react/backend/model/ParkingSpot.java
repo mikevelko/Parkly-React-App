@@ -1,5 +1,8 @@
 package pw.react.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,7 +36,7 @@ public class ParkingSpot implements Serializable {
     @Column
     private boolean booked;
 
-    @OneToMany(mappedBy="parkingSpot")
-    private transient List<Booking> bookings;
+    @OneToMany(mappedBy="parkingSpot", fetch = FetchType.LAZY)
+    private List<Booking> bookings;
 }
 
