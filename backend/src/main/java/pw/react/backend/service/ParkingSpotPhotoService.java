@@ -14,6 +14,7 @@ import pw.react.backend.model.ParkingSpotPhoto;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 class ParkingSpotPhotoService implements PhotoService {
@@ -32,14 +33,8 @@ class ParkingSpotPhotoService implements PhotoService {
         if (file == null) {
             throw new InvalidFileException("Attachment [MultipartFile] is null.");
         }
-        // Normalize file name
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-
+        String fileName = UUID.randomUUID().toString();
         try {
-            // Check if the file's name contains invalid characters
-            if (fileName.contains("..")) {
-                throw new InvalidFileException("Sorry! Filename contains invalid path sequence " + fileName);
-            }
 
             var parkingSpotPhoto = new ParkingSpotPhoto(fileName,
                     file.getContentType(),

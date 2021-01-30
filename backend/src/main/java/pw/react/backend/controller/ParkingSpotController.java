@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,13 @@ import pw.react.backend.model.ParkingSpot;
 import pw.react.backend.model.ParkingSpotPhoto;
 import pw.react.backend.service.ParkingSpotService;
 import pw.react.backend.service.PhotoService;
+import pw.react.backend.utils.PagedResponse;
 import pw.react.backend.web.UploadFileResponse;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 @RestController
 @RequestMapping(path = "/parkingSpots")
@@ -55,9 +59,33 @@ public class ParkingSpotController {
         return ResponseEntity.ok(repository.findById(parkingSpotId).orElseGet(() -> ParkingSpot.EMPTY));
     }
     @GetMapping(path = "")
-    public ResponseEntity<Collection<ParkingSpot>> getAllParkingSpots(){
-        return ResponseEntity.ok(repository.findAll());
+    public ResponseEntity<PagedResponse<Collection<ParkingSpot>>> getAllParkingSpots(@RequestParam(required = false) String name,
+                                                                      @RequestParam(required = false, defaultValue = "null") Boolean booked,
+                                                                      @RequestParam(defaultValue = "true") boolean sortAscending,
+                                                                      @RequestParam(defaultValue = "0") int page,
+                                                                      @RequestParam(defaultValue = "10") int size){
+
+        Pageable paging = PageRequest.of(page, size, sortAscending? Sort.by("name").ascending() : Sort.by("name").descending());
+        Page<ParkingSpot> pageResult;
+        if(name != null && booked != null){
+            pageResult = repository.findByIsBookedAndNameContaining(booked, name, paging);
+        }else if(name != null){
+            pageResult = repository.findByNameContaining(name, paging);
+        }else if(booked != null){
+            pageResult = repository.findByIsBooked(booked, paging);
+        }else{
+            pageResult = repository.findAll(paging);
+        }
+
+        PagedResponse<Collection<ParkingSpot>> response =
+                new PagedResponse<>(pageResult.getContent(),page, size, pageResult.getTotalPages());
+        return ResponseEntity.ok(response);
     }
+    @GetMapping(path = "/bookedCount")
+    public ResponseEntity<Integer> getBookedCount(@RequestParam boolean isBooked){
+        return ResponseEntity.ok(repository.countByIsBooked(isBooked));
+    }
+
     @PutMapping(path = "/{parkingSpotId}")
     public ResponseEntity<ParkingSpot> updateParkingSpot(@PathVariable Long parkingSpotId,
                                                          @RequestBody ParkingSpot updatedParkingSpot){
