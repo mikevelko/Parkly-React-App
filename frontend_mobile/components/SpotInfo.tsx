@@ -11,13 +11,13 @@ const SpotInfo = ({
 	route: any;
 	//navigation: any;
 }) => {
-    const { id } = route.params;
+    const { item } = route.params;
     //navigation.setOptions({ title: `${id}` });
   return (
     <>
       <DetailedView></DetailedView>
        {/* use id here */}
-      <Text style={{marginLeft:10}}>Bookings: {id}</Text>
+      <Text style={{marginLeft:10}}>Bookings: {item.name}</Text>
       <BookingsList></BookingsList>
     </>
   );
