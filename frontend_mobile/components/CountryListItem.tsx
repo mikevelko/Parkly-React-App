@@ -2,10 +2,10 @@ import React from 'react';
 import { TouchableOpacity, Text, Image } from 'react-native';
 import styles from '../styles/styles';
 
-const CountryListItem = ({ id, onPress }) => (
+const CountryListItem = ({ item, onPress }) => (
 	<TouchableOpacity onPress={onPress} style={styles.item}>
-		<Text style={styles.title}>Parking Spot Name</Text>
-		<Text style={styles.lowerText}>Parking Spot Address</Text>
+		<Text style={styles.title}>{item.name}</Text>
+		<Text style={styles.lowerText}>{item.city}, {item.street}</Text>
 	</TouchableOpacity>
 );
 export default CountryListItem;
