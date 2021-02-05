@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Pictrues from './data/cars.json'
+import Pictrues from '../data/cars.json'
 import ListItem from './ListItem'
 import { Redirect, Link } from "react-router-dom";
 
@@ -35,18 +35,18 @@ const PicturesList = [
 ];
 
 const ImageGridView = (props) => {
-  
+
     const images = props.images.map((pic) => {
-      return <img  src={pic} />;
+        return <img src={pic} />;
     });
-    
+
     return <div className="image-list">{images}</div>;
-  };
+};
 
 
 export default class ParkingSpotEditor extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props);
         this.state = {
             name: '',
             address: '',
@@ -55,7 +55,7 @@ export default class ParkingSpotEditor extends Component {
             pictureURL: '',
             validURL: false,
         }
-
+        this.parkingSpotId = props.match?.params?.id;
         this.handleNameChange = this.handleNameChange.bind(this)
         this.handleAddressChange = this.handleAddressChange.bind(this)
         this.onAddPictureClick = this.onAddPictureClick.bind(this)
@@ -63,54 +63,35 @@ export default class ParkingSpotEditor extends Component {
         this.onCancelPictureClick = this.onCancelPictureClick.bind(this)
         this.onConfirmPictureClick = this.onConfirmPictureClick.bind(this)
     }
-
     render() {
         if (this.state.addingPicture == false)
             return (
                 <div
-                style={{
-                    backgroundColor: '#e0f5bc'
-                }}>
-                    <input name="InputFiled1" placeholder="name" onChange={this.handleNameChange}
-                    />
-
+                    style={{
+                        backgroundColor: '#e0f5bc'
+                    }}>
+                    <input name="InputFiled1" placeholder="name" onChange={this.handleNameChange} />
                     <br />
-
-                    <input name="InputFiled2" placeholder="address" onChange={this.handleAddressChange}
-                    />
-
+                    <input name="InputFiled2" placeholder="address" onChange={this.handleAddressChange} />
                     <br />
-
                     <Link className="overview-button" onClick={() => this.onSaveClick(this.props)} to="/Overview"> Save and add</Link>
                     <Link className="overview-button" to="/Overview"> Cancel</Link>
-
                     <br />
-
                     <button onClick={this.onAddPictureClick}> Add Picture</button>
-
-
-                    <ImageGridView images={this.state.cachedPictures}/>
+                    <ImageGridView images={this.state.cachedPictures} />
                 </div>
             )
         else
             return (
                 <div>
-                    <input name="InputFiled1" placeholder="name" onChange={this.handleNameChange}
-                    />
-
+                    <input name="InputFiled1" placeholder="name" onChange={this.handleNameChange} />
                     <br />
-
-                    <input name="InputFiled2" placeholder="address" onChange={this.handleAddressChange}
-                    />
-
-
+                    <input name="InputFiled2" placeholder="address" onChange={this.handleAddressChange} />
                     <br />
-
                     <input name="InputFiled3" placeholder="image URL" onChange={this.handleNewURLChange} />
                     <br />
                     <button onClick={this.onConfirmPictureClick} disabled={!this.state.validURL}> Confirm</button>
                     <button onClick={this.onCancelPictureClick}> Cancel</button>
-
                 </div>
             )
     }
@@ -142,8 +123,7 @@ export default class ParkingSpotEditor extends Component {
     }
 
     handleNewURLChange(e) {
-        if(this.validURL(e.target.value))
-        {
+        if (this.validURL(e.target.value)) {
             this.setState(prev => {
                 return {
                     name: prev.name,
@@ -155,8 +135,7 @@ export default class ParkingSpotEditor extends Component {
                 }
             });
         }
-        else
-        {
+        else {
             this.setState(prev => {
                 return {
                     name: prev.name,
@@ -168,7 +147,7 @@ export default class ParkingSpotEditor extends Component {
                 }
             });
         }
-        
+
     }
 
     onSaveClick(props) {
@@ -179,25 +158,24 @@ export default class ParkingSpotEditor extends Component {
     onCancelClick() {
         // TODO: open some other view.
 
-
     }
 
     onAddPictureClick() {
         this.setState(prev => ({
             ...prev,
-                addingPicture: true
+            addingPicture: true
         }));
     }
 
     validURL(str) {
-        var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-          '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-          '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-          '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
         return !!pattern.test(str);
-      }
+    }
 
     onConfirmPictureClick() {
         this.setState(prev => {
