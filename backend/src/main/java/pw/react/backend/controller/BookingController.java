@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +19,13 @@ import org.springframework.web.multipart.MultipartFile;
 import pw.react.backend.dao.BookingRepository;
 import pw.react.backend.dao.ParkingSpotPhotoRepository;
 import pw.react.backend.dao.ParkingSpotRepository;
+import pw.react.backend.dao.UserRepository;
 import pw.react.backend.model.Booking;
 import pw.react.backend.model.ParkingSpot;
 import pw.react.backend.service.BookingService;
 import pw.react.backend.service.ParkingSpotService;
 import pw.react.backend.service.PhotoService;
+import pw.react.backend.utils.AuthFilter;
 import pw.react.backend.utils.PagedResponse;
 import pw.react.backend.web.UploadFileResponse;
 
@@ -40,18 +43,22 @@ public class BookingController {
     private BookingRepository repository;
     private ParkingSpotRepository parkingSpotRepository;
     private BookingService bookingService;
+    private AuthFilter filter;
 
 
     @Autowired
     public BookingController(BookingRepository repository,
                              ParkingSpotRepository parkingSpotRepository,
-                             BookingService bookingService){
+                             BookingService bookingService, UserRepository userRepository){
         this.repository = repository;
         this.bookingService = bookingService;
         this.parkingSpotRepository = parkingSpotRepository;
+        this.filter = new AuthFilter(userRepository);
     }
     @PostMapping(path = "")
-    public ResponseEntity<Long> createBooking(@RequestBody Booking booking){
+    public ResponseEntity<Long> createBooking(@RequestBody Booking booking, @RequestHeader(required = false, value = "security-header") String token){
+        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
         var parkingSpot = parkingSpotRepository.findById(booking.getParkingSpotId());
         if(parkingSpot.isEmpty()){
             return ResponseEntity.ok((long)-1);
@@ -61,8 +68,10 @@ public class BookingController {
         return ResponseEntity.ok(result.getId());
     }
     @GetMapping(path = "/{bookingId}")
-    public ResponseEntity<Booking> getBooking(@PathVariable Long bookingId)
+    public ResponseEntity<Booking> getBooking(@PathVariable Long bookingId, @RequestHeader(required = false, value = "security-header") String token)
     {
+        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
         return ResponseEntity.ok(repository.findById(bookingId).orElseGet(() -> Booking.EMPTY));
     }
     @GetMapping(path = "")
@@ -70,9 +79,11 @@ public class BookingController {
                                                               @RequestParam(required = false) @DateTimeFormat(pattern=Booking.DATE_FORMAT) Date to,
                                                               @RequestParam(defaultValue = "true") boolean sortAscending,
                                                               @RequestParam(defaultValue = "0") int page,
-                                                              @RequestParam(defaultValue = "10") int size){
+                                                              @RequestParam(defaultValue = "10") int size,
+                                                                             @RequestHeader(required = false, value = "security-header") String token){
+        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
-            Pageable paging = PageRequest.of(page, size, sortAscending? Sort.by("startDateTime").ascending() : Sort.by("startDateTime").descending());
+            Pageable paging = PageRequest.of(page, size, sortAscending? Sort.by("startDateTime").ascending() :  Sort.by("startDateTime").descending());
             Page<Booking> pageResult;
 
             if(from != null && to != null) {
@@ -93,7 +104,9 @@ public class BookingController {
     }
     @PutMapping(path = "/{bookingId}")
     public ResponseEntity<Booking> updateBooking(@PathVariable Long bookingId,
-                                                         @RequestBody Booking updatedBooking){
+                                                         @RequestBody Booking updatedBooking, @RequestHeader(required = false, value = "security-header") String token){
+        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
         var result = bookingService.updateBooking(bookingId, updatedBooking);
         if(Booking.EMPTY.equals(result)){
             return ResponseEntity.badRequest().body(updatedBooking);

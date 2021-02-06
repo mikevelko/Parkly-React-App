@@ -19,7 +19,7 @@ function deleteReservation() {
 function ParkingSpotDetails(props) {
     const [iterator, setIterator] = react.useState(0);
     const id = props.match?.params?.id;
-    console.log("CREATED " + id);
+
     const pictures = [rightArrow, rightArrow, rightArrow, rightArrow, rightArrow];
     return (
         <div className='Details'>

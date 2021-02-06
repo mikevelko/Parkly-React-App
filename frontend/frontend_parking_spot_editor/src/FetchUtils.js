@@ -1,17 +1,22 @@
 //wysyla zapytanie do backendu
-const parklyBackendUrl = "localhost:8080";
-export async function fetchData(suburl, body){
+const parklyBackendUrl = "http://localhost:8080";
+export async function fetchData(suburl, body, method="GET"){
     try{
-    return await fetch(parklyBackendUrl + suburl, {
-        method: 'GET', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
+      console.log("fetching");
+      return fetch(parklyBackendUrl + suburl, {
+        method: method, // *GET, POST, PUT, DELETE, etc.
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(body) // body data type must match "Content-Type" header
-      });
+        body: body? JSON.stringify(body): undefined // body data type must match "Content-Type" header
+      }).then((response) =>{
+        return response.text().then((val) => {
+          console.log(val)
+          return val;
+        })
+      }).then((value)=> {
+        return value;
+      })
     }catch(e){
         console.error(e);
     }
