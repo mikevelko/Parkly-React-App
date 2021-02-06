@@ -164,3 +164,5 @@
 2021-02-06 01:25:03 [INFO ] [restartedMain] positoryInitializationListener: Spring Data repositories initialized!
 2021-02-06 01:25:03 [INFO ] [RMI TCP Connection(3)-127.0.0.1] .web.servlet.DispatcherServlet: Initializing Servlet 'dispatcherServlet'
 2021-02-06 01:25:03 [INFO ] [RMI TCP Connection(3)-127.0.0.1] .web.servlet.DispatcherServlet: Completed initialization in 5 ms
+2021-02-06 13:01:55 [INFO ] [SpringContextShutdownHook] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-02-06 13:01:55 [INFO ] [SpringContextShutdownHook] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'

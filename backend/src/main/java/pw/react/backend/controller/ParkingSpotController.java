@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pw.react.backend.appException.ResourceNotFoundException;
+import pw.react.backend.dao.BookingRepository;
 import pw.react.backend.dao.ParkingSpotPhotoRepository;
 import pw.react.backend.dao.ParkingSpotRepository;
 import pw.react.backend.dao.UserRepository;
@@ -44,18 +45,20 @@ public class ParkingSpotController {
     private ParkingSpotService parkingSpotService;
     private PhotoService photoService;
     private AuthFilter filter;
+    private BookingRepository bookingRepository;
 
     @Autowired
     public ParkingSpotController(ParkingSpotRepository repository,
                                  ParkingSpotPhotoRepository photoRepository,
                                  ParkingSpotService parkingSpotService,
                                  PhotoService photoService,
-                                 UserRepository userRepository){
+                                 UserRepository userRepository, BookingRepository bookingRepository){
         this.repository = repository;
         this.parkingSpotService = parkingSpotService;
         this.photoService = photoService;
         this.photoRepository = photoRepository;
         this.filter = new AuthFilter(userRepository);
+        this.bookingRepository = bookingRepository;
     }
     @PostMapping(path = "")
     public ResponseEntity<Long> createParkingSpot(@RequestBody ParkingSpot parkingSpot,
@@ -92,6 +95,29 @@ public class ParkingSpotController {
             pageResult = repository.findAll(paging);
         }
 
+        PagedResponse<Collection<ParkingSpot>> response =
+                new PagedResponse<>(pageResult.getContent(),page, size, pageResult.getTotalPages());
+        for(ParkingSpot spot : response.getData()) {
+            spot.setBookings(new ArrayList<Booking>());
+        }
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping(path = "")
+    public ResponseEntity<PagedResponse<Collection<ParkingSpot>>> getAllItems(@RequestParam(required = false) String filter,
+                                                                                     @RequestParam(defaultValue = "true") boolean sort,
+                                                                                     @RequestParam(defaultValue = "0") int page,
+                                                                                     @RequestParam(defaultValue = "10") int size,
+                                                                                     @RequestHeader(required = false, value = "security-header") String token){
+        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        Pageable paging = PageRequest.of(page, size, sort? Sort.by("startDateTime").ascending() : Sort.by("startDateTime").descending());
+        Page<ParkingSpot> pageResult;
+         if(filter != null){
+             boolean isActive = filter.equals("active")? true:false;
+            pageResult = repository.findByActive(isActive, paging);
+        }else{
+            pageResult = repository.findAll(paging);
+        }
         PagedResponse<Collection<ParkingSpot>> response =
                 new PagedResponse<>(pageResult.getContent(),page, size, pageResult.getTotalPages());
         for(ParkingSpot spot : response.getData()) {
@@ -168,6 +194,17 @@ public class ParkingSpotController {
             )
         ).collect(Collectors.toList()));
     }
+    @DeleteMapping("/{parkingSpotId}")
+    public ResponseEntity<String> deletePhoto(@PathVariable long parkingSpotId,
+                                              @RequestHeader(required = false, value = "security-header") String token){
+        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        var parkingSpot = repository.findById(parkingSpotId);
+        if(parkingSpot.isPresent() == false)
+            throw new ResourceNotFoundException("not found");
+        repository.deleteById(parkingSpotId);
+        return ResponseEntity.ok(String.format("Item with id %s deleted.", parkingSpot.get().getId()));
+    }
+
     @DeleteMapping("/{parkingSpotId}/photos/{photoName}")
     public ResponseEntity<String> deletePhoto(@PathVariable long parkingSpotId, @PathVariable String photoName,
                                               @RequestHeader(required = false, value = "security-header") String token){
@@ -194,5 +231,38 @@ public class ParkingSpotController {
         }else{
             return ResponseEntity.notFound().build();
         }
+    }
+    @PostMapping(path = "")
+    public ResponseEntity<Long> bookItem(@RequestBody Booking booking, @RequestHeader(required = false, value = "security-header") String token){
+        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        var parkingSpot = repository.findById(booking.getItemId());
+        if(parkingSpot.isEmpty()){
+            return ResponseEntity.ok((long)-1);
+        }
+        var spot = parkingSpot.get();
+        if(spot.getActive() == false){
+            return ResponseEntity.badRequest().body((long)-1);
+        }
+        booking.setItem(spot);
+        var result = bookingRepository.save(booking);
+        spot.setBooked(true);
+        spot.setAcive(false);
+        result = parkingSpotService.updateParkingSpot(spot.getId(), spot);
+        return ResponseEntity.ok(result.getId());
+    }
+    @PostMapping(path = "")
+    public ResponseEntity<Long> releaseItem(@RequestBody Booking booking, @RequestHeader(required = false, value = "security-header") String token){
+        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        var parkingSpot = repository.findById(booking.getItemId());
+        if(parkingSpot.isEmpty()){
+            return ResponseEntity.ok((long)-1);
+        }
+        var spot = parkingSpot.get();
+        spot.setBooked(false);
+        spot.setAcive(true);
+        result = parkingSpotService.updateParkingSpot(spot.getId(), spot);
+        return ResponseEntity.ok(result.getId());
     }
 }
