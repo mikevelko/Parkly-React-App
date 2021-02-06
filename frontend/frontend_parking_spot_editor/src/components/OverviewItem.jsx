@@ -9,7 +9,7 @@ export default function OverviewItem ({ item, onPress, token }) {
 
     const fetchData = () => {
 		console.log("fetching data");
-        fetch(urlToFetch, {
+        fetch(urlToFetch, {  
             headers: {
                 'security-header': token,
               }
