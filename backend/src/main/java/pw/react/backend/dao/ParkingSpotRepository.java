@@ -16,5 +16,6 @@ public interface ParkingSpotRepository extends JpaRepository<ParkingSpot, Long> 
     Page<ParkingSpot> findByNameContaining(String name, Pageable pageable);
     Page<ParkingSpot> findByBookedAndNameContaining(Boolean booked, String name, Pageable pageable);
     Page<ParkingSpot> findByBooked(Boolean booked, Pageable pageable);
+    Page<ParkingSpot> findByActive(Boolean active, Pageable pageable);
     int countByBooked(boolean booked);
 }

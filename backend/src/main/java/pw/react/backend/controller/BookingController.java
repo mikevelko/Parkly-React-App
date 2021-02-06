@@ -59,11 +59,12 @@ public class BookingController {
     public ResponseEntity<Long> createBooking(@RequestBody Booking booking, @RequestHeader(required = false, value = "security-header") String token){
         if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
-        var parkingSpot = parkingSpotRepository.findById(booking.getParkingSpotId());
+        var parkingSpot = parkingSpotRepository.findById(booking.getItemId());
         if(parkingSpot.isEmpty()){
             return ResponseEntity.ok((long)-1);
         }
-        booking.setParkingSpot(parkingSpot.get());
+        booking.setItemType("ParkingSpot");
+        booking.setItem(parkingSpot.get());
         var result = repository.save(booking);
         return ResponseEntity.ok(result.getId());
     }

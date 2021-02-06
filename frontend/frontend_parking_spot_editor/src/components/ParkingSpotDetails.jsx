@@ -1,7 +1,7 @@
 import './App.css';
 import rightArrow from '../assets/rightArrow.png'
 import trashImage from '../assets/trash.png'
-import react from 'react'
+import react, { useEffect } from 'react'
 
 // Date reservation info
 function RawInfo() {

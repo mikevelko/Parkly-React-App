@@ -13,7 +13,7 @@ import {
   Redirect
 } from "react-router-dom"
 import LoginPage from './LoginPage';
-const TokenContext = React.createContext();
+const TokenContext = react.createContext();
 
 function App() {
   const [securityToken, setSecurityToken] = useState();

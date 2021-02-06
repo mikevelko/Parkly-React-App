@@ -16,5 +16,4 @@ public class AuthFilter {
             return false;
         return true;
     }
-
 }
