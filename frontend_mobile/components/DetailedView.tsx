@@ -3,12 +3,11 @@ import { View, Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import PicsList from "./picsList";
 
-const DetailedView = () => {
+const DetailedView = ({item}) => {
   return (
     <View
       style={{
         display: "flex",
-        flex: 0.4,
         marginTop: 40,
         marginHorizontal: 10,
         flexDirection: "column",
@@ -24,16 +23,16 @@ const DetailedView = () => {
           justifyContent:"space-between",
           marginHorizontal:10
       }}>
-      <Text>Hello World!</Text>
-      <Text>Address</Text>
+      <Text>{item.name}</Text>
+      <Text>{item.city} {item.street}</Text>
       </View> 
       <View style={{
           marginHorizontal:10
       }}>
-      <Text>Available/booked</Text>
+      <Text>{item.booked? 'booked' : 'available'}</Text>
 
       </View> 
-      <PicsList/>
+      <PicsList itemId={item.id}/>
 
     </View>
   );

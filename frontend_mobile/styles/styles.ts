@@ -28,9 +28,8 @@ const styles = StyleSheet.create({
 	},
 	button1: {
 		alignItems: "center",
-		backgroundColor: "#ff4d4d",
+		backgroundColor: "#006600",
 		padding: 10,
-		marginLeft: 16
 	  },
 	  button11: {
 		alignItems: "center",
@@ -40,7 +39,7 @@ const styles = StyleSheet.create({
 	  },
 	  button2: {
 		alignItems: "center",
-		backgroundColor: "#006600",
+		backgroundColor: "#ff4d4d",
 		padding: 10
 	  },
 	  button3: {

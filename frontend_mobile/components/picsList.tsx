@@ -1,36 +1,63 @@
-import React from 'react';
-import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, Image } from 'react-native';
+import {getSpotPics} from './FetchUtils';
+import {getSpotPic} from './FetchUtils';
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Pic',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Pic',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Pic',
-  },
-];
 
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
+const DATA = ['https://reactnative.dev/img/tiny_logo.png', 'https://reactnative.dev/img/tiny_logo.png','https://reactnative.dev/img/tiny_logo.png','https://reactnative.dev/img/tiny_logo.png','https://reactnative.dev/img/tiny_logo.png']
 
-const PicsList = () => {
+const Item = ({ url }) => {
+  const [pic,setPics] = useState([]);
+  const [oneTime, setOneTime] = useState();
+
+  useEffect(() => {
+		const DATA2 = getSpotPic(url);
+    console.log(DATA2);
+    const createData = async () => {
+    const a = await DATA2;
+    setPics(a);
+  };
+  
+  createData();
+
+	}, [oneTime])
+  
+  return (
+  <View >
+    <Image 
+    style={styles.tinyLogo}
+    source={{
+      uri: url,
+    }}></Image>
+  </View>)
+};
+ 
+const PicsList = ({itemId}) => {
+  
+  const [pics,setPics] = useState([]);
+  const [oneTime, setOneTime] = useState();
+
+  useEffect(() => {
+		const DATA2 = getSpotPics(itemId);
+    console.log(DATA2);
+    const createData = async () => {
+    const a = await DATA2;
+    setPics(a);
+  };
+  
+  createData();
+
+	}, [oneTime])
+  
+  console.log(pics);
   const renderItem = ({ item }) => (
-    <Item title={item.title} />
+    <Item url={item.fileDownloadUri} />
   );
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={DATA}
+        data={pics}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         horizontal={true}
@@ -50,8 +77,12 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
   },
-  title: {
-    fontSize: 32,
+  tinyLogo: {
+    height: 100,
+    width: 100,
+    margin: 10,
+   //to do from backend 
+   resizeMethod: 'resize',
   },
 });
 

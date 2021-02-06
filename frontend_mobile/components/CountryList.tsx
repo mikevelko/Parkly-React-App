@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import styles from '../styles/styles';
 import CountryListItem from './CountryListItem';
-import {fetchData} from './FetchUtils';
+import {fetchData, getBookingsCount} from './FetchUtils';
 
 function CountryList({ navigation }) {
 
@@ -23,27 +23,54 @@ function CountryList({ navigation }) {
 	const [searchString, setSearchString] = useState('');
 	const [overviewInfo, setOverviewInfo] = useState('');
 
-	const [searchFilter2,setSearchFilter2] = useState("false");
+	const [searchFilter2,setSearchFilter2] = useState("");
 	const [searchSorted, setSearchSorted] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [pageSize, setPageSize] = useState(4);
 	const [pageCount, setPageCount] = useState(0);
 	const [ItemsCount, setItemsCount] = useState(0);
-
+	const [bookedCount,setBookedCount]=useState(0);
+	const [unbookedCount, setUnbookedCount] = useState(0);
 
 	const onPressLeftOne = () => setCurrentPage(currentPage => currentPage - 1);
 	const onPressLeftAll = () => setCurrentPage(1);
 	const onPressRightOne = () => setCurrentPage(currentPage => currentPage + 1);
 	const onPressRightAll = () => setCurrentPage(currentPage => pageCount);
-	useEffect(() => {
-		setLoading(true);
-		let sorted = "false";
-		if(searchSorted) sorted="true";
-		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
-		const spots = fetchData("/parkingSpots?",(currentPage-1).toString(),"4",sorted,searchFilter2);
 
+	useEffect(() => {
+		if(currentPage!=1) setCurrentPage(1);
+		setLoading(true);
+		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
+		const spots = fetchData("/parkingSpots?",(currentPage-1).toString(),"4",searchSorted,searchFilter2);
+		const bookedCount = getBookingsCount(true);
+		const unbookedCount = getBookingsCount(false);
 		const printSpots = async () => {
 			const a = await spots;
+			const b = await bookedCount;
+			const ub = await unbookedCount;
+			setBookedCount(b);
+			setUnbookedCount(ub);
+			setParkingSpots(a.data);
+			setPageCount(a.pageCount);
+			console.log(a);
+		};
+		  
+		printSpots();
+		setLoading(false);
+	}, [searchFilter2,searchSorted])
+
+	useEffect(() => {
+		setLoading(true);
+		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
+		const spots = fetchData("/parkingSpots?",(currentPage-1).toString(),"4",searchSorted,searchFilter2);
+		const bookedCount = getBookingsCount(true);
+		const unbookedCount = getBookingsCount(false);
+		const printSpots = async () => {
+			const a = await spots;
+			const b = await bookedCount;
+			const ub = await unbookedCount;
+			setBookedCount(b);
+			setUnbookedCount(ub);
 			setParkingSpots(a.data);
 			setPageCount(a.pageCount);
 			console.log(a);
@@ -53,12 +80,11 @@ function CountryList({ navigation }) {
 		setLoading(false);
 	}, [currentPage])
 
-	useEffect(() => {
-		setCurrentPage(1);
-	}, [searchFilter2,searchSorted])
+
 
 	const onPressAll = () => {
 		setSearchFilter2("");
+
 	}
 	const onPressAvailable = () => {
 		setSearchFilter2("false");
@@ -75,7 +101,10 @@ function CountryList({ navigation }) {
 		return (
 			<CountryListItem
 				item={item}
-				onPress={() => navigation.navigate('SpotInfo', { item })}
+				onPress={() => {
+					navigation.navigate('SpotInfo', { item });
+					console.log(item);
+				}}
 			/>
 		);
 	};
@@ -106,21 +135,21 @@ function CountryList({ navigation }) {
 					style={styles.button11}
 					onPress={onPressAll}
 				>
-					<Text>25 all</Text>
+					<Text>{bookedCount+unbookedCount} all</Text>
 				</TouchableOpacity>
 
 				<TouchableOpacity
 					style={styles.button1}
 					onPress={onPressAvailable}
 				>
-					<Text>3 available</Text>
+					<Text>{unbookedCount} available</Text>
 				</TouchableOpacity>
 
 				<TouchableOpacity
 					style={styles.button2}
 					onPress={onPressBooked}
 				>
-					<Text>17 booked</Text>
+					<Text>{bookedCount} booked</Text>
 				</TouchableOpacity>
 
 

@@ -15,7 +15,7 @@ const SpotInfo = ({
     //navigation.setOptions({ title: `${id}` });
   return (
     <>
-      <DetailedView></DetailedView>
+      <DetailedView item={item}></DetailedView>
        {/* use id here */}
       <Text style={{marginLeft:10}}>Bookings: {item.name}</Text>
       <BookingsList></BookingsList>
