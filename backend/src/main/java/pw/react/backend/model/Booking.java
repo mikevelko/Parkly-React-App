@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
+import pw.react.backend.utils.DateTimeFormat;
 import pw.react.backend.utils.JsonDateDeserializer;
 import pw.react.backend.utils.JsonDateSerializer;
 
@@ -20,7 +21,6 @@ import java.time.LocalDateTime;
 public class Booking implements Serializable {
 
     public static Booking EMPTY = new Booking();
-    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,21 +29,27 @@ public class Booking implements Serializable {
     @Column
     private String name;
 
-    @Enumerated(EnumType.ORDINAL)
-    private BookingState bookingState;
+    @Column
+    private long ownerId;
+
+    @Column
+    private boolean Active;
 
     @Column(name = "start_date")
-    @JsonFormat(pattern=Booking.DATE_FORMAT)
+    @JsonFormat(pattern= DateTimeFormat.DATE_FORMAT)
     private LocalDateTime startDateTime;
 
     @Column(name = "end_date")
-    @JsonFormat(pattern=Booking.DATE_FORMAT)
+    @JsonFormat(pattern= DateTimeFormat.DATE_FORMAT)
     private LocalDateTime endDateTime;
 
-    @ManyToOne
-    @JoinColumn(name="parking_spot_id", nullable = false)
-    @JsonIgnoreProperties("bookings")
-    private ParkingSpot parkingSpot;
+    @Column
+    private String ItemType;
 
-    private transient long parkingSpotId;
+    @ManyToOne
+    @JoinColumn(name="item_id", nullable = false)
+    @JsonIgnoreProperties("bookings")
+    private ParkingSpot item;
+
+    private transient long itemId;
 }

@@ -30,6 +30,12 @@ public class ParkingSpot implements Serializable {
     @Column
     private String street;
     @Column
+    private String startDateTime;
+    @Column
+    private String endDateTime;
+    @Column
+    private boolean active;
+    @Column
     private String longitude;
     @Column
     private String latitude;

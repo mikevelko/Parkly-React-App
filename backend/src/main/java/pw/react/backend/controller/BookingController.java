@@ -75,8 +75,8 @@ public class BookingController {
         return ResponseEntity.ok(repository.findById(bookingId).orElseGet(() -> Booking.EMPTY));
     }
     @GetMapping(path = "")
-    public ResponseEntity<PagedResponse<Collection<Booking>>> getAllBookings(@RequestParam(required = false) @DateTimeFormat(pattern=Booking.DATE_FORMAT) Date from,
-                                                              @RequestParam(required = false) @DateTimeFormat(pattern=Booking.DATE_FORMAT) Date to,
+    public ResponseEntity<PagedResponse<Collection<Booking>>> getAllBookings(@RequestParam(required = false) @DateTimeFormat(pattern= pw.react.backend.utils.DateTimeFormat.DATE_FORMAT) Date from,
+                                                              @RequestParam(required = false) @DateTimeFormat(pattern= pw.react.backend.utils.DateTimeFormat.DATE_FORMAT) Date to,
                                                               @RequestParam(defaultValue = "true") boolean sortAscending,
                                                               @RequestParam(defaultValue = "0") int page,
                                                               @RequestParam(defaultValue = "10") int size,
