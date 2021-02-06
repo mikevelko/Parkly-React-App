@@ -17,17 +17,13 @@ import CountryListItem from './CountryListItem';
 import {fetchData} from './FetchUtils';
 
 function CountryList({ navigation }) {
-	enum SearchFilterType {
-		All,
-		Available,
-		Booked
-	}
+
 	const [isLoading, setLoading] = useState(true);
 	const [parkingSpots, setParkingSpots] = useState([]);
 	const [searchString, setSearchString] = useState('');
 	const [overviewInfo, setOverviewInfo] = useState('');
 
-	const [searchFilter, setSearchFilter] = useState(SearchFilterType.All);
+	const [searchFilter2,setSearchFilter2] = useState("false");
 	const [searchSorted, setSearchSorted] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [pageSize, setPageSize] = useState(4);
@@ -41,8 +37,10 @@ function CountryList({ navigation }) {
 	const onPressRightAll = () => setCurrentPage(currentPage => pageCount);
 	useEffect(() => {
 		setLoading(true);
+		let sorted = "false";
+		if(searchSorted) sorted="true";
 		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
-		const spots = fetchData("/parkingSpots?",(currentPage-1).toString(),"4","false");
+		const spots = fetchData("/parkingSpots?",(currentPage-1).toString(),"4",sorted,searchFilter2);
 
 		const printSpots = async () => {
 			const a = await spots;
@@ -56,57 +54,17 @@ function CountryList({ navigation }) {
 	}, [currentPage])
 
 	useEffect(() => {
-		setLoading(true);
 		setCurrentPage(1);
-		let sorted = "false";
-		if(searchSorted) sorted="true";
-		if(searchFilter==SearchFilterType.All) 
-		{
-		const spots = fetchData("/parkingSpots?",(currentPage-1).toString(),"4",sorted);
-		const printSpots = async () => {
-			const a = await spots;
-			setParkingSpots(a.data);
-			setPageCount(a.pageCount);
-			console.log(a);
-		};
-		printSpots();
-		}
-		if(searchFilter==SearchFilterType.Available) 
-		{
-		const spots = fetchData("/parkingSpots?",(currentPage-1).toString(),"4",sorted,"false");
-		const printSpots = async () => {
-			const a = await spots;
-			setParkingSpots(a.data);
-			setPageCount(a.pageCount);
-			console.log(a);
-		};
-		printSpots();
-		}
-
-		if(searchFilter==SearchFilterType.Booked) 
-		{
-		
-		const spots = fetchData("/parkingSpots?",(currentPage-1).toString(),"4",sorted,"true");
-		const printSpots = async () => {
-			const a = await spots;
-			setParkingSpots(a.data);
-			setPageCount(a.pageCount);
-			console.log(a);
-		};
-		printSpots();
-		}
-
-		setLoading(false);
-	}, [searchFilter,searchSorted])
+	}, [searchFilter2,searchSorted])
 
 	const onPressAll = () => {
-		setSearchFilter(SearchFilterType.All);
+		setSearchFilter2("");
 	}
 	const onPressAvailable = () => {
-		setSearchFilter(SearchFilterType.Available);
+		setSearchFilter2("false");
 	}
 	const onPressBooked = () => {
-		setSearchFilter(SearchFilterType.Booked);
+		setSearchFilter2("true");
 	}
 	const onPressSort = () => {
 		setSearchSorted(!searchSorted);
@@ -121,19 +79,23 @@ function CountryList({ navigation }) {
 			/>
 		);
 	};
+	const handleRefresh = () =>{
+		setLoading(true);
+		let sorted = "false";
+		if(searchSorted) sorted="true";
+		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
+		const spots = fetchData("/parkingSpots?",(currentPage-1).toString(),"4",sorted,searchFilter2);
 
-	// const handleRefresh = () => {
-	// 	if(searchString.length === 0)
-	// 	{
-	// 		setUrlToFetch(`https://restcountries.eu/rest/v2/all`);
-	// 	}
-	// 	else
-	// 	{
-	// 		setUrlToFetch(`https://restcountries.eu/rest/v2/name/${searchString}`);
-	// 	}
-	// 	fetchData();
-	// };
-
+		const printSpots = async () => {
+			const a = await spots;
+			setParkingSpots(a.data);
+			setPageCount(a.pageCount);
+			console.log(a);
+		};
+		  
+		printSpots();
+		setLoading(false);
+	}
 	return (
 		<SafeAreaView style={styles.container}>
 
@@ -179,7 +141,7 @@ function CountryList({ navigation }) {
 							data={parkingSpots}
 							renderItem={renderItem}
 							keyExtractor={(item) => item.id}
-							//onRefresh={handleRefresh}
+							onRefresh={handleRefresh}
 							refreshing={isLoading}
 						/>
 						{/* buttons at the end:
