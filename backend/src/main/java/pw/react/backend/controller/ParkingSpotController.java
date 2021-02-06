@@ -1,6 +1,5 @@
 package pw.react.backend.controller;
 
-import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pw.react.backend.appException.ResourceNotFoundException;
+import pw.react.backend.dao.BookingRepository;
 import pw.react.backend.dao.ParkingSpotPhotoRepository;
 import pw.react.backend.dao.ParkingSpotRepository;
 import pw.react.backend.dao.UserRepository;
@@ -30,7 +30,6 @@ import pw.react.backend.web.UploadFileResponse;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,24 +42,26 @@ public class ParkingSpotController {
     private ParkingSpotPhotoRepository photoRepository;
     private ParkingSpotService parkingSpotService;
     private PhotoService photoService;
-    private AuthFilter filter;
+    private AuthFilter authFilter;
+    private BookingRepository bookingRepository;
 
     @Autowired
     public ParkingSpotController(ParkingSpotRepository repository,
                                  ParkingSpotPhotoRepository photoRepository,
                                  ParkingSpotService parkingSpotService,
                                  PhotoService photoService,
-                                 UserRepository userRepository){
+                                 UserRepository userRepository, BookingRepository bookingRepository){
         this.repository = repository;
         this.parkingSpotService = parkingSpotService;
         this.photoService = photoService;
         this.photoRepository = photoRepository;
-        this.filter = new AuthFilter(userRepository);
+        this.authFilter = new AuthFilter(userRepository);
+        this.bookingRepository = bookingRepository;
     }
     @PostMapping(path = "")
     public ResponseEntity<Long> createParkingSpot(@RequestBody ParkingSpot parkingSpot,
                                                   @RequestHeader(required = false, value = "security-header") String token){
-        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         var result = repository.save(parkingSpot);
         return ResponseEntity.ok(result.getId());
@@ -68,7 +69,7 @@ public class ParkingSpotController {
     @GetMapping(path = "/{parkingSpotId}")
     public ResponseEntity<ParkingSpot> getParkingSpot(@PathVariable Long parkingSpotId, @RequestHeader(required = false, value = "security-header") String token)
     {
-        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         return ResponseEntity.ok(repository.findById(parkingSpotId).orElseGet(() -> ParkingSpot.EMPTY));
     }
     @GetMapping(path = "")
@@ -78,7 +79,7 @@ public class ParkingSpotController {
                                                                       @RequestParam(defaultValue = "0") int page,
                                                                       @RequestParam(defaultValue = "10") int size,
                                                                                      @RequestHeader(required = false, value = "security-header") String token){
-        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         Pageable paging = PageRequest.of(page, size, sortAscending? Sort.by("name").ascending() : Sort.by("name").descending());
         Page<ParkingSpot> pageResult;
@@ -99,9 +100,32 @@ public class ParkingSpotController {
         }
         return ResponseEntity.ok(response);
     }
+    @GetMapping(path = "getAllItems")
+    public ResponseEntity<PagedResponse<Collection<ParkingSpot>>> getAllItems(@RequestParam(required = false) String filter,
+                                                                                     @RequestParam(defaultValue = "true") boolean sort,
+                                                                                     @RequestParam(defaultValue = "0") int page,
+                                                                                     @RequestParam(defaultValue = "10") int size,
+                                                                                     @RequestHeader(required = false, value = "security-header") String token){
+        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        Pageable paging = PageRequest.of(page, size, sort? Sort.by("startDateTime").ascending() : Sort.by("startDateTime").descending());
+        Page<ParkingSpot> pageResult;
+         if(filter != null){
+             boolean isActive = filter.equals("active")? true:false;
+            pageResult = repository.findByActive(isActive, paging);
+        }else{
+            pageResult = repository.findAll(paging);
+        }
+        PagedResponse<Collection<ParkingSpot>> response =
+                new PagedResponse<>(pageResult.getContent(),page, size, pageResult.getTotalPages());
+        for(ParkingSpot spot : response.getData()) {
+            spot.setBookings(new ArrayList<Booking>());
+        }
+        return ResponseEntity.ok(response);
+    }
     @GetMapping(path = "/bookedCount")
     public ResponseEntity<Integer> getBookedCount(@RequestParam boolean booked, @RequestHeader(required = false, value = "security-header") String token){
-        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         return ResponseEntity.ok(repository.countByBooked(booked));
     }
@@ -110,7 +134,7 @@ public class ParkingSpotController {
     public ResponseEntity<ParkingSpot> updateParkingSpot(@PathVariable Long parkingSpotId,
                                                          @RequestBody ParkingSpot updatedParkingSpot,
                                                          @RequestHeader(required = false, value = "security-header") String token){
-        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         var result = parkingSpotService.updateParkingSpot(parkingSpotId, updatedParkingSpot);
         if(ParkingSpot.EMPTY.equals(result)){
@@ -121,7 +145,7 @@ public class ParkingSpotController {
     @GetMapping("/{parkingSpotId}/photos/{photoName}")
     public ResponseEntity<Resource> getPhoto(@PathVariable Long parkingSpotId, @PathVariable String photoName,
                                              @RequestHeader(required = false, value = "security-header") String token){
-        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         var photos = photoRepository.findByParkingSpotId(parkingSpotId);
         var photo = photos.stream().filter(x -> x.getFileName().equals(photoName)).findFirst();
@@ -146,7 +170,7 @@ public class ParkingSpotController {
     public ResponseEntity<UploadFileResponse> uploadPhoto(@PathVariable Long parkingSpotId,
                                                          @RequestParam("image") MultipartFile image,
                                                           @RequestHeader(required = false, value = "security-header") String token){
-        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         var photo = photoService.storePhoto(parkingSpotId, image);
         String fileDownloadUri = buildDownloadUri(photo);
@@ -158,7 +182,7 @@ public class ParkingSpotController {
     @GetMapping(value = "/{parkingSpotId}/photos")
     public ResponseEntity<Collection<UploadFileResponse>> getPhotos(@PathVariable Long parkingSpotId,
                                                                     @RequestHeader(required = false, value = "security-header") String token){
-        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         var photos = photoService.getParkingSpotPhotos(parkingSpotId);
 
@@ -168,10 +192,21 @@ public class ParkingSpotController {
             )
         ).collect(Collectors.toList()));
     }
+    @DeleteMapping("/{parkingSpotId}")
+    public ResponseEntity<String> deletePhoto(@PathVariable long parkingSpotId,
+                                              @RequestHeader(required = false, value = "security-header") String token){
+        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        var parkingSpot = repository.findById(parkingSpotId);
+        if(parkingSpot.isPresent() == false)
+            throw new ResourceNotFoundException("not found");
+        repository.deleteById(parkingSpotId);
+        return ResponseEntity.ok(String.format("Item with id %s deleted.", parkingSpot.get().getId()));
+    }
+
     @DeleteMapping("/{parkingSpotId}/photos/{photoName}")
     public ResponseEntity<String> deletePhoto(@PathVariable long parkingSpotId, @PathVariable String photoName,
                                               @RequestHeader(required = false, value = "security-header") String token){
-        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         var photos = photoRepository.findByParkingSpotId(parkingSpotId);
         var photo = photos.stream().filter(x -> x.getFileName().equals(photoName)).findFirst();
@@ -186,7 +221,7 @@ public class ParkingSpotController {
     public ResponseEntity<Collection<Booking>> getParkingSpotBookings(@PathVariable Long parkingSpotId,
                                                                       @RequestHeader(required = false, value = "security-header") String token)
     {
-        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         ParkingSpot spot = repository.findById(parkingSpotId).orElseGet(() -> null);
         if(spot != null){
@@ -194,5 +229,39 @@ public class ParkingSpotController {
         }else{
             return ResponseEntity.notFound().build();
         }
+    }
+    @PostMapping(path = "/bookItem")
+    public ResponseEntity<Long> bookItem(@RequestBody Booking booking, @RequestHeader(required = false, value = "security-header") String token){
+        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        var parkingSpot = repository.findById(booking.getItemId());
+        if(parkingSpot.isEmpty()){
+            return ResponseEntity.ok((long)-1);
+        }
+        var spot = parkingSpot.get();
+        var a = spot.isActive();
+        if(a == false){
+            return ResponseEntity.badRequest().body((long)-1);
+        }
+        booking.setItem(spot);
+        bookingRepository.save(booking);
+        spot.setBooked(true);
+        spot.setActive(false);
+        var result = parkingSpotService.updateParkingSpot(spot.getId(), spot);
+        return ResponseEntity.ok(result.getId());
+    }
+    @PostMapping(path = "/releaseItem")
+    public ResponseEntity<Long> releaseItem(@RequestBody Booking booking, @RequestHeader(required = false, value = "security-header") String token){
+        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        var parkingSpot = repository.findById(booking.getItemId());
+        if(parkingSpot.isEmpty()){
+            return ResponseEntity.ok((long)-1);
+        }
+        var spot = parkingSpot.get();
+        spot.setBooked(false);
+        spot.setActive(true);
+        var result = parkingSpotService.updateParkingSpot(spot.getId(), spot);
+        return ResponseEntity.ok(result.getId());
     }
 }

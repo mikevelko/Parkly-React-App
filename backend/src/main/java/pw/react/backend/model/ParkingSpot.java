@@ -42,7 +42,7 @@ public class ParkingSpot implements Serializable {
     @Column
     private boolean booked;
 
-    @OneToMany(mappedBy="parkingSpot", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="item", fetch = FetchType.LAZY)
     private List<Booking> bookings;
 }
 
