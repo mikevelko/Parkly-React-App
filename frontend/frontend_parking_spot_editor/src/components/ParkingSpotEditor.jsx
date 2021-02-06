@@ -74,8 +74,9 @@ export default class ParkingSpotEditor extends Component {
                     <br />
                     <input name="InputFiled2" placeholder="address" onChange={this.handleAddressChange} />
                     <br />
-                    <Link className="overview-button" onClick={() => this.onSaveClick(this.props)} to="/Overview"> Save and add</Link>
-                    <Link className="overview-button" to="/Overview"> Cancel</Link>
+                    <Link className="overview-button" onClick={() => this.onSaveClick(this.props)} to=""> Save and add</Link>
+                    <br />
+                    <Link className="overview-button" to=""> Cancel</Link>
                     <br />
                     <button onClick={this.onAddPictureClick}> Add Picture</button>
                     <ImageGridView images={this.state.cachedPictures} />

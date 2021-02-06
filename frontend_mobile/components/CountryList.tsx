@@ -1,21 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {
-	SafeAreaView,
-	View,
-	FlatList,
-	StyleSheet,
-	Text,
-	StatusBar,
-	Image,
-	TouchableOpacity,
-	TextInput,
-	NativeSyntheticEvent,
-	TextInputChangeEventData,
-} from 'react-native';
 import styles from '../styles/styles';
 import CountryListItem from './CountryListItem';
 
-function CountryList({ navigation }) {
+function CountryList() {
 	enum SearchFilterType {
 		All,
 		Available,

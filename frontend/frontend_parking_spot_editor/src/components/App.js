@@ -25,7 +25,7 @@ function App() {
         {!securityToken && <Route path="/">
           <Redirect to="/login"/>
         </Route>}
-        <Route exact path={"/"} component={Overview}/>
+        <Route exact path={"/"} component={() => <Overview token={securityToken} />}/>
         <Route exact path="/ParkingSpotEditor/:id" component={ParkingSpotEditor}/>
         <Route path="/ParkingSpotEditor" component={ParkingSpotEditor}/>
         <Route path="/Details/:id" component={ParkingSpotDetails}/>
