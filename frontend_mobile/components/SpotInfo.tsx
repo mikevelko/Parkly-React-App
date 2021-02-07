@@ -4,21 +4,15 @@ import BookingsList from './BookingsList';
 import DetailedView from './DetailedView';
 import styles from '../styles/styles';
 
-const SpotInfo = ({
-  route,
-  //navigation,
-}: {
-  route: any;
-  //navigation: any;
-}) => {
-  const { item } = route.params;
-  //navigation.setOptions({ title: `${id}` });
+const SpotInfo =  (props) => {
+    const { item } = props.route.params;
+    //navigation.setOptions({ title: `${id}` });
   return (
     <>
-      <DetailedView></DetailedView>
-      {/* use id here */}
-      <Text style={{ marginLeft: 10 }}>Bookings: {item.name}</Text>
-      <BookingsList></BookingsList>
+      <DetailedView item={item} securityToken={props.securityToken}></DetailedView>
+       {/* use id here */}
+      <Text style={{marginLeft:10}}>Bookings: {item.name}</Text>
+      <BookingsList itemId={item.id} securityToken={props.securityToken}></BookingsList>
     </>
   );
 }

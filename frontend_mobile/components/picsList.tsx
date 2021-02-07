@@ -16,11 +16,33 @@ const DATA = [
   },
 ];
 
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
+const DATA = ['https://reactnative.dev/img/tiny_logo.png', 'https://reactnative.dev/img/tiny_logo.png','https://reactnative.dev/img/tiny_logo.png','https://reactnative.dev/img/tiny_logo.png','https://reactnative.dev/img/tiny_logo.png']
+
+const Item = ({ url }) => {
+  return (
+  <View >
+    <Image 
+    style={styles.tinyLogo}
+    source={{
+      uri: url,
+    }}></Image>
+  </View>)
+};
+ 
+const PicsList = ({itemId, securityToken}) => {
+  
+  const [pics,setPics] = useState([]);
+  const [oneTime, setOneTime] = useState();
+
+  useEffect(() => {
+		const DATA2 = getSpotPics(securityToken,itemId);
+    console.log(DATA2);
+    const createData = async () => {
+    const a = await DATA2;
+    setPics(a);
+  };
+  
+  createData();
 
 const PicsList = () => {
   const renderItem = ({ item }) => (
@@ -50,8 +72,12 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
   },
-  title: {
-    fontSize: 32,
+  tinyLogo: {
+    height: 100,
+    width: 100,
+    margin: 10,
+   //to do from backend 
+   resizeMethod: 'scale',
   },
 });
 

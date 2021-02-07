@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/styles';
 import CountryListItem from './CountryListItem';
+import {fetchData, getBookingsCount} from './FetchUtils';
+
+function CountryList(props) {
 
 function CountryList() {
 	enum SearchFilterType {
@@ -67,7 +70,43 @@ function CountryList() {
 	const onPressRightAll = () => setCurrentPage(currentPage => pageCount);
 	useEffect(() => {
 		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
-		setUrlToFetch(makeUrlToFetch());
+		const spots = fetchData(props.securityToken,"/parkingSpots?",(currentPage-1).toString(),"4",searchSorted,searchFilter2);
+		const bookedCount = getBookingsCount(props.securityToken,true);
+		const unbookedCount = getBookingsCount(props.securityToken,false);
+		const printSpots = async () => {
+			const a = await spots;
+			const b = await bookedCount;
+			const ub = await unbookedCount;
+			setBookedCount(b);
+			setUnbookedCount(ub);
+			setParkingSpots(a.data);
+			setPageCount(a.pageCount);
+			console.log(a);
+		};
+		  
+		printSpots();
+		setLoading(false);
+	}, [searchFilter2,searchSorted])
+
+	useEffect(() => {
+		setLoading(true);
+		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
+		const spots = fetchData(props.securityToken,"/parkingSpots?",(currentPage-1).toString(),"4",searchSorted,searchFilter2);
+		const bookedCount = getBookingsCount(props.securityToken,true);
+		const unbookedCount = getBookingsCount(props.securityToken,false);
+		const printSpots = async () => {
+			const a = await spots;
+			const b = await bookedCount;
+			const ub = await unbookedCount;
+			setBookedCount(b);
+			setUnbookedCount(ub);
+			setParkingSpots(a.data);
+			setPageCount(a.pageCount);
+			console.log(a);
+		};
+		  
+		printSpots();
+		setLoading(false);
 	}, [currentPage])
 
 	const onPressAll = () => {
@@ -95,23 +134,30 @@ function CountryList() {
 		return (
 			<CountryListItem
 				item={item}
-				onPress={() => navigation.navigate('SpotInfo', { item })}
+				onPress={() => {
+					props.navigation.navigate('SpotInfo', { item });
+					console.log(item);
+				}}
 			/>
 		);
 	};
+	const handleRefresh = () =>{
+		setLoading(true);
+		let sorted = "false";
+		if(searchSorted) sorted="true";
+		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
+		const spots = fetchData(props.securityToken,"/parkingSpots?",(currentPage-1).toString(),"4",sorted,searchFilter2);
 
-	// const handleRefresh = () => {
-	// 	if(searchString.length === 0)
-	// 	{
-	// 		setUrlToFetch(`https://restcountries.eu/rest/v2/all`);
-	// 	}
-	// 	else
-	// 	{
-	// 		setUrlToFetch(`https://restcountries.eu/rest/v2/name/${searchString}`);
-	// 	}
-	// 	fetchData();
-	// };
-
+		const printSpots = async () => {
+			const a = await spots;
+			setParkingSpots(a.data);
+			setPageCount(a.pageCount);
+			console.log(a);
+		};
+		  
+		printSpots();
+		setLoading(false);
+	}
 	return (
 		<SafeAreaView style={styles.container}>
 
@@ -184,7 +230,7 @@ function CountryList() {
 								<Text style={styles.title}>&#8592;</Text>
 							</TouchableOpacity>
 
-							<Text>page {currentPage} of {pageCount}</Text>
+							<Text style={{ fontSize:20, marginTop:10}}>page {currentPage} of {pageCount}</Text>
 
 							<TouchableOpacity
 								disabled={currentPage == pageCount}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -8,29 +8,40 @@ import {
   StatusBar,
 } from "react-native";
 import BookingsListItem from "./BookingsListItem";
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Pic",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Pic",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Pic",
-  },
-];
+import {deleteBooking, getSpotBookings} from './FetchUtils';
 
 
-const BookingsList = () => {
-  const renderItem = ({ item }) => <BookingsListItem/>;
+const BookingsList = ({itemId,securityToken}) => {
+  const [bookings,setBookings] = useState([]);
+  const [oneTime, setOneTime] = useState(true);
+  
+  useEffect(() => {
+		const DATA = getSpotBookings(securityToken,itemId);
+    console.log(DATA);
+    const createData = async () => {
+    const a = await DATA;
+    setBookings(a);
+  };
+  
+  createData();
+
+	}, [oneTime])
+  
+  const Delete = (Id) => 
+  {
+    console.log(Id);
+    console.log(securityToken);
+    deleteBooking(securityToken,Id);
+    setOneTime(!oneTime);
+  }
+  const renderItem = ({ item }) => (
+    <BookingsListItem item={item} securityToken={securityToken} Delete={()=>Delete(item.id)}/>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={DATA}
+        data={bookings}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
