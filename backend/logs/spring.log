@@ -1,0 +1,52 @@
+2021-02-07 17:42:48 [INFO ] [restartedMain] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-02-07 17:42:48 [INFO ] [restartedMain] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 0ms. Found 0 JPA repository interfaces.
+2021-02-07 17:42:48 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat initialized with port(s): 8080 (http)
+2021-02-07 17:42:48 [INFO ] [restartedMain] letWebServerApplicationContext: Root WebApplicationContext: initialization completed in 290 ms
+2021-02-07 17:42:48 [INFO ] [restartedMain] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-02-07 17:42:48 [WARN ] [restartedMain] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-02-07 17:42:48 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-02-07 17:42:49 [INFO ] [task-2] igure.OptionalLiveReloadServer: LiveReload server is running on port 35729
+2021-02-07 17:42:49 [INFO ] [restartedMain] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-02-07 17:42:49 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat started on port(s): 8080 (http) with context path ''
+2021-02-07 17:42:49 [INFO ] [restartedMain] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-02-07 17:42:49 [INFO ] [restartedMain] positoryInitializationListener: Spring Data repositories initialized!
+2021-02-07 17:42:49 [INFO ] [restartedMain] EvaluationDeltaLoggingListener: Condition evaluation unchanged
+2021-02-07 17:42:50 [INFO ] [Thread-8] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-02-07 17:42:50 [INFO ] [Thread-8] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-02-07 17:42:50 [INFO ] [restartedMain] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-02-07 17:42:50 [INFO ] [restartedMain] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 15ms. Found 4 JPA repository interfaces.
+2021-02-07 17:42:51 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat initialized with port(s): 8080 (http)
+2021-02-07 17:42:51 [INFO ] [restartedMain] letWebServerApplicationContext: Root WebApplicationContext: initialization completed in 320 ms
+2021-02-07 17:42:51 [INFO ] [restartedMain] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-02-07 17:42:51 [WARN ] [restartedMain] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-02-07 17:42:51 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-02-07 17:42:51 [INFO ] [task-2] igure.OptionalLiveReloadServer: LiveReload server is running on port 35729
+2021-02-07 17:42:51 [INFO ] [restartedMain] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-02-07 17:42:51 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat started on port(s): 8080 (http) with context path ''
+2021-02-07 17:42:51 [INFO ] [restartedMain] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-02-07 17:42:51 [INFO ] [restartedMain] positoryInitializationListener: Spring Data repositories initialized!
+2021-02-07 17:42:51 [INFO ] [restartedMain] EvaluationDeltaLoggingListener: Condition evaluation unchanged
+2021-02-07 17:43:15 [INFO ] [SpringContextShutdownHook] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-02-07 17:43:15 [INFO ] [SpringContextShutdownHook] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-02-07 17:43:20 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-02-07 17:43:20 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-02-07 17:43:20 [INFO ] [restartedMain] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-02-07 17:43:20 [INFO ] [restartedMain] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 44ms. Found 4 JPA repository interfaces.
+2021-02-07 17:43:21 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat initialized with port(s): 8080 (http)
+2021-02-07 17:43:21 [INFO ] [restartedMain] letWebServerApplicationContext: Root WebApplicationContext: initialization completed in 1100 ms
+2021-02-07 17:43:21 [INFO ] [restartedMain] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-02-07 17:43:21 [WARN ] [restartedMain] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-02-07 17:43:21 [INFO ] [restartedMain] igure.OptionalLiveReloadServer: LiveReload server is running on port 35729
+2021-02-07 17:43:21 [INFO ] [restartedMain] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-02-07 17:43:22 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-02-07 17:43:22 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat started on port(s): 8080 (http) with context path ''
+2021-02-07 17:43:22 [INFO ] [restartedMain] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-02-07 17:43:22 [INFO ] [restartedMain] positoryInitializationListener: Spring Data repositories initialized!
+2021-02-07 17:43:22 [INFO ] [RMI TCP Connection(3)-192.168.18.67] .web.servlet.DispatcherServlet: Initializing Servlet 'dispatcherServlet'
+2021-02-07 17:43:22 [INFO ] [RMI TCP Connection(3)-192.168.18.67] .web.servlet.DispatcherServlet: Completed initialization in 6 ms
+2021-02-07 17:44:10 [WARN ] [http-nio-8080-exec-9] efaultHandlerExceptionResolver: Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize instance of `pw.react.backend.model.ParkingSpot` out of START_ARRAY token; nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize instance of `pw.react.backend.model.ParkingSpot` out of START_ARRAY token
+ at [Source: (PushbackInputStream); line: 1, column: 1]]
+2021-02-07 17:47:50 [WARN ] [http-nio-8080-exec-6] efaultHandlerExceptionResolver: Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize instance of `pw.react.backend.model.ParkingSpot` out of START_ARRAY token; nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize instance of `pw.react.backend.model.ParkingSpot` out of START_ARRAY token
+ at [Source: (PushbackInputStream); line: 1, column: 1]]
+2021-02-07 17:48:01 [WARN ] [http-nio-8080-exec-1] efaultHandlerExceptionResolver: Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize instance of `pw.react.backend.model.ParkingSpot` out of START_ARRAY token; nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize instance of `pw.react.backend.model.ParkingSpot` out of START_ARRAY token
+ at [Source: (PushbackInputStream); line: 1, column: 1]]

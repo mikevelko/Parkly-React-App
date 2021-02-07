@@ -1,2 +1,53 @@
 2021-02-07 12:52:38 [INFO ] [restartedMain] ckend.SampleBackendApplication: Starting SampleBackendApplication on DESKTOP-S0852M1 with PID 10360 (F:\5 sem - React\Parkly-React-App\backend\target\classes started by Mike in F:\5 sem - React\Parkly-React-App\backend)
 2021-02-07 12:52:38 [INFO ] [restartedMain] ckend.SampleBackendApplication: The following profiles are active: mysql-dev
+2021-02-07 17:42:48 [INFO ] [restartedMain] ckend.SampleBackendApplication: Starting SampleBackendApplication on Cezarys-MacBook-Pro.local with PID 30741 (/Users/cezarybanach/Documents/mini/react/parkly/Parkly-React-App/backend/target/classes started by cezarybanach in /Users/cezarybanach/Documents/mini/react/parkly/Parkly-React-App/backend)
+2021-02-07 17:42:48 [INFO ] [restartedMain] ckend.SampleBackendApplication: The following profiles are active: mysql-dev
+2021-02-07 17:42:49 [INFO ] [restartedMain] ckend.SampleBackendApplication: Started SampleBackendApplication in 0.645 seconds (JVM running for 3102.128)
+2021-02-07 17:42:50 [INFO ] [restartedMain] ckend.SampleBackendApplication: Starting SampleBackendApplication on Cezarys-MacBook-Pro.local with PID 30741 (/Users/cezarybanach/Documents/mini/react/parkly/Parkly-React-App/backend/target/classes started by cezarybanach in /Users/cezarybanach/Documents/mini/react/parkly/Parkly-React-App/backend)
+2021-02-07 17:42:50 [INFO ] [restartedMain] ckend.SampleBackendApplication: The following profiles are active: mysql-dev
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: ************** Environment variables **************
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: [PATH] : [/Users/cezarybanach/maven/bin:/Users/cezarybanach/maven/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/Users/cezarybanach/.npm-global/bin:/Applications/Genymotion.app/Contents/MacOS/tools/:/Users/cezarybanach/Library/Python/2.7/bin]
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: [SHELL] : [/bin/zsh]
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: [OLDPWD] : [/]
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: [USER] : [cezarybanach]
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: [TMPDIR] : [/var/folders/1n/cv398_dn22z792l6ld4z3y400000gn/T/]
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: [SSH_AUTH_SOCK] : [/private/tmp/com.apple.launchd.qUf3KSu7Ni/Listeners]
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: [XPC_FLAGS] : [0x0]
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: [VERSIONER_PYTHON_VERSION] : [2.7]
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: [__CF_USER_TEXT_ENCODING] : [0x1F5:0x0:0x0]
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: [LOGNAME] : [cezarybanach]
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: [JAVA_MAIN_CLASS_30741] : [pw.react.backend.SampleBackendApplication]
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: [LC_CTYPE] : [en_US.UTF-8]
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: [PWD] : [/Users/cezarybanach/Documents/mini/react/parkly/Parkly-React-App/backend]
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: [XPC_SERVICE_NAME] : [com.jetbrains.intellij.8584]
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: [HOME] : [/Users/cezarybanach]
+2021-02-07 17:42:51 [INFO ] [restartedMain] act.backend.service.MainConfig: Injected CORS URL: [http://localhost:3000,http://bookly.url,http://localhost:19006]
+2021-02-07 17:42:51 [INFO ] [restartedMain] ct.backend.service.HttpService: Injected CARLY URL: [N/A]
+2021-02-07 17:42:51 [INFO ] [restartedMain] ct.backend.service.HttpService: Injected PARKLY URL: [N/A]
+2021-02-07 17:42:51 [INFO ] [restartedMain] ct.backend.service.HttpService: Injected FLATLY URL: [N/A]
+2021-02-07 17:42:51 [INFO ] [restartedMain] ct.backend.service.HttpService: Injected INTEGRATION URL: [http://this-is-the-way.eu-central-1.elasticbeanstalk.com]
+2021-02-07 17:42:51 [INFO ] [restartedMain] ckend.SampleBackendApplication: Started SampleBackendApplication in 0.776 seconds (JVM running for 3104.398)
+2021-02-07 17:43:20 [INFO ] [restartedMain] ckend.SampleBackendApplication: Starting SampleBackendApplication on Cezarys-MacBook-Pro.local with PID 32741 (/Users/cezarybanach/Documents/mini/react/parkly/Parkly-React-App/backend/target/classes started by cezarybanach in /Users/cezarybanach/Documents/mini/react/parkly/Parkly-React-App/backend)
+2021-02-07 17:43:20 [INFO ] [restartedMain] ckend.SampleBackendApplication: The following profiles are active: mysql-dev
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: ************** Environment variables **************
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: [PATH] : [/Users/cezarybanach/maven/bin:/Users/cezarybanach/maven/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/Users/cezarybanach/.npm-global/bin:/Applications/Genymotion.app/Contents/MacOS/tools/:/Users/cezarybanach/Library/Python/2.7/bin]
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: [SHELL] : [/bin/zsh]
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: [OLDPWD] : [/]
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: [USER] : [cezarybanach]
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: [TMPDIR] : [/var/folders/1n/cv398_dn22z792l6ld4z3y400000gn/T/]
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: [SSH_AUTH_SOCK] : [/private/tmp/com.apple.launchd.qUf3KSu7Ni/Listeners]
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: [XPC_FLAGS] : [0x0]
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: [VERSIONER_PYTHON_VERSION] : [2.7]
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: [JAVA_MAIN_CLASS_32741] : [pw.react.backend.SampleBackendApplication]
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: [__CF_USER_TEXT_ENCODING] : [0x1F5:0x0:0x0]
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: [LOGNAME] : [cezarybanach]
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: [LC_CTYPE] : [en_US.UTF-8]
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: [PWD] : [/Users/cezarybanach/Documents/mini/react/parkly/Parkly-React-App/backend]
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: [XPC_SERVICE_NAME] : [com.jetbrains.intellij.8584]
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: [HOME] : [/Users/cezarybanach]
+2021-02-07 17:43:21 [INFO ] [restartedMain] act.backend.service.MainConfig: Injected CORS URL: [http://localhost:3000,http://bookly.url,http://localhost:19006]
+2021-02-07 17:43:21 [INFO ] [restartedMain] ct.backend.service.HttpService: Injected CARLY URL: [N/A]
+2021-02-07 17:43:21 [INFO ] [restartedMain] ct.backend.service.HttpService: Injected PARKLY URL: [N/A]
+2021-02-07 17:43:21 [INFO ] [restartedMain] ct.backend.service.HttpService: Injected FLATLY URL: [N/A]
+2021-02-07 17:43:21 [INFO ] [restartedMain] ct.backend.service.HttpService: Injected INTEGRATION URL: [http://this-is-the-way.eu-central-1.elasticbeanstalk.com]
+2021-02-07 17:43:22 [INFO ] [restartedMain] ckend.SampleBackendApplication: Started SampleBackendApplication in 2.731 seconds (JVM running for 3.403)
