@@ -4,7 +4,10 @@ import { Redirect, Link } from "react-router-dom";
 export default function ParkingSpotAdder({ token }) {
 
     const [name, setName] = useState('');
-    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [street, setStreet] = useState('');
+    const [longitude, setLongitude] = useState('');
+    const [latitude, setLatitude] = useState('');
     const [cachedPictures, setCachedPictures] = useState([]);
     const [addingPicture, setAddingPicture] = useState(false);
     const [pictureURL, setPictureURL] = useState('');
@@ -29,11 +32,11 @@ export default function ParkingSpotAdder({ token }) {
                 'Content-Type': 'application/json'
             }
             , body: JSON.stringify({
-                name: "parking6",
-                city: "warsaw",
-                street: "abc",
-                longitude: "123",
-                latitude: "321",
+                name: name,
+                city: city,
+                street: street,
+                longitude: longitude,
+                latitude: latitude,
                 booked: false,
                 active: true,
                 startDateTime: "1991-11-30 20:15:00",
@@ -49,8 +52,17 @@ export default function ParkingSpotAdder({ token }) {
     function handleNameChange(e) {
         setName(e.target.value);
     }
-    function handleAddressChange(e) {
-        setAddress(e.target.value);
+    function handleCityChange(e) {
+        setCity(e.target.value);
+    }
+    function handleStreetChange(e) {
+        setStreet(e.target.value);
+    }
+    function handleLongitudeChange(e) {
+        setLongitude(e.target.value);
+    }
+    function handleLatitudeChange(e) {
+        setLatitude(e.target.value);
     }
 
     function handleNewURLChange(e) {
@@ -106,9 +118,15 @@ export default function ParkingSpotAdder({ token }) {
                 style={{
                     backgroundColor: '#e0f5bc'
                 }}>
-                <input name="InputFiled1" placeholder="name" onChange={handleNameChange} />
+                 <input name="name" placeholder="name" onChange={handleNameChange} />
                 <br />
-                <input name="InputFiled2" placeholder="address" onChange={handleAddressChange} />
+                <input name="city" placeholder="city" onChange={handleCityChange} />
+                <br />
+                <input name="street" placeholder="street" onChange={handleStreetChange} />
+                <br />
+                <input name="longitude" placeholder="longitude" onChange={handleLongitudeChange} />
+                <br />
+                <input name="latitude" placeholder="latitude" onChange={handleLatitudeChange} />
                 <br />
                 <button className="overview-button" onClick={onSaveClick}>Save and add</button>
                 <br />
@@ -121,6 +139,16 @@ export default function ParkingSpotAdder({ token }) {
     else
         return (
             <div>
+                 <input name="name" placeholder="name" onChange={handleNameChange} />
+                <br />
+                <input name="city" placeholder="city" onChange={handleCityChange} />
+                <br />
+                <input name="street" placeholder="street" onChange={handleStreetChange} />
+                <br />
+                <input name="longitude" placeholder="longitude" onChange={handleLongitudeChange} />
+                <br />
+                <input name="latitude" placeholder="latitude" onChange={handleLatitudeChange} />
+                <br />
                 <input name="InputFiled3" placeholder="image URL" onChange={handleNewURLChange} />
                 <br />
                 <button onClick={onConfirmPictureClick} disabled={!validURL}>Confirm</button>

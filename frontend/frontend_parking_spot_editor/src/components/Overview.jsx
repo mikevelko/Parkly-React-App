@@ -33,14 +33,12 @@ export default function Overview ({token, onClickOverViewItem}) {
 					'&booked=true';
 
 		console.log("http://localhost:8080/parkingSpots?"
-			+ "name=parking"
 			+ "&page=" + JSON.stringify(currentPage - 1)
 			+ "&size=" + JSON.stringify(pageSize)
 			+ "&sortAscending=" + JSON.stringify(searchSorted)
 			+ filterString
 		);
 		return ("http://localhost:8080/parkingSpots?"
-			+ "name=parking"
 			+ "&page=" + JSON.stringify(currentPage - 1)
 			+ "&size=" + JSON.stringify(pageSize)
 			+ "&sortAscending=" + JSON.stringify(searchSorted)

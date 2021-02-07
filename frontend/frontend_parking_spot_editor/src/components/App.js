@@ -29,7 +29,7 @@ function App() {
           <Redirect to="/login"/>
         </Route>}
         <Route exact path={"/"} component={() => <Overview token={securityToken} onClickOverViewItem={(id) => setDetailsID(id)}/>}/>
-        <Route exact path="/ParkingSpotEditor/:id" component={() => <ParkingSpotEditor token={securityToken} itemID={detailsID}/>}/>
+        <Route exact path="/ParkingSpotEditor/:id" component={() => <ParkingSpotEditor token={securityToken} id={detailsID}/>}/>
         <Route path="/ParkingSpotAdder" component={() => <ParkingSpotAdder token={securityToken}/>}/>
         <Route path="/Details/:id" component={() => <ParkingSpotDetails token={securityToken} itemID={detailsID}/>}/>
         <Route path="/AllBookings" component={() => <AllBookings token={securityToken}/>}/>

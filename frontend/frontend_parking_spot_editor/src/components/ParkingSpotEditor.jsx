@@ -43,7 +43,7 @@ export default function ParkingSpotEditor({ token, id }) {
 
     const editParkingSpot = () => {
         console.log("posting Parking spot");
-        fetch("http://localhost:8080/parkingSpots", {
+        fetch("http://localhost:8080/parkingSpots/" + id, {
             method: "PUT",
             headers: {
                 'security-header': token,
@@ -55,7 +55,9 @@ export default function ParkingSpotEditor({ token, id }) {
                 "city": city,
                 "street": street,
                 "longitude": longitude,
-                "latitude": latitude
+                "latitude": latitude,
+                "startDateTime": "1991-11-30 20:15:00",
+                "endDateTime": "2021-02-28 22:15:00",
             })
         })
             .then((response) => response.json())
@@ -148,6 +150,16 @@ export default function ParkingSpotEditor({ token, id }) {
     else
         return (
             <div>
+                 <input name="name" placeholder="name" onChange={handleNameChange} />
+                <br />
+                <input name="city" placeholder="city" onChange={handleCityChange} />
+                <br />
+                <input name="street" placeholder="street" onChange={handleStreetChange} />
+                <br />
+                <input name="longitude" placeholder="longitude" onChange={handleLongitudeChange} />
+                <br />
+                <input name="latitude" placeholder="latitude" onChange={handleLatitudeChange} />
+                <br />
                 <input name="pic url" placeholder="image URL" onChange={handleNewURLChange} />
                 <br />
                 <button onClick={onConfirmPictureClick} disabled={!validURL}>Confirm</button>
