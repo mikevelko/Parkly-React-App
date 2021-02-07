@@ -16,19 +16,26 @@ import CountryList from './CountryList';
 import DetailsScreen from './DetailsScreen';
 import DetailedView from './DetailedView';
 import SpotInfo from './SpotInfo';
+import LoginPage from './LoginPage';
 
 const HomeScreen = () => {
 	const Stack = createStackNavigator();
-
+	const [securityToken, setSecurityToken] = useState(null);
 	return (
 		<NavigationContainer>
 			<Stack.Navigator>
-				<Stack.Screen
-					name='Home'
-					component={CountryList}
-					options={{ title: 'Welcome' }}
-				/>
-				<Stack.Screen name='SpotInfo' component={SpotInfo} />
+
+				<Stack.Screen name="LoginPage">
+					{props => <LoginPage {...props} setSecurityToken={setSecurityToken} />}
+				</Stack.Screen>
+
+				<Stack.Screen name="Home" options={{ title: 'Parking spots' }}>
+					{props => <CountryList {...props} securityToken={securityToken} />}
+				</Stack.Screen>
+
+				<Stack.Screen name="SpotInfo" options={{ title: 'Spot information' }}>
+					{props => <SpotInfo {...props} securityToken={securityToken} />}
+				</Stack.Screen>
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

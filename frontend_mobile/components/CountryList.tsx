@@ -16,7 +16,7 @@ import styles from '../styles/styles';
 import CountryListItem from './CountryListItem';
 import {fetchData, getBookingsCount} from './FetchUtils';
 
-function CountryList({ navigation }) {
+function CountryList(props) {
 
 	const [isLoading, setLoading] = useState(true);
 	const [parkingSpots, setParkingSpots] = useState([]);
@@ -41,9 +41,9 @@ function CountryList({ navigation }) {
 		if(currentPage!=1) setCurrentPage(1);
 		setLoading(true);
 		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
-		const spots = fetchData("/parkingSpots?",(currentPage-1).toString(),"4",searchSorted,searchFilter2);
-		const bookedCount = getBookingsCount(true);
-		const unbookedCount = getBookingsCount(false);
+		const spots = fetchData(props.securityToken,"/parkingSpots?",(currentPage-1).toString(),"4",searchSorted,searchFilter2);
+		const bookedCount = getBookingsCount(props.securityToken,true);
+		const unbookedCount = getBookingsCount(props.securityToken,false);
 		const printSpots = async () => {
 			const a = await spots;
 			const b = await bookedCount;
@@ -62,9 +62,9 @@ function CountryList({ navigation }) {
 	useEffect(() => {
 		setLoading(true);
 		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
-		const spots = fetchData("/parkingSpots?",(currentPage-1).toString(),"4",searchSorted,searchFilter2);
-		const bookedCount = getBookingsCount(true);
-		const unbookedCount = getBookingsCount(false);
+		const spots = fetchData(props.securityToken,"/parkingSpots?",(currentPage-1).toString(),"4",searchSorted,searchFilter2);
+		const bookedCount = getBookingsCount(props.securityToken,true);
+		const unbookedCount = getBookingsCount(props.securityToken,false);
 		const printSpots = async () => {
 			const a = await spots;
 			const b = await bookedCount;
@@ -102,7 +102,7 @@ function CountryList({ navigation }) {
 			<CountryListItem
 				item={item}
 				onPress={() => {
-					navigation.navigate('SpotInfo', { item });
+					props.navigation.navigate('SpotInfo', { item });
 					console.log(item);
 				}}
 			/>
@@ -113,7 +113,7 @@ function CountryList({ navigation }) {
 		let sorted = "false";
 		if(searchSorted) sorted="true";
 		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
-		const spots = fetchData("/parkingSpots?",(currentPage-1).toString(),"4",sorted,searchFilter2);
+		const spots = fetchData(props.securityToken,"/parkingSpots?",(currentPage-1).toString(),"4",sorted,searchFilter2);
 
 		const printSpots = async () => {
 			const a = await spots;
@@ -197,7 +197,7 @@ function CountryList({ navigation }) {
 								<Text style={styles.title}>&#8592;</Text>
 							</TouchableOpacity>
 
-							<Text>page {currentPage} of {pageCount}</Text>
+							<Text style={{ fontSize:20, marginTop:10}}>page {currentPage} of {pageCount}</Text>
 
 							<TouchableOpacity
 								disabled={currentPage == pageCount}

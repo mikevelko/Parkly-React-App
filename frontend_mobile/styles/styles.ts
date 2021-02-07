@@ -6,10 +6,11 @@ const styles = StyleSheet.create({
 		marginTop: StatusBar.currentHeight || 0,
 	},
 	item: {
-		backgroundColor: '#00bfff',
+		backgroundColor: '#b0e0e6',
 		padding: 20,
 		marginVertical: 8,
 		marginHorizontal: 16,
+		borderRadius: 15,
 	},
 	title: {
 		fontSize: 24,
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
 	},
 	button1: {
 		alignItems: "center",
-		backgroundColor: "#006600",
+		backgroundColor: "#98fb98",
 		padding: 10,
 	  },
 	  button11: {
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
 	  },
 	  button3: {
 		alignItems: "center",
-		backgroundColor: "#3333ff",
+		backgroundColor: "#87cefa",
 		padding: 10,
 		marginRight: 16
 	  },
