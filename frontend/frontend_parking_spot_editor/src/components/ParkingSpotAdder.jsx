@@ -3,7 +3,7 @@ import { Redirect, Link } from "react-router-dom";
 
 export default function ParkingSpotAdder({ token }) {
 
-	const [name, setName] = useState('');
+    const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [cachedPictures, setCachedPictures] = useState([]);
     const [addingPicture, setAddingPicture] = useState(false);
@@ -14,31 +14,31 @@ export default function ParkingSpotAdder({ token }) {
         const images = cachedPictures.map((pic) => {
             return <img src={pic} />;
         });
-    
+
         return <div className="image-list">{images}</div>;
     };
-    
+
     const fetchData = () => {
         console.log("fetching data");
-        fetch("http://localhost:8080/parkingSpots", {  
+        fetch("http://localhost:8080/parkingSpots", {
             method: "POST",
             headers: {
                 'security-header': token,
                 'Accept': '*/*',
                 'Content-Type': 'application/json'
-                }
-            , body: {
-                "name": "abc",
-                "city": "adsfdfsagdfgdfasg",
-                "street": "abc",
-                "longitude": "123",
-                "latitude": "321",
-                // "booked": false,
-                // "active": true,
-                // "startDateTime": "1991-11-30 20:15:00",
-                // "endDateTime": "1991-11-30 22:15:00"
             }
+            , body: JSON.stringify({
+                name: "parking6",
+                city: "warsaw",
+                street: "abc",
+                longitude: "123",
+                latitude: "321",
+                booked: false,
+                active: true,
+                startDateTime: "1991-11-30 20:15:00",
+                endDateTime: "2021-02-30 22:15:00"
             })
+        })
             .then((response) => response.json())
             .then((json) => console.log(json))
             .catch((error) => console.error(error));
@@ -55,7 +55,7 @@ export default function ParkingSpotAdder({ token }) {
         if (isValidURL(e.target.value)) {
             setPictureURL(e.target.value);
             setValidURL(true);
-            }
+        }
         else {
             setPictureURL(e.target.value);
             setValidURL(false);
@@ -81,22 +81,22 @@ export default function ParkingSpotAdder({ token }) {
         // },
         // "POST")
         // .then((json) => { parkingSpotID=json; console.log(json);} )
-		// .catch((error) => console.error("1:" + error))
+        // .catch((error) => console.error("1:" + error))
         // .finally(() => {}
-            // {
-            //     cachedPictures.forEach(picture => {
-            //         fetchDataAfterSecurity(token, "/parkingSpots/" + parkingSpotID + "/photos" , 
-            //         {
-            //             "fileName": "e55cff4a-f221-4447-b8f2-030114d33499",
-            //             "fileDownloadUri": picture,
-            //             "fileType": "image/png",
-            //             "size": 280590
-            //         },
-            //         "POST")
-            //         .then((json) => console.log(json))
-		    //         .catch((error) => console.error("2222222222222222222:" + error))
-            //     });
-            // }
+        // {
+        //     cachedPictures.forEach(picture => {
+        //         fetchDataAfterSecurity(token, "/parkingSpots/" + parkingSpotID + "/photos" , 
+        //         {
+        //             "fileName": "e55cff4a-f221-4447-b8f2-030114d33499",
+        //             "fileDownloadUri": picture,
+        //             "fileType": "image/png",
+        //             "size": 280590
+        //         },
+        //         "POST")
+        //         .then((json) => console.log(json))
+        //         .catch((error) => console.error("2222222222222222222:" + error))
+        //     });
+        // }
         //)
 
     }
