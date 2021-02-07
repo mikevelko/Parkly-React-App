@@ -121,10 +121,6 @@ export default function ParkingSpotAdder({ token }) {
     else
         return (
             <div>
-                <input name="InputFiled1" placeholder="name" onChange={handleNameChange} />
-                <br />
-                <input name="InputFiled2" placeholder="address" onChange={handleAddressChange} />
-                <br />
                 <input name="InputFiled3" placeholder="image URL" onChange={handleNewURLChange} />
                 <br />
                 <button onClick={onConfirmPictureClick} disabled={!validURL}>Confirm</button>
