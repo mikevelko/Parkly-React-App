@@ -8,11 +8,16 @@ import {
   StatusBar,
   Button,
 } from "react-native";
+import {deleteBooking} from './FetchUtils';
 
 
-
-const BookingsListItem = ({ item }) => {
-  const Delete = () => { }
+const BookingsListItem = ({ item,securityToken }) => {
+  const Delete = () => 
+  {
+    console.log(item.id);
+    console.log(securityToken);
+    deleteBooking(securityToken,item.id);
+  }
   return (
     <View style={styles.item}>
       <View style={styles.item2}>

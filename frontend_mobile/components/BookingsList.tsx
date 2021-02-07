@@ -29,7 +29,7 @@ const BookingsList = ({itemId,securityToken}) => {
   
 
   const renderItem = ({ item }) => (
-    <BookingsListItem item={item} />
+    <BookingsListItem item={item} securityToken={securityToken}/>
   );
 
   return (
