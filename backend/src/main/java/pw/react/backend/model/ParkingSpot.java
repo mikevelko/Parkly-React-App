@@ -1,13 +1,16 @@
 package pw.react.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
+import pw.react.backend.utils.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -29,10 +32,15 @@ public class ParkingSpot implements Serializable {
     private String city;
     @Column
     private String street;
-    @Column
-    private String startDateTime;
-    @Column
-    private String endDateTime;
+
+    @Column(name = "start_date")
+    @JsonFormat(pattern= DateTimeFormat.DATE_FORMAT)
+    private LocalDateTime startDateTime;
+
+    @Column(name = "end_date")
+    @JsonFormat(pattern= DateTimeFormat.DATE_FORMAT)
+    private LocalDateTime endDateTime;
+
     @Column
     private boolean active;
     @Column

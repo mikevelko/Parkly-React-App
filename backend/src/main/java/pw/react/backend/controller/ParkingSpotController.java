@@ -28,8 +28,11 @@ import pw.react.backend.utils.AuthFilter;
 import pw.react.backend.utils.PagedResponse;
 import pw.react.backend.web.UploadFileResponse;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -145,7 +148,7 @@ public class ParkingSpotController {
     @GetMapping("/{parkingSpotId}/photos/{photoName}")
     public ResponseEntity<Resource> getPhoto(@PathVariable Long parkingSpotId, @PathVariable String photoName,
                                              @RequestHeader(required = false, value = "security-header") String token){
-        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
 
         var photos = photoRepository.findByParkingSpotId(parkingSpotId);
         var photo = photos.stream().filter(x -> x.getFileName().equals(photoName)).findFirst();
@@ -193,7 +196,7 @@ public class ParkingSpotController {
         ).collect(Collectors.toList()));
     }
     @DeleteMapping("/{parkingSpotId}")
-    public ResponseEntity<String> deletePhoto(@PathVariable long parkingSpotId,
+    public ResponseEntity<String> deleteParkingSpot(@PathVariable long parkingSpotId,
                                               @RequestHeader(required = false, value = "security-header") String token){
         if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         var parkingSpot = repository.findById(parkingSpotId);
@@ -239,8 +242,13 @@ public class ParkingSpotController {
             return ResponseEntity.ok((long)-1);
         }
         var spot = parkingSpot.get();
-        var a = spot.isActive();
-        if(a == false){
+        var currentTime = new Date();
+        LocalDateTime ldt = LocalDateTime.ofInstant(currentTime.toInstant(), ZoneId.systemDefault());
+        if(ldt.compareTo(spot.getEndDateTime())>0){
+            spot.setActive(false);
+            parkingSpotService.updateParkingSpot(spot.getId(), spot);
+        }
+        if(spot.isActive() == false || booking.getEndDateTime().compareTo(spot.getEndDateTime())>0){
             return ResponseEntity.badRequest().body((long)-1);
         }
         booking.setItem(spot);
@@ -259,8 +267,15 @@ public class ParkingSpotController {
             return ResponseEntity.ok((long)-1);
         }
         var spot = parkingSpot.get();
+
+        var currentTime = new Date();
+        LocalDateTime ldt = LocalDateTime.ofInstant(currentTime.toInstant(), ZoneId.systemDefault());
+        if(ldt.compareTo(spot.getEndDateTime())>0){
+            spot.setActive(false);
+        }else{
+            spot.setActive(true);
+        }
         spot.setBooked(false);
-        spot.setActive(true);
         var result = parkingSpotService.updateParkingSpot(spot.getId(), spot);
         return ResponseEntity.ok(result.getId());
     }

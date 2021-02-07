@@ -5,19 +5,19 @@ import DetailedView from './DetailedView';
 import styles from '../styles/styles';
 
 const SpotInfo = ({
-	route,
-	//navigation,
+  route,
+  //navigation,
 }: {
-	route: any;
-	//navigation: any;
+  route: any;
+  //navigation: any;
 }) => {
-    const { item } = route.params;
-    //navigation.setOptions({ title: `${id}` });
+  const { item } = route.params;
+  //navigation.setOptions({ title: `${id}` });
   return (
     <>
       <DetailedView></DetailedView>
-       {/* use id here */}
-      <Text style={{marginLeft:10}}>Bookings: {item.name}</Text>
+      {/* use id here */}
+      <Text style={{ marginLeft: 10 }}>Bookings: {item.name}</Text>
       <BookingsList></BookingsList>
     </>
   );
