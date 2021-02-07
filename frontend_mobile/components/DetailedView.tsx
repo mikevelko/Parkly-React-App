@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import PicsList from "./picsList";
 
-const DetailedView = ({item}) => {
+const DetailedView = ({item,securityToken}) => {
   return (
     <View
       style={{
@@ -11,7 +11,7 @@ const DetailedView = ({item}) => {
         marginTop: 40,
         marginHorizontal: 10,
         flexDirection: "column",
-        backgroundColor: "#98FB98",
+        backgroundColor: item.booked?'red':'green',
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         borderBottomLeftRadius: 10,
@@ -32,7 +32,7 @@ const DetailedView = ({item}) => {
       <Text>{item.booked? 'booked' : 'available'}</Text>
 
       </View> 
-      <PicsList itemId={item.id}/>
+      <PicsList itemId={item.id} securityToken={securityToken}/>
 
     </View>
   );

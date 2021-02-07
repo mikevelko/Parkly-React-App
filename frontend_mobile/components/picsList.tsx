@@ -7,21 +7,6 @@ import {getSpotPic} from './FetchUtils';
 const DATA = ['https://reactnative.dev/img/tiny_logo.png', 'https://reactnative.dev/img/tiny_logo.png','https://reactnative.dev/img/tiny_logo.png','https://reactnative.dev/img/tiny_logo.png','https://reactnative.dev/img/tiny_logo.png']
 
 const Item = ({ url }) => {
-  const [pic,setPics] = useState([]);
-  const [oneTime, setOneTime] = useState();
-
-  useEffect(() => {
-		const DATA2 = getSpotPic(url);
-    console.log(DATA2);
-    const createData = async () => {
-    const a = await DATA2;
-    setPics(a);
-  };
-  
-  createData();
-
-	}, [oneTime])
-  
   return (
   <View >
     <Image 
@@ -32,13 +17,13 @@ const Item = ({ url }) => {
   </View>)
 };
  
-const PicsList = ({itemId}) => {
+const PicsList = ({itemId, securityToken}) => {
   
   const [pics,setPics] = useState([]);
   const [oneTime, setOneTime] = useState();
 
   useEffect(() => {
-		const DATA2 = getSpotPics(itemId);
+		const DATA2 = getSpotPics(securityToken,itemId);
     console.log(DATA2);
     const createData = async () => {
     const a = await DATA2;
@@ -82,7 +67,7 @@ const styles = StyleSheet.create({
     width: 100,
     margin: 10,
    //to do from backend 
-   resizeMethod: 'resize',
+   resizeMethod: 'scale',
   },
 });
 
