@@ -1,13 +1,14 @@
 //wysyla zapytanie do backendu
-//const parklyBackendUrl = "http://localhost:8080";
-const parklyBackendUrl = "Parkly-env.eba-rnjsijxg.eu-central-1.elasticbeanstalk.com";
+const parklyBackendUrl = "http://localhost:8080";
+//const parklyBackendUrl = "Parkly-env.eba-rnjsijxg.eu-central-1.elasticbeanstalk.com";
 export async function fetchData(suburl, body, method="GET"){
     try{
       console.log("fetching");
       return fetch(parklyBackendUrl + suburl, {
         method: method, // *GET, POST, PUT, DELETE, etc.
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'security-header': "asdfsdfajslkdfj"
         },
         body: body? JSON.stringify(body): undefined // body data type must match "Content-Type" header
       }).then((response) =>{
