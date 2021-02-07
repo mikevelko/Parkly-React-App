@@ -1,0 +1,2 @@
+2021-02-07 12:52:38 [INFO ] [restartedMain] ckend.SampleBackendApplication: Starting SampleBackendApplication on DESKTOP-S0852M1 with PID 10360 (F:\5 sem - React\Parkly-React-App\backend\target\classes started by Mike in F:\5 sem - React\Parkly-React-App\backend)
+2021-02-07 12:52:38 [INFO ] [restartedMain] ckend.SampleBackendApplication: The following profiles are active: mysql-dev

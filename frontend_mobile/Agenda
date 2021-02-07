@@ -1,0 +1,26 @@
+DEMO AGENDA
+
+1. Initial empty app (v.1.initial-app)
+2. Debugging (v.2.console-log)
+    - console log
+    - remote Debugging
+    - breakpoints
+    - mention react-native-debugger (https://github.com/jhen0409/react-native-debugger/releases)
+    - connecting more then one device
+
+3. Publish to Expo
+4. Touchable opacity (v.3.touchableOpacity)
+5. Navigation (with AppLoading) (v.4.navigation)
+6. Flat List (v.5.basicflatlist)
+7. Dynamic data fetching (v.6.dynamicContentLoadedFromService)
+
+
+
+TODO Before labs tommorow:
+- Create expo accounts
+- Refresh your knowledge about loading data from REST services
+- Read about flat list 
+- Read about stack navigation
+
+
+Labs requirement: publish apps to expo accounts and provide QR codes

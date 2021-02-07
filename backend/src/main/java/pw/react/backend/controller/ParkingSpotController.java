@@ -148,7 +148,7 @@ public class ParkingSpotController {
     @GetMapping("/{parkingSpotId}/photos/{photoName}")
     public ResponseEntity<Resource> getPhoto(@PathVariable Long parkingSpotId, @PathVariable String photoName,
                                              @RequestHeader(required = false, value = "security-header") String token){
-        if(authFilter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
 
         var photos = photoRepository.findByParkingSpotId(parkingSpotId);
         var photo = photos.stream().filter(x -> x.getFileName().equals(photoName)).findFirst();
