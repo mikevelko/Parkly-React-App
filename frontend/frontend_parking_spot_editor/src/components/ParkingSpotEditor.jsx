@@ -1,131 +1,157 @@
 import React, { useEffect, useState } from 'react'
-
-import ListItem from './ListItem'
 import { Redirect, Link } from "react-router-dom";
 
-export default function ParkingSpotEditor ({ token }) {
+export default function ParkingSpotEditor({ token, id }) {
 
-//     const [urlToFetch, setUrlToFetch] = useState("http://localhost:8080/parkingSpots");
-// 	const [name, setName] = useState('');
-//     const [address, setAddress] = useState('');
-//     const [cachedPictures, setCachedPictures] = useState(PicturesList);
-//     const [addingPicture, setAddingPicture] = useState(false);
-//     const [pictureURL, setPictureURL] = useState('');
-//     const [validURL, setValidURL] = useState(false);
+    const [name, setName] = useState('');
+    const [city, setCity] = useState('');
+    const [street, setStreet] = useState('');
+    const [longitude, setLongitude] = useState('');
+    const [latitude, setLatitude] = useState('');
+    const [cachedPictures, setCachedPictures] = useState([]);
+    const [addingPicture, setAddingPicture] = useState(false);
+    const [pictureURL, setPictureURL] = useState('');
+    const [validURL, setValidURL] = useState(false);
+    const [redirectToOV, setRedirectToOV] = useState(false);
 
-//     const ImageGridView = (props) => {
+    const ImageGridView = () => {
+        const images = cachedPictures.map((pic) => {
+            return <img src={pic} />;
+        });
 
-//         const images = props.images.map((pic) => {
-//             return <img src={pic} />;
-//         });
-    
-//         return <div className="image-list">{images}</div>;
-//     };
+        return <div className="image-list">{images}</div>;
+    };
 
-//     fetchData("/authorization/login", {
-//         login: login,
-//         password: encrypted
-//     }, "POST").then((value) => {
-//         props.setToken(value);
-//     });
-    
-//     const addParkingSpot = () => {
-//         console.log("adding parking spot");
-//         fetch(urlToFetch, {  
-//             headers: {
-//                 'security-header': token,
-//                 }
-//             })
-//             .then((response) => response.json())
-//             .then((json) => setImgList(json))
-//             .catch((error) => console.error(error));
-//     };
-//     useEffect(() => {
-//         fetchData();
-//     });
-
-//     function handleNameChange(e) {
-//         setName(e.target.value);
-//     }
-
-//     function handleAddressChange(e) {
-//         setAddress(e.target.value);
-//     }
-
-//     function handleNewURLChange(e) {
-//         if (this.validURL(e.target.value)) {
-//             setPictureURL(e.target.value);
-//             setValidURL(true);
-//             }
-//         else {
-//             setPictureURL(e.target.value);
-//             setValidURL(false);
-//         }
-
-//     }
-
-//     function onSaveClick() {
-//         // TODO: add backend here (easiest way: remove previous entry for this parking spot from DB and add current saved version to DB)
-//         redirectTo("/Overview");
-//     }
-
-//     function onCancelClick() {
-//         // TODO: open some other view.
-
-//     }
-
-//     function onAddPictureClick() {
-//         setAddingPicture(true);
-//     }
-
-//     function isValidURL(str) {
-//         var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-//             '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-//             '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-//             '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-//             '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-//             '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
-//         return !!pattern.test(str);
-//     }
-
-//     function onConfirmPictureClick() {
-//         setCachedPictures(cachedPictures.concat(pictureURL));
-//         setAddingPicture(false);
-//     }
-
-//     function onCancelPictureClick() {
-//         setAddingPicture(false);
-//     }
-
-//     if (this.state.addingPicture == false)
-//         return (
-//             <div
-//                 style={{
-//                     backgroundColor: '#e0f5bc'
-//                 }}>
-//                 <input name="InputFiled1" placeholder="name" onChange={this.handleNameChange} />
-//                 <br />
-//                 <input name="InputFiled2" placeholder="address" onChange={this.handleAddressChange} />
-//                 <br />
-//                 <Link className="overview-button" onClick={() => this.onSaveClick(this.props)} to=""> Save and add</Link>
-//                 <br />
-//                 <Link className="overview-button" to=""> Cancel</Link>
-//                 <br />
-//                 <button onClick={this.onAddPictureClick}> Add Picture</button>
-//                 <ImageGridView images={this.state.cachedPictures} />
-//             </div>
-//         )
-//     else
-//         return (
-//             <div>
-//                 <input name="InputFiled1" placeholder="name" onChange={this.handleNameChange} />
-//                 <br />
-//                 <input name="InputFiled2" placeholder="address" onChange={this.handleAddressChange} />
-//                 <br />
-//                 <input name="InputFiled3" placeholder="image URL" onChange={this.handleNewURLChange} />
-//                 <br />
-//                 <button onClick={this.onConfirmPictureClick} disabled={!this.state.validURL}> Confirm</button>
-//                 <button onClick={this.onCancelPictureClick}> Cancel</button>
-//             </div>
-//         )
+    const fetchParkingSpot = () => {
+        console.log("fetching Parking spot info");
+        fetch("http://localhost:8080/parkingSpots/" + id, {
+            headers: {
+                'security-header': token,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => { 
+                console.log(json);
+                setName(json.name);
+                setCity(json.city);
+                setStreet(json.street);
+                setLongitude(json.longitude);
+                setLatitude(json.latitude);
+            })
+            .catch((error) => console.error(error));
     }
+
+    const editParkingSpot = () => {
+        console.log("posting Parking spot");
+        fetch("http://localhost:8080/parkingSpots", {
+            method: "PUT",
+            headers: {
+                'security-header': token,
+                'Accept': '*/*',
+                'Content-Type': 'application/json'
+            }
+            , body: JSON.stringify({
+                "name": name,
+                "city": city,
+                "street": street,
+                "longitude": longitude,
+                "latitude": latitude
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => console.log(json))
+            .catch((error) => console.error(error))
+            .finally(() => setRedirectToOV(true));
+    };
+
+    function handleNameChange(e) {
+        setName(e.target.value);
+    }
+    function handleCityChange(e) {
+        setCity(e.target.value);
+    }
+    function handleStreetChange(e) {
+        setStreet(e.target.value);
+    }
+    function handleLongitudeChange(e) {
+        setLongitude(e.target.value);
+    }
+    function handleLatitudeChange(e) {
+        setLatitude(e.target.value);
+    }
+
+    function handleNewURLChange(e) {
+        if (isValidURL(e.target.value)) {
+            setPictureURL(e.target.value);
+            setValidURL(true);
+        }
+        else {
+            setPictureURL(e.target.value);
+            setValidURL(false);
+        }
+    }
+
+    function onSaveClick() {
+        editParkingSpot();
+    }
+
+    function onAddPictureClick() {
+        setAddingPicture(true);
+    }
+
+    function isValidURL(str) {
+        var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+        return !!pattern.test(str);
+    }
+
+    function onConfirmPictureClick() {
+        setCachedPictures(cachedPictures.concat(pictureURL));
+        setAddingPicture(false);
+    }
+
+    function onCancelPictureClick() {
+        setAddingPicture(false);
+    }
+    if(redirectToOV)
+    {
+        return <Redirect to="" />
+    }
+    else if (addingPicture == false)
+        return (
+            <div
+                style={{
+                    backgroundColor: '#e0f5bc'
+                }}>
+                <input name="name" placeholder="name" onChange={handleNameChange} />
+                <br />
+                <input name="city" placeholder="city" onChange={handleCityChange} />
+                <br />
+                <input name="street" placeholder="street" onChange={handleStreetChange} />
+                <br />
+                <input name="longitude" placeholder="longitude" onChange={handleLongitudeChange} />
+                <br />
+                <input name="latitude" placeholder="latitude" onChange={handleLatitudeChange} />
+                <br />
+                <button className="overview-button" onClick={onSaveClick}>Save changes</button>
+                <br />
+                <Link className="overview-button" to="">Cancel</Link>
+                <br />
+                <button onClick={onAddPictureClick}>Add Picture</button>
+                <ImageGridView images={cachedPictures} />
+            </div>
+        )
+    else
+        return (
+            <div>
+                <input name="pic url" placeholder="image URL" onChange={handleNewURLChange} />
+                <br />
+                <button onClick={onConfirmPictureClick} disabled={!validURL}>Confirm</button>
+                <button onClick={onCancelPictureClick}>Cancel</button>
+            </div>
+        )
+}

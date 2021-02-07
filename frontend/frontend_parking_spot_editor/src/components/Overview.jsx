@@ -114,8 +114,9 @@ export default function Overview ({token, onClickOverViewItem}) {
                 onClick={() => setSearchFilter(searchFilterType.Available)}># available</button>
                 <button className="overview-button" name="booked-button"
                 onClick={() => setSearchFilter(searchFilterType.Booked)}># booked</button>
-                <button className="overview-button" name="sort-button">Sort</button>
+                <button onClick={onPressSort} className="overview-button" name="sort-button">Sort</button>
                 <Link className="overview-button" name="add-button" to="/ParkingSpotAdder">Add new spot</Link>
+                <Link className="overview-button" name="add-button" to="/AllBookings">Viel all bookings</Link>
             </div>
             <OverviewItemList onClick={onClickOverViewItem} items={parkingSpots} token={token}/>
             <button disabled={currentPage==1} onClick={onPressLeftAll}> left bruh uh</button>

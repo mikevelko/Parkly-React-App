@@ -5,6 +5,7 @@ import ParkingSpotEditor from './ParkingSpotEditor';
 import ParkingSpotAdder from './ParkingSpotAdder';
 import Overview from './Overview'
 import ParkingSpotDetails from './ParkingSpotDetails'
+import AllBookings from './AllBookings'
 import react,{useEffect, useState} from 'react'
 import {
   BrowserRouter as Router,
@@ -31,6 +32,8 @@ function App() {
         <Route exact path="/ParkingSpotEditor/:id" component={() => <ParkingSpotEditor token={securityToken} itemID={detailsID}/>}/>
         <Route path="/ParkingSpotAdder" component={() => <ParkingSpotAdder token={securityToken}/>}/>
         <Route path="/Details/:id" component={() => <ParkingSpotDetails token={securityToken} itemID={detailsID}/>}/>
+        <Route path="/AllBookings" component={() => <AllBookings token={securityToken}/>}/>
+
       </Switch>
     </Router>
     </TokenContext.Provider>

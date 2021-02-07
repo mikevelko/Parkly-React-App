@@ -10,19 +10,8 @@ import {
     Redirect
   } from "react-router-dom"
 
-// Date reservation info
-function RawInfo(elem) {
-    return (
-        <div className='rawInfo'>
-            <h4>From {elem.startDateTime} to {elem.endDateTime}</h4>
 
-            <input className='trash' type='image' onClick={deleteReservation} src={trashImage} alt='left arrow'></input></div>
-    )
-}
-//delete reservation
-function deleteReservation() {
-    // TODO
-}
+
 
 function ParkingSpotDetails({token, itemID}) {
     const [urlToFetch, setUrlToFetch] = useState("http://localhost:8080/parkingSpots/" + itemID);
@@ -71,6 +60,19 @@ function ParkingSpotDetails({token, itemID}) {
         fetchBookings();
 	}, []);
 
+    const fetchDeleteBooking = (ajdi) => {
+		console.log("fetching delete booking");
+        fetch("http://localhost:8080/bookings/" + ajdi, {  
+            method: "DELETE",
+            headers: {
+                'security-header': token,
+              }
+          })
+			.then((response) => response.json())
+			.catch((error) => console.error(error))
+            .finally(() => fetchBookings());
+	};
+
     //change iterator for images
     function increaseIterator() {
         setIterator((prevIterator) => {
@@ -88,7 +90,23 @@ function ParkingSpotDetails({token, itemID}) {
         })
     }
 
-    if (!item)
+    function RawInfo(elem) {
+        return (
+            <div className='rawInfo'>
+                <h4>From {elem.startDateTime} to {elem.endDateTime}</h4>
+    
+                <input className='trash' type='image'
+                onClick={() => deleteReservation(elem.id)} src={trashImage} alt='left arrow'/>
+            </div>
+        )
+    }
+
+        //delete reservation
+    function deleteReservation(id) {
+        fetchDeleteBooking(id);
+    }
+
+    if (!item || !bookings || !imgList)
         return(
             <div>Loading...</div>
         )
@@ -106,14 +124,12 @@ function ParkingSpotDetails({token, itemID}) {
                     <div className='ImageList'>
                         <input className='leftArrow' type='image' onClick={decreaseIterator} src={rightArrow} alt='left arrow'></input>
 
-                        {(!imgList || imgList.length) ? :
-                            imgList.map((picture, i) => {
+                            {imgList.map((picture, i) => {
                                 if (i >= iterator && i < iterator + 3) 
                                     return (<img src={picture.fileDownloadUri} className='imageFromList'/>)
                                 else 
                                     return <></>
-                            })
-                        }
+                            }) }
 
                         <input className='rightArrow' type='image' onClick={increaseIterator} src={rightArrow} alt='right arrow'></input>
                     </div>
@@ -122,7 +138,7 @@ function ParkingSpotDetails({token, itemID}) {
                 <h4>Bookings</h4>
                 <div className='ListOfBookingTimes'>
                     {bookings.map((elem) => {
-                        return RawInfo(elem)
+                        return RawInfo(elem);
                     })}
                 </div>
             </div>
