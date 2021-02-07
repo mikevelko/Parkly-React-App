@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import pw.react.backend.appException.ResourceNotFoundException;
 import pw.react.backend.dao.BookingRepository;
 import pw.react.backend.dao.ParkingSpotPhotoRepository;
 import pw.react.backend.dao.ParkingSpotRepository;
@@ -115,4 +116,15 @@ public class BookingController {
         return ResponseEntity.ok(result);
     }
 
+    @DeleteMapping("/{bookingId}")
+    public ResponseEntity<String> deleteBooking(@PathVariable long bookingId,
+                                                    @RequestHeader(required = false, value = "security-header") String token){
+        if(filter.IsInvalidToken(token)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        var booking = repository.findById(bookingId);
+        if(booking.isPresent() == false)
+            throw new ResourceNotFoundException("not found");
+        repository.deleteById(bookingId);
+        return ResponseEntity.ok(String.format("Item with id %s deleted.", booking.get().getId()));
+    }
 }
