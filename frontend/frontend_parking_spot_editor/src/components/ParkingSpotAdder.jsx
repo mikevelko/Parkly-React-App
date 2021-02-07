@@ -23,7 +23,7 @@ export default function ParkingSpotAdder({ token }) {
         fetch("http://localhost:8080/parkingSpots", {  
             method: "POST",
             headers: {
-                'security-header': 'token',
+                'security-header': token,
                 'Accept': '*/*',
                 'Content-Type': 'application/json'
                 }

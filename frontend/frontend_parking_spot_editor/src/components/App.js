@@ -29,7 +29,7 @@ function App() {
         </Route>}
         <Route exact path={"/"} component={() => <Overview token={securityToken} onClickOverViewItem={(id) => setDetailsID(id)}/>}/>
         <Route exact path="/ParkingSpotEditor/:id" component={() => <ParkingSpotEditor token={securityToken} itemID={detailsID}/>}/>
-        <Route path="/ParkingSpotAdder" component={ParkingSpotAdder}/>
+        <Route path="/ParkingSpotAdder" component={() => <ParkingSpotAdder token={securityToken}/>}/>
         <Route path="/Details/:id" component={() => <ParkingSpotDetails token={securityToken} itemID={detailsID}/>}/>
       </Switch>
     </Router>

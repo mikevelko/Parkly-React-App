@@ -11,10 +11,11 @@ import {
   } from "react-router-dom"
 
 // Date reservation info
-function RawInfo(elem, i) {
+function RawInfo(elem) {
     return (
         <div className='rawInfo'>
-            <h4>i</h4>
+            <h4>From {elem.startDateTime} to {elem.endDateTime}</h4>
+
             <input className='trash' type='image' onClick={deleteReservation} src={trashImage} alt='left arrow'></input></div>
     )
 }
@@ -87,7 +88,7 @@ function ParkingSpotDetails({token, itemID}) {
         })
     }
 
-    if (!imgList || !imgList.length || !item)
+    if (!item)
         return(
             <div>Loading...</div>
         )
@@ -105,12 +106,14 @@ function ParkingSpotDetails({token, itemID}) {
                     <div className='ImageList'>
                         <input className='leftArrow' type='image' onClick={decreaseIterator} src={rightArrow} alt='left arrow'></input>
 
-                        {imgList.map((picture, i) => {
-                            if (i >= iterator && i < iterator + 3) 
-                                return (<img src={picture.fileDownloadUri} className='imageFromList'/>)
-                            else 
-                                return <></>
-                        })}
+                        {(!imgList || imgList.length) ? :
+                            imgList.map((picture, i) => {
+                                if (i >= iterator && i < iterator + 3) 
+                                    return (<img src={picture.fileDownloadUri} className='imageFromList'/>)
+                                else 
+                                    return <></>
+                            })
+                        }
 
                         <input className='rightArrow' type='image' onClick={increaseIterator} src={rightArrow} alt='right arrow'></input>
                     </div>
@@ -118,8 +121,8 @@ function ParkingSpotDetails({token, itemID}) {
 
                 <h4>Bookings</h4>
                 <div className='ListOfBookingTimes'>
-                    {bookings.map((elem, i) => {
-                        return RawInfo(elem, i)
+                    {bookings.map((elem) => {
+                        return RawInfo(elem)
                     })}
                 </div>
             </div>
