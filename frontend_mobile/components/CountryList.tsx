@@ -197,7 +197,7 @@ function CountryList(props) {
 								<Text style={styles.title}>&#8592;</Text>
 							</TouchableOpacity>
 
-							<Text>page {currentPage} of {pageCount}</Text>
+							<Text style={{ fontSize:20, marginTop:10}}>page {currentPage} of {pageCount}</Text>
 
 							<TouchableOpacity
 								disabled={currentPage == pageCount}

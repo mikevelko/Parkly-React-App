@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -11,13 +11,9 @@ import {
 import {deleteBooking} from './FetchUtils';
 
 
-const BookingsListItem = ({ item,securityToken }) => {
-  const Delete = () => 
-  {
-    console.log(item.id);
-    console.log(securityToken);
-    deleteBooking(securityToken,item.id);
-  }
+const BookingsListItem = ({ item,securityToken, Delete }) => {
+  
+  
   return (
     <View style={styles.item}>
       <View style={styles.item2}>
@@ -26,10 +22,11 @@ const BookingsListItem = ({ item,securityToken }) => {
       </View>
 
 
-      <Button
+      <Button 
         title="Delete"
-        color="red"
+        color="#ff4500"
         onPress={Delete}
+        
       />
     </View>
   )
@@ -41,12 +38,13 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    backgroundColor: "#b5b5b5",
+    backgroundColor: "#f0e68c",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    borderRadius: 15,
   },
   item2: {
     flexDirection: "column",

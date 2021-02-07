@@ -11,7 +11,7 @@ const DetailedView = ({item,securityToken}) => {
         marginTop: 40,
         marginHorizontal: 10,
         flexDirection: "column",
-        backgroundColor: item.booked?'red':'green',
+        backgroundColor: item.booked?'#f08080':'#98fb98',
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         borderBottomLeftRadius: 10,
