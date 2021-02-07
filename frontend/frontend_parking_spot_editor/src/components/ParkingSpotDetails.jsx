@@ -10,9 +10,6 @@ import {
     Redirect
   } from "react-router-dom"
 
-
-
-
 function ParkingSpotDetails({token, itemID}) {
     const [urlToFetch, setUrlToFetch] = useState("http://localhost:8080/parkingSpots/" + itemID);
 	const [imgList, setImgList] = useState();
