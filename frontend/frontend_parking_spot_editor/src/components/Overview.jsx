@@ -4,9 +4,7 @@ import OverviewItem from './OverviewItem.jsx'
 import OverviewItemList from './OverviewItemList.jsx'
 import { Redirect, Link } from "react-router-dom";
 
-
-
-export default function Overview ({token}) {
+export default function Overview ({token, onClickOverViewItem}) {
 
     const searchFilterType = {
         All: 0,
@@ -70,6 +68,9 @@ export default function Overview ({token}) {
 	};
 	useEffect(() => {
 		fetchData();
+	}, []);
+	useEffect(() => {
+		fetchData();
 	}, [urlToFetch]);
 
 	const onPressLeftOne = () => setCurrentPage(currentPage => currentPage - 1);
@@ -78,7 +79,7 @@ export default function Overview ({token}) {
 	const onPressRightAll = () => setCurrentPage(currentPage => pageCount);
 	useEffect(() => {
 		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
-		setUrlToFetch(makeUrlToFetch());
+		setUrlToFetch(makeUrlToFetch);
 	}, [currentPage])
 
 	const onPressAll = () => {
@@ -114,14 +115,14 @@ export default function Overview ({token}) {
                 <button className="overview-button" name="booked-button"
                 onClick={() => setSearchFilter(searchFilterType.Booked)}># booked</button>
                 <button className="overview-button" name="sort-button">Sort</button>
-                <Link className="overview-button" name="add-button" to="/ParkingSpotEditor">Add new spot</Link>
+                <Link className="overview-button" name="add-button" to="/ParkingSpotAdder">Add new spot</Link>
             </div>
-            <OverviewItemList items={parkingSpots} token={token}/>
-            <button onClick={onPressLeftAll}> left bruh uh</button>
-            <button onClick={onPressLeftOne}> left bruh</button>
+            <OverviewItemList onClick={onClickOverViewItem} items={parkingSpots} token={token}/>
+            <button disabled={currentPage==1} onClick={onPressLeftAll}> left bruh uh</button>
+            <button disabled={currentPage==1} onClick={onPressLeftOne}> left bruh</button>
             <label> page {currentPage} of {pageCount}</label>
-            <button onClick={onPressRightOne}> right bruh</button>
-            <button onClick={onPressRightAll}> right bruh uh</button>
+            <button disabled={currentPage==pageCount} onClick={onPressRightOne}> right bruh</button>
+            <button disabled={currentPage==pageCount} onClick={onPressRightAll}> right bruh uh</button>
 
 
             {/* {this.state.spots.map((spot) =>

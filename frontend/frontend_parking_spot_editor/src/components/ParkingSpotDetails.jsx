@@ -1,13 +1,20 @@
 import './App.css';
 import rightArrow from '../assets/rightArrow.png'
 import trashImage from '../assets/trash.png'
-import react, { useEffect } from 'react'
+import react, { useEffect, useState } from 'react'
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    Redirect
+  } from "react-router-dom"
 
 // Date reservation info
-function RawInfo() {
+function RawInfo(elem, i) {
     return (
         <div className='rawInfo'>
-            <h4>{1}</h4>
+            <h4>i</h4>
             <input className='trash' type='image' onClick={deleteReservation} src={trashImage} alt='left arrow'></input></div>
     )
 }
@@ -16,42 +23,57 @@ function deleteReservation() {
     // TODO
 }
 
-function ParkingSpotDetails(props) {
+function ParkingSpotDetails({token, itemID}) {
+    const [urlToFetch, setUrlToFetch] = useState("http://localhost:8080/parkingSpots/" + itemID);
+	const [imgList, setImgList] = useState();
+    const [bookings, setBookings] = useState();
+    const [item, setItem] = useState();
     const [iterator, setIterator] = react.useState(0);
-    const id = props.match?.params?.id;
+    const [id, setId] = useState(itemID);
 
-    const pictures = [rightArrow, rightArrow, rightArrow, rightArrow, rightArrow];
-    return (
-        <div className='Details'>
-            <div className='GeneralInfo'>
-                <div className='NameAndAddress'>
-                    <h2>Name</h2>
-                    <h4>Address: </h4>
-                </div>
-                <h4>Avaliable/booking</h4>
+    const fetchData = () => {
+		console.log("fetching data for details view");
+        fetch(urlToFetch, {  
+            headers: {
+                'security-header': token,
+              }
+          })
+			.then((response) => response.json())
+            .then((json) => setItem(json))
+			.catch((error) => console.error(error));
+	};
+    const fetchImages = () => {
+		console.log("fetching imagers for details view");
+        fetch(urlToFetch + "/photos", {  
+            headers: {
+                'security-header': token,
+              }
+          })
+			.then((response) => response.json())
+            .then((json) => setImgList(json))
+			.catch((error) => console.error(error));
+	};
+    const fetchBookings = () => {
+		console.log("fetching booking for details view");
+        fetch(urlToFetch + "/bookings", {  
+            headers: {
+                'security-header': token,
+              }
+          })
+			.then((response) => response.json())
+            .then((json) => setBookings(json))
+			.catch((error) => console.error(error));
+	};
+	useEffect(() => {
+		fetchData();
+        fetchImages();
+        fetchBookings();
+	}, []);
 
-                <div className='ImageList'>
-                    <input className='leftArrow' type='image' onClick={decreaseIterator} src={rightArrow} alt='left arrow'></input>
-                    {pictures.map((picture, i) => {
-                        if (i >= iterator && i < iterator + 3) return (<input type='image' src={picture} className='imageFromList' alt='right arrow'></input>)
-                        else return <></>
-                    })}
-
-                    <input className='rightArrow' type='image' onClick={increaseIterator} src={rightArrow} alt='right arrow'></input>
-                </div>
-            </div>
-            <h4>Bookings</h4>
-            <div className='ListOfBookingTimes'>
-                {[1, 2, 3, 4, 5].map((elem, i) => {
-                    return RawInfo(elem, i)
-                })}
-            </div>
-        </div>
-    )
     //change iterator for images
     function increaseIterator() {
         setIterator((prevIterator) => {
-            if (pictures.length - prevIterator <= 3) {
+            if (imgList.length - prevIterator <= 3) {
                 return prevIterator
             } else return prevIterator + 1
         })
@@ -64,5 +86,44 @@ function ParkingSpotDetails(props) {
             } else return prevIterator
         })
     }
+
+    if (!imgList || !imgList.length || !item)
+        return(
+            <div>Loading...</div>
+        )
+    else
+        return (
+            <div className='Details'>
+                <div className='GeneralInfo'>
+                    <div className='NameAndAddress'>
+                        <h2>{item.name}</h2>
+                        <Link to={"/ParkingSpotEditor/:" + itemID}>Edit</Link>
+                        <h4>Address: {item.street}, {item.city}</h4>
+                    </div>
+                    <h4>{item.booked ? "Booked" : "Available"}</h4>
+
+                    <div className='ImageList'>
+                        <input className='leftArrow' type='image' onClick={decreaseIterator} src={rightArrow} alt='left arrow'></input>
+
+                        {imgList.map((picture, i) => {
+                            if (i >= iterator && i < iterator + 3) 
+                                return (<img src={picture.fileDownloadUri} className='imageFromList'/>)
+                            else 
+                                return <></>
+                        })}
+
+                        <input className='rightArrow' type='image' onClick={increaseIterator} src={rightArrow} alt='right arrow'></input>
+                    </div>
+                </div>
+
+                <h4>Bookings</h4>
+                <div className='ListOfBookingTimes'>
+                    {bookings.map((elem, i) => {
+                        return RawInfo(elem, i)
+                    })}
+                </div>
+            </div>
+        )
+
 }
 export default ParkingSpotDetails;

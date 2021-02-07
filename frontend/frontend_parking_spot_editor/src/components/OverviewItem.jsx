@@ -20,7 +20,7 @@ export default function OverviewItem ({ item, onPress, token }) {
 	};
 	useEffect(() => {
 		fetchData();
-	});
+	}, []);
 
     const size = 3;
 
@@ -29,6 +29,9 @@ export default function OverviewItem ({ item, onPress, token }) {
     return (
         <div className="overview-item-flex" onClick={onPress}>
             <label>{item.name}</label>
+            <br></br>
+            <label>{item.id}</label>
+            <br></br>
             <label>{item.address}</label>
         </div>
     ) 
@@ -36,6 +39,9 @@ export default function OverviewItem ({ item, onPress, token }) {
     return (
         <div className="overview-item-flex" onClick={onPress}>
             <label>{item.name}</label>
+            <br></br>
+            <label>{item.id}</label>
+            <br></br>
             <label>{item.address}</label>
             <div>
                 {imgList.slice(0, size).map(i => { return <img width="50px" width="50px" src={i.fileDownloadUri}/> })}

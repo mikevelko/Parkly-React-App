@@ -2,6 +2,7 @@ import logo from '../assets/logo.svg';
 import './App.css';
 import './ParkingSpotEditor'
 import ParkingSpotEditor from './ParkingSpotEditor';
+import ParkingSpotAdder from './ParkingSpotAdder';
 import Overview from './Overview'
 import ParkingSpotDetails from './ParkingSpotDetails'
 import react,{useEffect, useState} from 'react'
@@ -17,6 +18,7 @@ const TokenContext = react.createContext();
 
 function App() {
   const [securityToken, setSecurityToken] = useState();
+  const [detailsID, setDetailsID] = useState();
   return (
     <TokenContext.Provider value ={securityToken}>
     <Router>
@@ -25,10 +27,10 @@ function App() {
         {!securityToken && <Route path="/">
           <Redirect to="/login"/>
         </Route>}
-        <Route exact path={"/"} component={() => <Overview token={securityToken} />}/>
-        <Route exact path="/ParkingSpotEditor/:id" component={ParkingSpotEditor}/>
-        <Route path="/ParkingSpotEditor" component={ParkingSpotEditor}/>
-        <Route path="/Details/:id" component={ParkingSpotDetails}/>
+        <Route exact path={"/"} component={() => <Overview token={securityToken} onClickOverViewItem={(id) => setDetailsID(id)}/>}/>
+        <Route exact path="/ParkingSpotEditor/:id" component={() => <ParkingSpotEditor token={securityToken} itemID={detailsID}/>}/>
+        <Route path="/ParkingSpotAdder" component={ParkingSpotAdder}/>
+        <Route path="/Details/:id" component={() => <ParkingSpotDetails token={securityToken} itemID={detailsID}/>}/>
       </Switch>
     </Router>
     </TokenContext.Provider>

@@ -13,8 +13,8 @@ export default class OverviewItemList extends Component
         return (
             <div>
                 {this.props.items.map((item) => 
-                <Link to={"/Details/:" + item.id}>
-                    <OverviewItem onPress={this.onPress} item={item} token={this.props.token}/>
+                <Link to={"/Details/:" + item.id} onClick={() => this.props.onClick(item.id)}>
+                    <OverviewItem item={item} token={this.props.token}/>
                 </Link>
                     )}
             </div>
