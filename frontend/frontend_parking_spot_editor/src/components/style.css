@@ -1,0 +1,141 @@
+:root {
+  font-size: 16px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  --font-fam: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --bg-color: #5d5d5d;
+  --accents-color: #e4e4e4;
+  --green: #4ae67e;
+  --light-green: rgba(74, 230, 126, 0.5) e;
+  --orange: #fb8960;
+  --light--orange: rgba(251, 137, 96, 0.5);
+  --transition-speed: 300ms;
+  --shadow: 0.5px 0.5px 6px #0000001a;
+}
+
+button {
+  box-shadow: none;
+  border: none;
+  text-shadow: none;
+  cursor: pointer;
+}
+button:hover {
+  box-shadow: none;
+  border: none;
+  text-shadow: none;
+}
+button:active {
+  outline: none;
+  border: none;
+}
+button:focus {
+  outline: none;
+}
+
+.overview-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2rem;
+  margin: 2rem;
+}
+
+.overview-top-buttons-flex {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+.overview-top-button {
+  font: var(--font-fam);
+  flex-grow: 1;
+  border: none;
+  border-radius: 0.25rem;
+  height: 35px;
+  background-color: var(--accents-color);
+  color: var(--bg-color);
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.available {
+  background-color: var(--green);
+}
+.booked {
+  background-color: var(--orange);
+}
+.arrow-icon-top {
+  fill: var(--bg-color);
+}
+
+.overview-buttons-bottom-flex {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+.page-n-of {
+  color: var(--accents-color);
+  padding: 1px 0px 0px 0px;
+  margin: 0px 1rem 0px 1rem;
+}
+.change-page {
+  background: transparent;
+}
+.change-page:disabled {
+  background: transparent;
+}
+
+.parking-spots-list {
+  display: flex;
+  gap: 1rem;
+
+  width: 100%;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-x: hidden;
+}
+.parking-spots-list-item {
+  display: flex;
+  height: 100px;
+  gap: 1rem;
+  width: 100%;
+  cursor: pointer;
+  justify-content: space-between;
+  text-decoration: none;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: var(--accents-color);
+  padding: 0.5rem;
+  box-shadow: var(--shadow);
+  box-sizing: border-box;
+}
+.available-item {
+  background-color: var(--light-green);
+}
+.booked-item {
+  background-color: var(--light-green);
+}
+.name-address {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1;
+}
+.imgs {
+  grid-column: 2;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  overflow-x: hidden;
+  border-radius: 0.25rem;
+  max-width: 70%;
+}
+img {
+  border-radius: 0.25rem;
+  box-shadow: var(--shadow);
+}
+a {
+  text-decoration: none;
+  color: var(--bg-color);
+}

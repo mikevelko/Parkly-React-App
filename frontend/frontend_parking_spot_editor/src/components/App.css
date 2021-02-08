@@ -14,16 +14,16 @@
   height: 100vh;
   background-color:#e0f5bc;
 }
-
+/* 
 .overview-flex {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
   margin: 10px 20px 10px 20px;
-}
+} */
 
-.overview-search {
+/* .overview-search {
   width: 100%;
   padding: 10px;
   border: none;
@@ -53,7 +53,7 @@
   gap: 1rem;
   grid-template-columns: 25% 25% 1fr;
   background-color: lightgray;
-}
+} */
 
 .App {
   padding-left: 10%;
