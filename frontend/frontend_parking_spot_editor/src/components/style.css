@@ -318,4 +318,8 @@ a {
   justify-content: space-between;
   gap: 1rem;
 }
+.nob {
+  color: var(--accents-color);
+  align-self: center;
+}
 

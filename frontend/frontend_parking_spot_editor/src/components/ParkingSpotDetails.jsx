@@ -135,7 +135,7 @@ function ParkingSpotDetails({token, itemID}) {
                     <label className="pad">{item.street}, {item.city}</label>
 
                     <lable className={item.booked ? "bkd" : "avl"}>{item.booked ? "Booked" : "Available"}</lable>
-
+                    <br></br>
                     <div className='inner-horizontal modif'>
                         <button className="arrowbutton" onClick={decreaseIterator}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="13.378" height="23.759" viewBox="0 0 13.378 23.759">
@@ -161,11 +161,15 @@ function ParkingSpotDetails({token, itemID}) {
                 </div>
 
                 <label className="bookings-label">Bookings</label>
-                <div className='booking-list'>
+                {(!bookings || bookings.length==0) 
+                ?   <label className="nob">There are no bookings for this parking spot</label>
+                    :<div className='booking-list'>
                     {bookings.map((elem) => {
                         return RawInfo(elem);
                     })}
-                </div>
+                    </div>
+                 }
+
             </div>
         )
 

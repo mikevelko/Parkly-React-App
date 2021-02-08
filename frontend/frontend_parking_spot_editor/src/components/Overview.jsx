@@ -77,30 +77,30 @@ export default function Overview ({token, onClickOverViewItem}) {
 		fetchData();
 	}, [urlToFetch]);
 
-	const [imgList, setImgList] = useState([[]]);
-	const [pagePhotos, setPagePhotos] = useState([[]]);
-    const fetchItemPhotos = (id) => {
-		console.log("fetching photos through Overview");
-        fetch("http://localhost:8080/parkingSpots/" + id + "/photos", {  
-            headers: {
-                'security-header': token,
-              }
-          })
-			.then((response) => response.json())
-            .then((json) => {setImgList(json); console.log(json); return json;})
-			.catch((error) => console.error(error));
-	};
-	const updateOverviewItems = () => {
-		parkingSpots.forEach(spot => {
-			pagePhotos.concat([spot.id, fetchItemPhotos(spot.id)])
-		});
-	}
-	useEffect(() => {
-		updateOverviewItems();
-	}, []);
-	useEffect(() => {
-		updateOverviewItems();
-	}, [parkingSpots]);
+	// const [imgList, setImgList] = useState([[]]);
+	// const [pagePhotos, setPagePhotos] = useState([[]]);
+    // const fetchItemPhotos = (id) => {
+	// 	console.log("fetching photos through Overview");
+    //     fetch("http://localhost:8080/parkingSpots/" + id + "/photos", {  
+    //         headers: {
+    //             'security-header': token,
+    //           }
+    //       })
+	// 		.then((response) => response.json())
+    //         .then((json) => {setImgList(json); console.log(json); return json;})
+	// 		.catch((error) => console.error(error));
+	// };
+	// const updateOverviewItems = () => {
+	// 	parkingSpots.forEach(spot => {
+	// 		pagePhotos.concat([spot.id, fetchItemPhotos(spot.id)])
+	// 	});
+	// }
+	// useEffect(() => {
+	// 	updateOverviewItems();
+	// }, []);
+	// useEffect(() => {
+	// 	updateOverviewItems();
+	// }, [parkingSpots]);
 
 	// filtering by search
 	const handleChangeSearchString = (e) => {setSearchString(e.target.value)}
@@ -173,14 +173,14 @@ export default function Overview ({token, onClickOverViewItem}) {
 				</Link>
             </div>
 
-			<div className="parking-spots-list">
+			{/* <div className="parking-spots-list">
                 {parkingSpots.map((item) => 
                 <Link to={"/Details/:" + item.id} onClick={() => onClickOverViewItem(item.id)}>
                     <OverviewItem item={item} token={token} photos={() => fetchItemPhotos(item.id)}/>
                 </Link>
                     )}
-            </div>
-            {/* <OverviewItemList onClick={onClickOverViewItem} items={parkingSpots} token={token} pagePhotos={pagePhotos}/> */}
+            </div> */}
+            <OverviewItemList onClick={onClickOverViewItem} items={parkingSpots} token={token}/>
 
 			<div className="overview-buttons-bottom-flex">
 				<button className="change-page" disabled={currentPage==1} onClick={onPressLeftAll}>
