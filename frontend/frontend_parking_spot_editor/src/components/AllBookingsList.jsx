@@ -11,11 +11,9 @@ export default class AllBookingsList extends Component
 
     render() {
         return (
-            <div>
+            <div className="booking-list">
                 {this.props.items.map((item) => 
-                <div>
-                    <AllBookingsItem item={item} />
-                </div>
+                    <AllBookingsItem item={item} token={this.props.token} onClickDelete={this.props.onClickDelete} />
                     )}
             </div>
         )

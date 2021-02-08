@@ -33,7 +33,7 @@ export default function Overview ({token, onClickOverViewItem}) {
 
 		const s = (!searchString || searchString.length==0) ? 
 			'' : 
-			'&name=' + {searchString};
+			'&name=' + searchString;
 
 		console.log("http://localhost:8080/parkingSpots?"
 			+ "&page=" + JSON.stringify(currentPage - 1)
@@ -77,26 +77,35 @@ export default function Overview ({token, onClickOverViewItem}) {
 		fetchData();
 	}, [urlToFetch]);
 
-	// const [imgList, setImgList] = useState();
-    // const fetchItemPhotos = (id) => {
-	// 	console.log("fetching photos through Overview");
-    //     fetch("http://localhost:8080/parkingSpots/" + id + "/photos", {  
-    //         headers: {
-    //             'security-header': token,
-    //           }
-    //       })
-	// 		.then((response) => response.json())
-    //         .then((json) => {setImgList(json); console.log(json)})
-	// 		.catch((error) => console.error(error));
-	// };
-	// const updateOverviewItems = () => {
-	// 	// zrobic nowa liste photos i 
-	// }
+	const [imgList, setImgList] = useState([[]]);
+	const [pagePhotos, setPagePhotos] = useState([[]]);
+    const fetchItemPhotos = (id) => {
+		console.log("fetching photos through Overview");
+        fetch("http://localhost:8080/parkingSpots/" + id + "/photos", {  
+            headers: {
+                'security-header': token,
+              }
+          })
+			.then((response) => response.json())
+            .then((json) => {setImgList(json); console.log(json); return json;})
+			.catch((error) => console.error(error));
+	};
+	const updateOverviewItems = () => {
+		parkingSpots.forEach(spot => {
+			pagePhotos.concat([spot.id, fetchItemPhotos(spot.id)])
+		});
+	}
+	useEffect(() => {
+		updateOverviewItems();
+	}, []);
+	useEffect(() => {
+		updateOverviewItems();
+	}, [parkingSpots]);
 
 	// filtering by search
 	const handleChangeSearchString = (e) => {setSearchString(e.target.value)}
 	useEffect(() => {
-		console.log('searchString changed to "' + {searchString} + '"' );
+		console.log('searchString changed to "' + searchString + '"' );
 
 		if (currentPage != 1)
 			setCurrentPage(1);
@@ -139,15 +148,15 @@ export default function Overview ({token, onClickOverViewItem}) {
 	// body
     return (
         <div className="overview-flex">
-            {/* <input className="overview-search" name="overview-search"
-                placeholder="Search" onSubmit={this.handleSearchSubmit} /> */}
+
 			<input
 				type="text"
 				className="overview-search"
 				placeholder='search'
 				value={searchString}
-				onChangeText={handleChangeSearchString}
+				onChange={handleChangeSearchString}
 			/>
+
             <div className="overview-top-buttons-flex">
                 <button className="overview-top-button" name="all-button"
                 onClick={() => setSearchFilter(searchFilterType.All)}>All</button>
@@ -164,7 +173,14 @@ export default function Overview ({token, onClickOverViewItem}) {
 				</Link>
             </div>
 
-            <OverviewItemList onClick={onClickOverViewItem} items={parkingSpots} token={token}/>
+			<div className="parking-spots-list">
+                {parkingSpots.map((item) => 
+                <Link to={"/Details/:" + item.id} onClick={() => onClickOverViewItem(item.id)}>
+                    <OverviewItem item={item} token={token} photos={() => fetchItemPhotos(item.id)}/>
+                </Link>
+                    )}
+            </div>
+            {/* <OverviewItemList onClick={onClickOverViewItem} items={parkingSpots} token={token} pagePhotos={pagePhotos}/> */}
 
 			<div className="overview-buttons-bottom-flex">
 				<button className="change-page" disabled={currentPage==1} onClick={onPressLeftAll}>

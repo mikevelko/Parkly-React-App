@@ -31,6 +31,10 @@ button:active {
 button:focus {
   outline: none;
 }
+button:disabled{
+  cursor: default;
+  filter: brightness(50%);
+}
 input {
   box-shadow: none;
   border: none;
@@ -49,6 +53,8 @@ input:focus {
   outline: none;
 }
 
+
+/* ---------------- overview ------------------ */
 .overview-flex {
   display: flex;
   flex-direction: column;
@@ -167,12 +173,24 @@ a {
   color: var(--bg-color);
 }
 
+
+ /* ---------- add/edit parking spot ---------- */
 .add-flex {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.5rem;
   margin: 2rem;
+}
+.inner-horizontal {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+.inner-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .add-input {
@@ -183,3 +201,121 @@ a {
   padding-left: 1rem;
   caret-color: var(--bg-color);
 }
+
+.image-list-flex{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
+}
+.image-list-flex img {
+  max-width: 250px;
+  max-height: 150px;
+}
+
+.addpic {
+  margin-top: 1rem;;
+}
+
+/* ----------------- login --------------- */
+.login-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  margin: 2rem;
+}
+.centering-wrapper {
+  display: flex;
+  place-content: center;
+}
+.login-text{
+  margin-top: 0.4rem;
+  color: var(--accents-color);
+}
+
+/* -------------- all bookings ------------------- */
+
+.booking-list {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-x: hidden;
+}
+.booking-item {
+  display: flex;
+  height: auto;
+  gap: 2rem;
+  width: 100%;
+  cursor: pointer;
+  justify-content: flex-start;
+  align-items: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: var(--accents-color);
+  /* padding: 0.5rem; */
+  padding-left: 1rem;
+  box-shadow: var(--shadow);
+  box-sizing: border-box;
+  /* padding-top: 0.7rem; */
+  overflow: hidden;
+  color: var(--bg-color);
+}
+.bi-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+.delete-button {
+  height: 5rem;
+  width: 5rem;
+  background-color: rgb(179, 96, 96);
+  /* margin: -0.7rem -0.5rem -0.5rem auto; */
+  margin-left: auto;
+} 
+
+.bookings-top-buttons-flex {
+  display: flex;
+  gap: 1rem;
+  width: 25%;
+}
+
+/* -------------- details -------------- */
+.bookings-label {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: var(--accents-color);
+}
+.avl {
+  font-weight: bold;
+  color: var(--green);
+}
+.bkd {
+  font-weight: bold;
+  color: var(--orange);
+}
+.arrowbutton {
+  background-color: transparent;
+}
+.pname {
+  font-weight: bold;
+  font-size: 2rem;
+  color: var(--accents-color);
+}
+.pad {
+  font-weight: bold;
+  color: var(--accents-color);
+}
+.modif {
+  justify-content: space-between ;
+}
+.img-flex-details{
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+

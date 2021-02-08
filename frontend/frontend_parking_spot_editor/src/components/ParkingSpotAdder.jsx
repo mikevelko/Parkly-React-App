@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Redirect, Link } from "react-router-dom";
+import './style.css'
 
 export default function ParkingSpotAdder({ token }) {
 
@@ -19,11 +20,11 @@ export default function ParkingSpotAdder({ token }) {
             return <img src={pic} />;
         });
 
-        return <div className="image-list">{images}</div>;
+        return <div className="image-list-flex">{images}</div>;
     };
 
     const postPhoto = (photoURL, id) => {
-        console.log("posting Parking spot");
+        console.log("posting photo for parking id: " + id);
         fetch("http://localhost:8080/parkingSpots/" + id + "/photos", {
             method: "POST",
             headers: {
@@ -36,6 +37,25 @@ export default function ParkingSpotAdder({ token }) {
                 "fileDownloadUri": photoURL,
                 "fileType": "image/jpeg",
                 "size": 470423
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => console.log(json))
+            .catch((error) => console.error(error))
+            .finally(() => setRedirectToOV(true));
+    };
+
+    const altpostPhoto = (path, id) => {
+        console.log("posting photo for parking id: " + id);
+        fetch("http://localhost:8080/parkingSpots/" + id + "/photos", {
+            method: "POST",
+            headers: {
+                'security-header': token,
+                'Accept': '*/*',
+                'Content-Type': 'application/json'
+            }
+            , body: JSON.stringify({
+                "image": path,
             })
         })
             .then((response) => response.json())
@@ -72,6 +92,7 @@ export default function ParkingSpotAdder({ token }) {
                 console.log(id);
                 cachedPictures.forEach(photoURL => {
                     postPhoto(photoURL, id);
+                    //altpostPhoto("C:/Users/Jaśnie Panicz/Desktop/tapety spotlight/tapety spotlight 1-95/80/16c9df9e4410ff9d9aa9cca832ed9e62097633af3b1fb566e1d790e6722d59bc.jpg", id);
                 });
             })
             .catch((error) => console.error(error))
@@ -93,7 +114,6 @@ export default function ParkingSpotAdder({ token }) {
     function handleLatitudeChange(e) {
         setLatitude(e.target.value);
     }
-
     function handleNewURLChange(e) {
         if (isValidURL(e.target.value)) {
             setPictureURL(e.target.value);
@@ -103,7 +123,6 @@ export default function ParkingSpotAdder({ token }) {
             setPictureURL(e.target.value);
             setValidURL(false);
         }
-
     }
 
     function onSaveClick() {
@@ -126,43 +145,46 @@ export default function ParkingSpotAdder({ token }) {
 
     function onConfirmPictureClick() {
         setCachedPictures(cachedPictures.concat(pictureURL));
+        setPictureURL(''); // moze tak byc, ale nie musi
         setAddingPicture(false);
     }
+    useEffect(() => {
+		console.log("cached pics: " + cachedPictures);
+	}, [cachedPictures]);
 
     function onCancelPictureClick() {
         setAddingPicture(false);
     }
+
     if(redirectToOV)
     {
         return <Redirect to="" />
     }
-    else if (addingPicture == false)
-        return (
-            <div className="add-flex">
-                <input className="add-input" name="name" placeholder="name" onChange={handleNameChange} />
-                <input className="add-input" name="city" placeholder="city" onChange={handleCityChange} />
-                <input className="add-input" name="street" placeholder="street" onChange={handleStreetChange} />
-                <input className="add-input" name="longitude" placeholder="longitude" onChange={handleLongitudeChange} />
-                <input className="add-input" name="latitude" placeholder="latitude" onChange={handleLatitudeChange} />
-                <button className="overview-top-button" onClick={onSaveClick}>Save and add</button>
-                <Link to="">
-                    <button className="overview-top-button">Cancel</button>
-                </Link>
-                <button className="overview-top-button" onClick={onAddPictureClick}>Add Picture</button>
-                <ImageGridView images={cachedPictures} />
-            </div>
-        )
     else
         return (
             <div className="add-flex">
-                <input className="add-input" name="name" placeholder="name" onChange={handleNameChange} />
-                <input className="add-input" name="city" placeholder="city" onChange={handleCityChange} />
-                <input className="add-input" name="street" placeholder="street" onChange={handleStreetChange} />
-                <input className="add-input" name="longitude" placeholder="longitude" onChange={handleLongitudeChange} />
-                <input className="add-input" name="latitude" placeholder="latitude" onChange={handleLatitudeChange} />
-                <input className="add-input" name="InputFiled3" placeholder="image URL" onChange={handleNewURLChange} />
-                <button className="overview-top-button" onClick={onConfirmPictureClick} disabled={!validURL}>Confirm</button>
-                <button className="overview-top-button" onClick={onCancelPictureClick}>Cancel</button>
+                <input className="add-input" name="name" placeholder="name" value={name}  onChange={handleNameChange} />
+                <input className="add-input" name="city" placeholder="city" value={city}  onChange={handleCityChange} />
+                <input className="add-input" name="street" placeholder="street" value={street}  onChange={handleStreetChange} />
+                <input className="add-input" name="longitude" placeholder="longitude" value={longitude} onChange={handleLongitudeChange} />
+                <input className="add-input" name="latitude" placeholder="latitude" value={latitude} onChange={handleLatitudeChange} />
+                <div className="inner-horizontal">
+                    <Link to="">
+                        <button disabled={addingPicture} className="overview-top-button">Cancel</button>
+                    </Link>
+                    <button disabled={addingPicture} className="overview-top-button" onClick={onSaveClick}>Save and add</button>
+                </div>
+                {addingPicture 
+                    ? <div className="inner-vertical addpic">
+                        <input className="add-input" name="InputFiled3" placeholder="image URL" value={pictureURL} onChange={handleNewURLChange} />
+                        <div className="inner-horizontal">
+                            <button className="overview-top-button" onClick={onCancelPictureClick}>Cancel</button>
+                            <button disabled={validURL} className="overview-top-button" onClick={onConfirmPictureClick} disabled={!validURL}>Confirm</button>
+                        </div>
+                    </div>
+                    : <button className="overview-top-button addpic" onClick={onAddPictureClick}>Add Picture</button>
+                }
+                <ImageGridView images={cachedPictures} />
             </div>
         )
 }

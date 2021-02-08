@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchData } from '../FetchUtils';
 import { useHistory } from 'react-router-dom';
+import './style.css'
 
 const bcrypt = require('bcryptjs');
 
@@ -26,21 +27,18 @@ export default function LoginPage(props) {
         });
     }
     return (
-        <div style={{
-            width: '100px',
-            margin: '0 auto'
-        }}>
-            <form>
-                <label>
-                    <p>Login</p>
-                    <input type="text" onChange={(e) => setLogin(e.target.value)} />
-                </label>
-                <label>
-                    <p>Password</p>
-                    <input type="password" onChange={(e) => setPassword(e.target.value)} />
-                </label>
+        <div className="centering-wrapper">
+            <form className="login-flex">
+                <div className="inner-horizontal">
+                    <label className="login-text">Login</label>
+                    <input className="add-input" type="text" onChange={(e) => setLogin(e.target.value)} />
+                </div>
+                <div className="inner-horizontal">
+                    <label className="login-text">Password</label>
+                    <input className="add-input" type="password" onChange={(e) => setPassword(e.target.value)} />
+                </div>
                 <div>
-                    <button type="button" onClick={() => onSubmitHandler()}>Submit</button>
+                    <button className="overview-top-button" type="button" onClick={() => onSubmitHandler()}>Submit</button>
                 </div>
             </form>
         </div>

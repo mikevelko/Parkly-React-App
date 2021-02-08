@@ -1,4 +1,5 @@
 import './App.css';
+import './style.css';
 import rightArrow from '../assets/rightArrow.png'
 import trashImage from '../assets/trash.png'
 import react, { useEffect, useState } from 'react'
@@ -87,14 +88,31 @@ function ParkingSpotDetails({token, itemID}) {
         })
     }
 
-    function RawInfo(elem) {
+    function RawInfo(item) {
         return (
-            <div className='rawInfo'>
-                <h4>From {elem.startDateTime} to {elem.endDateTime}</h4>
-    
-                <input className='trash' type='image'
-                onClick={() => deleteReservation(elem.id)} src={trashImage} alt='left arrow'/>
+            <div className="booking-item">
+            <label><b>{item.item.name}</b></label>
+            <div className="bi-flex">
+                <label>from {item.startDateTime} </label>
+                <label>to {item.endDateTime}</label>
             </div>
+            <button className="delete-button" onClick={() => deleteReservation(item.id)}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="25" viewBox="0 0 22 25">
+            <g id="Group_19" data-name="Group 19" transform="translate(-282.5 -37.5)">
+                <line id="Line_4" data-name="Line 4" x2="20" transform="translate(283.5 41.5)" fill="none" stroke="#e4e4e4" stroke-linecap="round" stroke-width="2"/>
+                <line id="Line_5" data-name="Line 5" y1="3" transform="translate(290.5 38.5)" fill="none" stroke="#e4e4e4" stroke-linecap="round" stroke-width="2"/>
+                <line id="Line_6" data-name="Line 6" y2="20" transform="translate(285.5 41.5)" fill="none" stroke="#e4e4e4" stroke-linecap="round" stroke-width="2"/>
+                <line id="Line_7" data-name="Line 7" y1="20" transform="translate(301.5 41.5)" fill="none" stroke="#e4e4e4" stroke-linecap="round" stroke-width="2"/>
+                <line id="Line_8" data-name="Line 8" x2="16" transform="translate(285.5 61.5)" fill="none" stroke="#e4e4e4" stroke-linecap="round" stroke-width="2"/>
+                <line id="Line_9" data-name="Line 9" y2="14" transform="translate(293.5 44.5)" fill="none" stroke="#e4e4e4" stroke-linecap="round" stroke-width="2"/>
+                <line id="Line_10" data-name="Line 10" y2="14" transform="translate(297.5 44.5)" fill="none" stroke="#e4e4e4" stroke-linecap="round" stroke-width="2"/>
+                <line id="Line_11" data-name="Line 11" y2="14" transform="translate(289.5 44.5)" fill="none" stroke="#e4e4e4" stroke-linecap="round" stroke-width="2"/>
+                <line id="Line_12" data-name="Line 12" y1="3" transform="translate(296.5 38.5)" fill="none" stroke="#e4e4e4" stroke-linecap="round" stroke-width="2"/>
+                <path id="Path_10" data-name="Path 10" d="M0,0H6" transform="translate(290.5 38.5)" fill="none" stroke="#e4e4e4" stroke-linecap="round" stroke-width="2"/>
+            </g>
+            </svg>
+            </button>
+        </div>
         )
     }
 
@@ -109,31 +127,41 @@ function ParkingSpotDetails({token, itemID}) {
         )
     else
         return (
-            <div className='Details'>
-                <div className='GeneralInfo'>
-                    <div className='NameAndAddress'>
-                        <h2>{item.name}</h2>
-                        <Link to={"/ParkingSpotEditor/:" + itemID}>Edit</Link>
-                        <h4>Address: {item.street}, {item.city}</h4>
-                    </div>
-                    <h4>{item.booked ? "Booked" : "Available"}</h4>
+            <div className='overview-flex'>
+                <div className="inner-vertical">
 
-                    <div className='ImageList'>
-                        <input className='leftArrow' type='image' onClick={decreaseIterator} src={rightArrow} alt='left arrow'></input>
+                    <Link to={"/ParkingSpotEditor/:" + itemID}>Edit</Link>
+                    <label className="pname">{item.name}</label>
+                    <label className="pad">{item.street}, {item.city}</label>
 
+                    <lable className={item.booked ? "bkd" : "avl"}>{item.booked ? "Booked" : "Available"}</lable>
+
+                    <div className='inner-horizontal modif'>
+                        <button className="arrowbutton" onClick={decreaseIterator}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13.378" height="23.759" viewBox="0 0 13.378 23.759">
+                            <path id="Path_6" data-name="Path 6" d="M-424.622-326.618-435-316.24ZM-435-337l10.378,10.378Z" transform="translate(-423.122 -314.74) rotate(180)" fill="rgba(0,0,0,0)" stroke="#e4e4e4" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+                            </svg>
+                        </button>
+
+                        <div className="img-flex-details">
                             {imgList.map((picture, i) => {
-                                if (i >= iterator && i < iterator + 3) 
-                                    return (<img src={picture.fileDownloadUri} className='imageFromList'/>)
-                                else 
-                                    return <></>
-                            }) }
-
-                        <input className='rightArrow' type='image' onClick={increaseIterator} src={rightArrow} alt='right arrow'></input>
+                                    if (i >= iterator && i < iterator + 3) 
+                                        return (<img src={picture.fileDownloadUri} className='imageFromList'/>)
+                                    else 
+                                        return <></>
+                                }) }
+                        </div>
+                            
+                        <button className="arrowbutton" onClick={increaseIterator}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13.378" height="23.759" viewBox="0 0 13.378 23.759">
+                            <path id="Path_5" data-name="Path 5" d="M-424.622-326.618-435-316.24ZM-435-337l10.378,10.378Z" transform="translate(436.5 338.5)" fill="rgba(0,0,0,0)" stroke="#e4e4e4" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+                            </svg>
+                        </button>
                     </div>
                 </div>
 
-                <h4>Bookings</h4>
-                <div className='ListOfBookingTimes'>
+                <label className="bookings-label">Bookings</label>
+                <div className='booking-list'>
                     {bookings.map((elem) => {
                         return RawInfo(elem);
                     })}
