@@ -31,6 +31,23 @@ button:active {
 button:focus {
   outline: none;
 }
+input {
+  box-shadow: none;
+  border: none;
+  text-shadow: none;
+}
+input:hover {
+  box-shadow: none;
+  border: none;
+  text-shadow: none;
+}
+input:active {
+  outline: none;
+  border: none;
+}
+input:focus {
+  outline: none;
+}
 
 .overview-flex {
   display: flex;
@@ -38,6 +55,16 @@ button:focus {
   align-items: stretch;
   gap: 2rem;
   margin: 2rem;
+}
+
+.overview-search {
+  border-radius: 0.25rem;
+  background-color: var(--accents-color);
+  color: var(--bg-color);
+  height: 2rem;
+  padding-left: 1rem;
+  margin-bottom: -1rem;
+  caret-color: var(--bg-color);
 }
 
 .overview-top-buttons-flex {
@@ -138,4 +165,21 @@ img {
 a {
   text-decoration: none;
   color: var(--bg-color);
+}
+
+.add-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 2rem;
+}
+
+.add-input {
+  border-radius: 0.25rem;
+  background-color: var(--accents-color);
+  color: var(--bg-color);
+  height: 2rem;
+  padding-left: 1rem;
+  caret-color: var(--bg-color);
 }

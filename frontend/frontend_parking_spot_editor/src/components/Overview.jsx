@@ -4,7 +4,6 @@ import './style.css'
 import OverviewItem from './OverviewItem.jsx'
 import OverviewItemList from './OverviewItemList.jsx'
 import { Redirect, Link } from "react-router-dom";
-// import dblL from "../assets/double-left-arrrow.svg"
 
 export default function Overview ({token, onClickOverViewItem}) {
 
@@ -16,12 +15,10 @@ export default function Overview ({token, onClickOverViewItem}) {
 
 	const [isLoading, setLoading] = useState(true);
 	const [parkingSpots, setParkingSpots] = useState([]);
-	// const [searchString, setSearchString] = useState('');
+	const [searchString, setSearchString] = useState('');
 	const [overviewInfo, setOverviewInfo] = useState('');
 	const defaultUrlToFetch = 'http://localhost:8080/parkingSpots?name=parking&page=0&size=4';
 	const [urlToFetch, setUrlToFetch] = useState(defaultUrlToFetch);
-
-	// const [searchText, setSearchText] = useState('');
 	const [searchFilter, setSearchFilter] = useState(0);
 	const [searchSorted, setSearchSorted] = useState(true);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -34,17 +31,23 @@ export default function Overview ({token, onClickOverViewItem}) {
 				(searchFilter == searchFilterType.Available) ? '&booked=false' :
 					'&booked=true';
 
+		const s = (!searchString || searchString.length==0) ? 
+			'' : 
+			'&name=' + {searchString};
+
 		console.log("http://localhost:8080/parkingSpots?"
 			+ "&page=" + JSON.stringify(currentPage - 1)
 			+ "&size=" + JSON.stringify(pageSize)
 			+ "&sortAscending=" + JSON.stringify(searchSorted)
 			+ filterString
+			+ s
 		);
 		return ("http://localhost:8080/parkingSpots?"
 			+ "&page=" + JSON.stringify(currentPage - 1)
 			+ "&size=" + JSON.stringify(pageSize)
 			+ "&sortAscending=" + JSON.stringify(searchSorted)
 			+ filterString
+			+ s
 		);
 	}
 
@@ -74,10 +77,34 @@ export default function Overview ({token, onClickOverViewItem}) {
 		fetchData();
 	}, [urlToFetch]);
 
-	const updateOverviewItems = () => {
-		// zrobic nowa liste photos i 
-	}
+	// const [imgList, setImgList] = useState();
+    // const fetchItemPhotos = (id) => {
+	// 	console.log("fetching photos through Overview");
+    //     fetch("http://localhost:8080/parkingSpots/" + id + "/photos", {  
+    //         headers: {
+    //             'security-header': token,
+    //           }
+    //       })
+	// 		.then((response) => response.json())
+    //         .then((json) => {setImgList(json); console.log(json)})
+	// 		.catch((error) => console.error(error));
+	// };
+	// const updateOverviewItems = () => {
+	// 	// zrobic nowa liste photos i 
+	// }
 
+	// filtering by search
+	const handleChangeSearchString = (e) => {setSearchString(e.target.value)}
+	useEffect(() => {
+		console.log('searchString changed to "' + {searchString} + '"' );
+
+		if (currentPage != 1)
+			setCurrentPage(1);
+		else
+			setUrlToFetch(makeUrlToFetch());
+	}, [searchString])
+
+	// page changing
 	const onPressLeftOne = () => setCurrentPage(currentPage => currentPage - 1);
 	const onPressLeftAll = () => setCurrentPage(1);
 	const onPressRightOne = () => setCurrentPage(currentPage => currentPage + 1);
@@ -87,6 +114,7 @@ export default function Overview ({token, onClickOverViewItem}) {
 		setUrlToFetch(makeUrlToFetch);
 	}, [currentPage])
 
+	// sorting and filtering by filters
 	const onPressAll = () => {
 		setSearchFilter(searchFilterType.All);
 	}
@@ -108,10 +136,18 @@ export default function Overview ({token, onClickOverViewItem}) {
 			setUrlToFetch(makeUrlToFetch());
 	}, [searchFilter, searchSorted])
 
+	// body
     return (
         <div className="overview-flex">
             {/* <input className="overview-search" name="overview-search"
                 placeholder="Search" onSubmit={this.handleSearchSubmit} /> */}
+			<input
+				type="text"
+				className="overview-search"
+				placeholder='search'
+				value={searchString}
+				onChangeText={handleChangeSearchString}
+			/>
             <div className="overview-top-buttons-flex">
                 <button className="overview-top-button" name="all-button"
                 onClick={() => setSearchFilter(searchFilterType.All)}>All</button>
