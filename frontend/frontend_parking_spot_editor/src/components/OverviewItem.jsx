@@ -6,7 +6,7 @@ import './style.css'
 export default function OverviewItem ({ item, onPress, token }) {
 
 	const [urlToFetch, setUrlToFetch] = useState("http://localhost:8080/parkingSpots/" + item.id + "/photos");
-	const [imgList, setImgList] = useState();
+	const [imgList, setImgList] = useState([]);
     //const [value, setValue] = useState(0); // integer state
     const size = 100;
     // const slicedList = (imgList) ? imgList.slice(0, size) : [];
@@ -19,7 +19,7 @@ export default function OverviewItem ({ item, onPress, token }) {
               }
           })
 			.then((response) => response.json())
-            .then((json) => {setImgList(json); console.log(json)})
+            .then((json) => { setImgList(json); console.log(json)})
 			.catch((error) => console.error(error));
 	};
 	useEffect(() => {
@@ -31,9 +31,9 @@ export default function OverviewItem ({ item, onPress, token }) {
     //     setValue(value => value + 1); // update the state to force render
     // }
 
-    // useEffect(() => {
-	// 	useForceUpdate();
-	// }, [imgList]);
+    useEffect(() => {
+		console.log("imglist chagned")
+	}, [imgList]);
 
 
     return (
