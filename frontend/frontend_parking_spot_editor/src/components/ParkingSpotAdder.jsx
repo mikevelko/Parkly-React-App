@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Redirect, Link } from "react-router-dom";
+import { parklyBackendUrl } from '../FetchUtils';
 import './style.css'
 
 export default function ParkingSpotAdder({ token }) {
@@ -21,7 +22,7 @@ export default function ParkingSpotAdder({ token }) {
         formData.append('image', image);
 
         console.log("posting photo for parking id: " + id);
-        fetch("http://localhost:8080/parkingSpots/" + id + "/photos", {
+        fetch(parklyBackendUrl + "/parkingSpots/" + id + "/photos", {
             method: "POST",
             headers: {
                 'security-header': token,
@@ -58,7 +59,7 @@ export default function ParkingSpotAdder({ token }) {
 
     const postParkingSpot = () => {
         console.log("posting Parking spot");
-        fetch("http://localhost:8080/parkingSpots", {
+        fetch(parklyBackendUrl + "/parkingSpots", {
             method: "POST",
             headers: {
                 'security-header': token,

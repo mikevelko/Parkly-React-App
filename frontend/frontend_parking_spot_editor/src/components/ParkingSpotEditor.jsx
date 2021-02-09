@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Redirect, Link } from "react-router-dom";
+import { parklyBackendUrl } from '../FetchUtils';
 import './style.css'
 
 
@@ -17,13 +18,13 @@ export default function ParkingSpotEditor({ token, id }) {
 
     const fetchParkingSpot = () => {
         console.log("fetching Parking spot info");
-        fetch("http://localhost:8080/parkingSpots/" + id, {
+        fetch(parklyBackendUrl + "/parkingSpots/" + id, {
             headers: {
                 'security-header': token,
             }
         })
             .then((response) => response.json())
-            .then((json) => { 
+            .then((json) => {
                 console.log(json);
                 setName(json["name"]);
                 setCity(json["city"]);
@@ -33,19 +34,19 @@ export default function ParkingSpotEditor({ token, id }) {
             })
             .catch((error) => console.error(error));
     }
-    useEffect(() =>{
+    useEffect(() => {
         fetchParkingSpot();
     }, [])
 
-    
+
     const altpostPhoto = (image, parkingid) => {
-        
+
         const formData = new FormData()
-        
+
         formData.append('image', image);
-        
+
         console.log("posting photo for parking id: " + parkingid);
-        fetch("http://localhost:8080/parkingSpots/" + parkingid + "/photos", {
+        fetch(parklyBackendUrl + "/parkingSpots/" + parkingid + "/photos", {
             method: "POST",
             headers: {
                 'security-header': token,
@@ -54,12 +55,12 @@ export default function ParkingSpotEditor({ token, id }) {
             }
             , body: formData
         })
-        .then((response) => response.json())
-        .then((json) => console.log(json))
-        .catch((error) => console.error(error))
-        .finally(() => setRedirectToOV(true));
+            .then((response) => response.json())
+            .then((json) => console.log(json))
+            .catch((error) => console.error(error))
+            .finally(() => setRedirectToOV(true));
     };
-    
+
     const onImageChange = (event) => {
         if (event.target.files && event.target.files[0]) {
             let reader = new FileReader();
@@ -79,10 +80,10 @@ export default function ParkingSpotEditor({ token, id }) {
 
         return <div className="image-list-flex">{images}</div>;
     };
-    
+
     const editParkingSpot = () => {
         console.log("posting Parking spot");
-        fetch("http://localhost:8080/parkingSpots/" + id, {
+        fetch(parklyBackendUrl + "/parkingSpots/" + id, {
             method: "PUT",
             headers: {
                 'security-header': token,
@@ -139,22 +140,22 @@ export default function ParkingSpotEditor({ token, id }) {
     }
     else
         return (
-                <div className="add-flex">
-                    <input className="add-input" name="name" placeholder="name" value={name} onChange={handleNameChange} />
-                    <input className="add-input" name="city" placeholder="city" value={city} onChange={handleCityChange} />
-                    <input className="add-input" name="street" placeholder="street" value={street} onChange={handleStreetChange} />
-                    <input className="add-input" name="longitude" placeholder="longitude" value={longitude} onChange={handleLongitudeChange} />
-                    <input className="add-input" name="latitude" placeholder="latitude" value={latitude} onChange={handleLatitudeChange} />
-                    <div className="inner-horizontal">
-                        <Link to="">
-                            <button disabled={addingPicture} className="overview-top-button">Cancel</button>
-                        </Link>
-                        <button disabled={addingPicture} className="overview-top-button" onClick={onSaveClick}>Save changes</button>
-                    </div>
-                    <input className="inputfile" type="file" accept="image/*" id="InputFiled3" name="InputFiled3" onChange={onImageChange} multiple />
-                    <label for="InputFiled3">Add a picture</label>
-
-                    <ImageGridView images={cachedPictures} />
+            <div className="add-flex">
+                <input className="add-input" name="name" placeholder="name" value={name} onChange={handleNameChange} />
+                <input className="add-input" name="city" placeholder="city" value={city} onChange={handleCityChange} />
+                <input className="add-input" name="street" placeholder="street" value={street} onChange={handleStreetChange} />
+                <input className="add-input" name="longitude" placeholder="longitude" value={longitude} onChange={handleLongitudeChange} />
+                <input className="add-input" name="latitude" placeholder="latitude" value={latitude} onChange={handleLatitudeChange} />
+                <div className="inner-horizontal">
+                    <Link to="">
+                        <button disabled={addingPicture} className="overview-top-button">Cancel</button>
+                    </Link>
+                    <button disabled={addingPicture} className="overview-top-button" onClick={onSaveClick}>Save changes</button>
                 </div>
+                <input className="inputfile" type="file" accept="image/*" id="InputFiled3" name="InputFiled3" onChange={onImageChange} multiple />
+                <label for="InputFiled3">Add a picture</label>
+
+                <ImageGridView images={cachedPictures} />
+            </div>
         )
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-const baseUrl = "http://10.0.3.2:8080";
+//const baseUrl = "http://10.0.3.2:8080";
+export const baseUrl = "http://Parkly-env.eba-rnjsijxg.eu-central-1.elasticbeanstalk.com";
 export async function fetchData(securityToken, suburl, page, size, sort, booked = "", method = "GET", body = null) {
     try {
         let url = baseUrl + suburl + "page=" + page + "&size=" + size + "&sortAscending=" + sort;

@@ -22,7 +22,7 @@ public class SampleBackendApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("http://localhost:3000","http://bookly.url","http://localhost:19006", booklyUrl)
+						.allowedOrigins("http://localhost:3000","http://bookly.url","http://localhost:19006","http://parkly-web-app.s3-website.eu-central-1.amazonaws.com", booklyUrl)
 						.allowedMethods("GET", "PUT", "POST", "PATCH", "DELETE", "OPTIONS");
 			}
 		};

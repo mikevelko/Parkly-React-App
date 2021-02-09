@@ -42,3 +42,7 @@
 2021-02-09 18:17:25 [INFO ] [restartedMain] positoryInitializationListener: Spring Data repositories initialized!
 2021-02-09 18:17:25 [INFO ] [RMI TCP Connection(2)-127.0.0.1] .web.servlet.DispatcherServlet: Initializing Servlet 'dispatcherServlet'
 2021-02-09 18:17:25 [INFO ] [RMI TCP Connection(2)-127.0.0.1] .web.servlet.DispatcherServlet: Completed initialization in 6 ms
+2021-02-09 18:59:21 [WARN ] [http-nio-8080-exec-10] efaultHandlerExceptionResolver: Resolved [org.springframework.web.multipart.support.MissingServletRequestPartException: Required request part 'image' is not present]
+2021-02-09 19:01:35 [WARN ] [http-nio-8080-exec-4] efaultHandlerExceptionResolver: Resolved [org.springframework.web.multipart.support.MissingServletRequestPartException: Required request part 'image' is not present]
+2021-02-09 19:24:57 [INFO ] [SpringContextShutdownHook] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-02-09 19:24:57 [INFO ] [SpringContextShutdownHook] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
