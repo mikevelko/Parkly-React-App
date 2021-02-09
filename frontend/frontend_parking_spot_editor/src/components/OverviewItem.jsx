@@ -8,9 +8,7 @@ export default function OverviewItem({ item, onPress, token }) {
 
     const [urlToFetch, setUrlToFetch] = useState(parklyBackendUrl + "/parkingSpots/" + item.id + "/photos");
     const [imgList, setImgList] = useState();
-    //const [value, setValue] = useState(0); // integer state
     const size = 100;
-    // const slicedList = (imgList) ? imgList.slice(0, size) : [];
 
     const fetchItemPhotos = () => {
         console.log("fetching photos - OverViewItem");
@@ -30,14 +28,9 @@ export default function OverviewItem({ item, onPress, token }) {
         fetchItemPhotos();
     }, [urlToFetch]);
 
-    // const useForceUpdate = () =>{
-    //     setValue(value => value + 1); // update the state to force render
-    // }
-
     useEffect(() => {
         console.log("imglist chagned")
     }, [imgList]);
-
 
     return (
         <div className="parking-spots-list-item" onClick={onPress}>

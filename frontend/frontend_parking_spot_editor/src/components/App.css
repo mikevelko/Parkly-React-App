@@ -14,46 +14,6 @@
   height: 100vh;
   background-color:#e0f5bc;
 }
-/* 
-.overview-flex {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  margin: 10px 20px 10px 20px;
-} */
-
-/* .overview-search {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  background-color: lightgray;
-}
-
-.overview-buttons-flex {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.overview-button {
-  width: calc(100% / 5.5);
-  border: none;
-  height: 30;
-  background-color: lightgray;
-  color: black;
-  cursor: pointer;
-}
-
-.overview-item-flex {
-  display: grid;
-  align-items: center;
-  width: 100%;
-  height: 6rem;
-  gap: 1rem;
-  grid-template-columns: 25% 25% 1fr;
-  background-color: lightgray;
-} */
 
 .App {
   padding-left: 10%;

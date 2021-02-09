@@ -99,17 +99,19 @@ export default function AllBookings({ token }) {
 
 	return (
 		<div className="overview-flex">
+
 			{/* <input className="overview-search" name="overview-search"
                 placeholder="Search" onSubmit={this.handleSearchSubmit} /> */}
+
 			<div className="bookings-top-buttons-flex">
 				<button onClick={onPressSort} className="overview-top-button" name="sort-button">Sort</button>
 				<button onClick={fetchData} className="overview-top-button" name="refresh-button">Refresh</button>
-
 			</div>
 
 			<AllBookingsList items={bookings} token={token} onClickDelete={deleteBooking} />
 
 			<div className="overview-buttons-bottom-flex">
+
 				<button className="change-page" disabled={currentPage == 1} onClick={onPressLeftAll}>
 					<svg xmlns="http://www.w3.org/2000/svg" width="19.378" height="23.76" viewBox="0 0 19.378 23.76">
 						<g id="Group_13" data-name="Group 13" transform="translate(1.5 1.5)">
@@ -117,19 +119,23 @@ export default function AllBookings({ token }) {
 						</g>
 					</svg>
 				</button>
+
 				<button className="change-page" disabled={currentPage == 1} onClick={onPressLeftOne}>
 					<svg xmlns="http://www.w3.org/2000/svg" width="13.378" height="23.759" viewBox="0 0 13.378 23.759">
 						<path id="Path_6" data-name="Path 6" d="M-424.622-326.618-435-316.24ZM-435-337l10.378,10.378Z" transform="translate(-423.122 -314.74) rotate(180)" fill="rgba(0,0,0,0)" stroke="#e4e4e4" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
 					</svg>
 				</button>
+
 				<label className="page-n-of">
 					{currentPage} of {pageCount}
 				</label>
+
 				<button className="change-page" disabled={currentPage == pageCount} onClick={onPressRightOne}>
 					<svg xmlns="http://www.w3.org/2000/svg" width="13.378" height="23.759" viewBox="0 0 13.378 23.759">
 						<path id="Path_5" data-name="Path 5" d="M-424.622-326.618-435-316.24ZM-435-337l10.378,10.378Z" transform="translate(436.5 338.5)" fill="rgba(0,0,0,0)" stroke="#e4e4e4" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
 					</svg>
 				</button>
+				
 				<button className="change-page" disabled={currentPage == pageCount} onClick={onPressRightAll}>
 					<svg xmlns="http://www.w3.org/2000/svg" width="19.378" height="23.76" viewBox="0 0 19.378 23.76">
 						<g id="Group_18" data-name="Group 18" transform="translate(17.878 22.26) rotate(180)">
@@ -137,6 +143,7 @@ export default function AllBookings({ token }) {
 						</g>
 					</svg>
 				</button>
+
 			</div>
 		</div>
 	)
