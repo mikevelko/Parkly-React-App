@@ -34,8 +34,8 @@ const DetailedView = ({item,securityToken}) => {
       </View> 
       <PicsList itemId={item.id} securityToken={securityToken}/>
 
-            </View>
-      );
+    </View>
+  );
 };
 
 export default DetailedView;

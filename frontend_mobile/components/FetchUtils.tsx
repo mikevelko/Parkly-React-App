@@ -112,7 +112,7 @@ export async function getSpotBookings(securityToken, spotId) {
     }
 }
 
-export async function deleteBooking(securityToken, bookingId) {
+export function deleteBooking(securityToken, bookingId) {
     let Url = 'http://localhost:8080/bookings/' + bookingId.toString();
     try {
         console.log("fetching");
@@ -122,7 +122,6 @@ export async function deleteBooking(securityToken, bookingId) {
                 Accept: 'application/json',
                 'security-header': securityToken
             },
-            //body: body? JSON.stringify(body): undefined // body data type must match "Content-Type" header
         })
     } catch (e) {
         console.error(e);
