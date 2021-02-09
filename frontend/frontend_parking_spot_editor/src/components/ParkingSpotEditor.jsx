@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Redirect, Link } from "react-router-dom";
+import './style.css'
+
 
 export default function ParkingSpotEditor({ token, id }) {
 
@@ -8,19 +10,10 @@ export default function ParkingSpotEditor({ token, id }) {
     const [street, setStreet] = useState('');
     const [longitude, setLongitude] = useState('');
     const [latitude, setLatitude] = useState('');
+    const [uploadedFiles, setUploadedFiles] = useState([]);
     const [cachedPictures, setCachedPictures] = useState([]);
     const [addingPicture, setAddingPicture] = useState(false);
-    const [pictureURL, setPictureURL] = useState('');
-    const [validURL, setValidURL] = useState(false);
     const [redirectToOV, setRedirectToOV] = useState(false);
-
-    const ImageGridView = () => {
-        const images = cachedPictures.map((pic) => {
-            return <img src={pic} />;
-        });
-
-        return <div className="image-list-flex">{images}</div>;
-    };
 
     const fetchParkingSpot = () => {
         console.log("fetching Parking spot info");
@@ -32,37 +25,61 @@ export default function ParkingSpotEditor({ token, id }) {
             .then((response) => response.json())
             .then((json) => { 
                 console.log(json);
-                setName(json.name);
-                setCity(json.city);
-                setStreet(json.street);
-                setLongitude(json.longitude);
-                setLatitude(json.latitude);
+                setName(json["name"]);
+                setCity(json["city"]);
+                setStreet(json["street"]);
+                setLongitude(json["longitude"]);
+                setLatitude(json["latitude"]);
             })
             .catch((error) => console.error(error));
     }
+    useEffect(() =>{
+        fetchParkingSpot();
+    }, [])
 
-    const postPhoto = (photoURL, id) => {
-        console.log("posting Parking spot");
-        fetch("http://localhost:8080/parkingSpots/" + id + "/photos", {
+    
+    const altpostPhoto = (image, parkingid) => {
+        
+        const formData = new FormData()
+        
+        formData.append('image', image);
+        
+        console.log("posting photo for parking id: " + parkingid);
+        fetch("http://localhost:8080/parkingSpots/" + parkingid + "/photos", {
             method: "POST",
             headers: {
                 'security-header': token,
                 'Accept': '*/*',
-                'Content-Type': 'application/json'
+                // "type": "formData"
             }
-            , body: JSON.stringify({
-                "fileName": "6d8f36c5-2c14-4069-8a63-33a2ac26a169",
-                "fileDownloadUri": photoURL,
-                "fileType": "image/jpeg",
-                "size": 470423
-            })
+            , body: formData
         })
-            .then((response) => response.json())
-            .then((json) => console.log(json))
-            .catch((error) => console.error(error))
-            .finally(() => setRedirectToOV(true));
+        .then((response) => response.json())
+        .then((json) => console.log(json))
+        .catch((error) => console.error(error))
+        .finally(() => setRedirectToOV(true));
     };
+    
+    const onImageChange = (event) => {
+        if (event.target.files && event.target.files[0]) {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                setCachedPictures(cachedPictures.concat(e.target.result));
+                setAddingPicture(false);
+            };
+            reader.readAsDataURL(event.target.files[0]);
+            setUploadedFiles(uploadedFiles.concat(Array.from(event.target.files)));
+        }
+    }
 
+    const ImageGridView = () => {
+        const images = cachedPictures.map((pic) => {
+            return <img src={pic} />;
+        });
+
+        return <div className="image-list-flex">{images}</div>;
+    };
+    
     const editParkingSpot = () => {
         console.log("posting Parking spot");
         fetch("http://localhost:8080/parkingSpots/" + id, {
@@ -83,12 +100,10 @@ export default function ParkingSpotEditor({ token, id }) {
             })
         })
             .then((response) => response.json())
-            .then((json) => json["id"])
-            .then((id) =>
-            {
+            .then((id) => {
                 console.log(id);
-                cachedPictures.forEach(photoURL => {
-                    postPhoto(photoURL, id);
+                uploadedFiles.forEach(photo => {
+                    altpostPhoto(photo, id);
                 });
             })
             .catch((error) => console.error(error))
@@ -111,96 +126,35 @@ export default function ParkingSpotEditor({ token, id }) {
         setLatitude(e.target.value);
     }
 
-    function handleNewURLChange(e) {
-        if (isValidURL(e.target.value)) {
-            setPictureURL(e.target.value);
-            setValidURL(true);
-        }
-        else {
-            setPictureURL(e.target.value);
-            setValidURL(false);
-        }
-    }
-
     function onSaveClick() {
         editParkingSpot();
     }
 
-    function onAddPictureClick() {
-        setAddingPicture(true);
-    }
+    useEffect(() => {
+        console.log("cached pics: " + cachedPictures);
+    }, [cachedPictures]);
 
-    function isValidURL(str) {
-        var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-            '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
-        return !!pattern.test(str);
-    }
-
-    function onConfirmPictureClick() {
-        setCachedPictures(cachedPictures.concat(pictureURL));
-        setAddingPicture(false);
-    }
-
-    function onCancelPictureClick() {
-        setAddingPicture(false);
-    }
-    if(redirectToOV)
-    {
+    if (redirectToOV) {
         return <Redirect to="" />
     }
-    // else if (addingPicture == false)
-    //     return (
-    //         <div
-    //             style={{
-    //                 backgroundColor: '#e0f5bc'
-    //             }}>
-    //             <input name="name" placeholder="name" onChange={handleNameChange} />
-    //             <br />
-    //             <input name="city" placeholder="city" onChange={handleCityChange} />
-    //             <br />
-    //             <input name="street" placeholder="street" onChange={handleStreetChange} />
-    //             <br />
-    //             <input name="longitude" placeholder="longitude" onChange={handleLongitudeChange} />
-    //             <br />
-    //             <input name="latitude" placeholder="latitude" onChange={handleLatitudeChange} />
-    //             <br />
-    //             <button className="overview-button" onClick={onSaveClick}>Save changes</button>
-    //             <br />
-    //             <Link className="overview-button" to="">Cancel</Link>
-    //             <br />
-    //             <button onClick={onAddPictureClick}>Add Picture</button>
-    //             <ImageGridView images={cachedPictures} />
-    //         </div>
-    //     )
     else
         return (
-            <div className="add-flex">
-                <input className="add-input" name="name" placeholder="name" onChange={handleNameChange} />
-                <input className="add-input" name="city" placeholder="city" onChange={handleCityChange} />
-                <input className="add-input" name="street" placeholder="street" onChange={handleStreetChange} />
-                <input className="add-input" name="longitude" placeholder="longitude" onChange={handleLongitudeChange} />
-                <input className="add-input" name="latitude" placeholder="latitude" onChange={handleLatitudeChange} />
-                <div className="inner-horizontal">
-                    <Link to="">
-                        <button disabled={addingPicture} className="overview-top-button">Cancel</button>
-                    </Link>
-                    <button disabled={addingPicture} className="overview-top-button" onClick={onSaveClick}>Save and add</button>
-                </div>
-                {addingPicture 
-                    ? <div className="inner-vertical addpic">
-                        <input className="add-input" name="InputFiled3" placeholder="image URL" onChange={handleNewURLChange} />
-                        <div className="inner-horizontal">
-                            <button className="overview-top-button" onClick={onCancelPictureClick}>Cancel</button>
-                            <button className="overview-top-button" onClick={onConfirmPictureClick} disabled={!validURL}>Confirm</button>
-                        </div>
+                <div className="add-flex">
+                    <input className="add-input" name="name" placeholder="name" value={name} onChange={handleNameChange} />
+                    <input className="add-input" name="city" placeholder="city" value={city} onChange={handleCityChange} />
+                    <input className="add-input" name="street" placeholder="street" value={street} onChange={handleStreetChange} />
+                    <input className="add-input" name="longitude" placeholder="longitude" value={longitude} onChange={handleLongitudeChange} />
+                    <input className="add-input" name="latitude" placeholder="latitude" value={latitude} onChange={handleLatitudeChange} />
+                    <div className="inner-horizontal">
+                        <Link to="">
+                            <button disabled={addingPicture} className="overview-top-button">Cancel</button>
+                        </Link>
+                        <button disabled={addingPicture} className="overview-top-button" onClick={onSaveClick}>Save changes</button>
                     </div>
-                    : <button className="overview-top-button addpic" onClick={onAddPictureClick}>Add Picture</button>
-                }
-                <ImageGridView images={cachedPictures} />
-            </div>
+                    <input className="inputfile" type="file" accept="image/*" id="InputFiled3" name="InputFiled3" onChange={onImageChange} multiple />
+                    <label for="InputFiled3">Add a picture</label>
+
+                    <ImageGridView images={cachedPictures} />
+                </div>
         )
 }

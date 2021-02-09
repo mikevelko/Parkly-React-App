@@ -130,36 +130,51 @@ function ParkingSpotDetails({token, itemID}) {
             <div className='overview-flex'>
                 <div className="inner-vertical">
 
-                    <Link to={"/ParkingSpotEditor/:" + itemID}>Edit</Link>
-                    <label className="pname">{item.name}</label>
-                    <label className="pad">{item.street}, {item.city}</label>
+                    <div className="inner-horizontal">
+                        {(!item.name || item.name=="") ?
+                            <label className="pname">No name</label>
+                        :
+                            <label className="pname">{item.name}</label>
+                        }
+                        <Link className="pad edit" to={"/ParkingSpotEditor/:" + itemID}>Edit</Link>
+                    </div>
+                    {(!item.city || item.city=="" || !item.street || item.street=="") && <label className="pad">No address</label>}
+                    {!(!item.street || item.street=="") && <label className="pad">{item.street}</label>}
+                    {!(!item.city || item.city=="") && <label className="pad">{item.city}</label>}
 
-                    <lable className={item.booked ? "bkd" : "avl"}>{item.booked ? "Booked" : "Available"}</lable>
+
+                    <label className={item.booked ? "bkd" : "avl"}>{item.booked ? "Booked" : "Available"}</label>
+                    <br></br>
                     <br></br>
                     <div className='inner-horizontal modif'>
-                        <button className="arrowbutton" onClick={decreaseIterator}>
+                        <button disabled={imgList.length==0} className="arrowbutton" onClick={decreaseIterator}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="13.378" height="23.759" viewBox="0 0 13.378 23.759">
                             <path id="Path_6" data-name="Path 6" d="M-424.622-326.618-435-316.24ZM-435-337l10.378,10.378Z" transform="translate(-423.122 -314.74) rotate(180)" fill="rgba(0,0,0,0)" stroke="#e4e4e4" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
                             </svg>
                         </button>
 
-                        <div className="img-flex-details">
+                        {imgList.length!=0 ?
+                            <div className="img-flex-details">
                             {imgList.map((picture, i) => {
                                     if (i >= iterator && i < iterator + 3) 
                                         return (<img src={picture.fileDownloadUri} className='imageFromList'/>)
                                     else 
                                         return <></>
                                 }) }
-                        </div>
+                            </div>
+                        :
+                            <label className="nob">There are no photos for this parking spot</label>
+                        }
+                        
                             
-                        <button className="arrowbutton" onClick={increaseIterator}>
+                        <button disabled={imgList.length==0} className="arrowbutton" onClick={increaseIterator}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="13.378" height="23.759" viewBox="0 0 13.378 23.759">
                             <path id="Path_5" data-name="Path 5" d="M-424.622-326.618-435-316.24ZM-435-337l10.378,10.378Z" transform="translate(436.5 338.5)" fill="rgba(0,0,0,0)" stroke="#e4e4e4" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
                             </svg>
                         </button>
                     </div>
                 </div>
-
+                <br></br>
                 <label className="bookings-label">Bookings</label>
                 {(!bookings || bookings.length==0) 
                 ?   <label className="nob">There are no bookings for this parking spot</label>

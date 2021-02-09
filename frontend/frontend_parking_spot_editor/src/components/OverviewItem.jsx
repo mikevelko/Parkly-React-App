@@ -40,10 +40,24 @@ export default function OverviewItem ({ item, onPress, token }) {
 
     return (
         <div className="parking-spots-list-item" onClick={onPress}>
+
             <div className="name-address">
-                <b>{item.name}</b>
-                <br></br>
-                {item.street}, {item.city}
+                {(!item.name || item.name=="") ?
+                        <b>No name</b>
+                    :
+                        <b>{item.name}</b>
+                    }
+                {(!item.street || item.street=="") ?
+                        <label>No street</label>
+                    :
+                        <label>{item.street}</label>
+                    }
+                {(!item.city || item.city=="") ?
+                    <label>No city</label>
+                :
+                    <label>{item.city}</label>
+                }
+                <label className={item.booked ? "bkd" : "avl"}>{item.booked ? "Booked" : "Available"}</label>
             </div>
             {imgList &&
                 <div className="imgs">
