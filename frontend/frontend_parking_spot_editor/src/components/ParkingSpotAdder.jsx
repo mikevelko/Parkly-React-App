@@ -203,8 +203,8 @@ export default function ParkingSpotAdder({ token }) {
                     </Link>
                     <button disabled={addingPicture} className="overview-top-button" onClick={onSaveClick}>Save and add</button>
                 </div>
-                <input className="inputfile" type="file" id="InputFiled3" name="InputFiled3" onChange={onImageChange}/>
-                <label for="InputFiled3">Choose a file</label>
+                <input className="inputfile" type="file" accept="image/*"  id="InputFiled3" name="InputFiled3" onChange={onImageChange}/>
+                <label for="InputFiled3">Choose a photo</label>
 
                 {/* {addingPicture 
                     ? <div className="inner-vertical addpic">
