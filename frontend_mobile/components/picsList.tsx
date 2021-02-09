@@ -1,20 +1,8 @@
-import React from 'react';
-import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, Image } from 'react-native';
+import {getSpotPics} from './FetchUtils';
+import {getSpotPic} from './FetchUtils';
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Pic',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Pic',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Pic',
-  },
-];
 
 const DATA = ['https://reactnative.dev/img/tiny_logo.png', 'https://reactnative.dev/img/tiny_logo.png','https://reactnative.dev/img/tiny_logo.png','https://reactnative.dev/img/tiny_logo.png','https://reactnative.dev/img/tiny_logo.png']
 
@@ -44,15 +32,17 @@ const PicsList = ({itemId, securityToken}) => {
   
   createData();
 
-const PicsList = () => {
+	}, [oneTime])
+  
+  console.log(pics);
   const renderItem = ({ item }) => (
-    <Item title={item.title} />
+    <Item url={item.fileDownloadUri} />
   );
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={DATA}
+        data={pics}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         horizontal={true}

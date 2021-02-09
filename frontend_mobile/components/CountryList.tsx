@@ -1,74 +1,45 @@
 import React, { useState, useEffect } from 'react';
+import {
+	SafeAreaView,
+	View,
+	FlatList,
+	StyleSheet,
+	Text,
+	StatusBar,
+	Image,
+	TouchableOpacity,
+	TextInput,
+	NativeSyntheticEvent,
+	TextInputChangeEventData,
+} from 'react-native';
 import styles from '../styles/styles';
 import CountryListItem from './CountryListItem';
 import {fetchData, getBookingsCount} from './FetchUtils';
 
 function CountryList(props) {
 
-function CountryList() {
-	enum SearchFilterType {
-		All,
-		Available,
-		Booked
-	}
 	const [isLoading, setLoading] = useState(true);
 	const [parkingSpots, setParkingSpots] = useState([]);
 	const [searchString, setSearchString] = useState('');
 	const [overviewInfo, setOverviewInfo] = useState('');
-	const defaultUrlToFetch = 'http://localhost:8080/parkingSpots?name=parking&page=0&size=4';
-	const [urlToFetch, setUrlToFetch] = useState(defaultUrlToFetch);
 
-	const [searchFilter, setSearchFilter] = useState(SearchFilterType.All);
-	const [searchSorted, setSearchSorted] = useState(true);
+	const [searchFilter2,setSearchFilter2] = useState("");
+	const [searchSorted, setSearchSorted] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [pageSize, setPageSize] = useState(4);
 	const [pageCount, setPageCount] = useState(0);
-
-	const makeUrlToFetch = () => {
-		const filterString =
-			(searchFilter == SearchFilterType.All) ? '' :
-				(searchFilter == SearchFilterType.Available) ? '&booked=false' :
-					'&booked=true';
-
-		console.log("http://localhost:8080/parkingSpots?"
-			+ "name=parking"
-			+ "&page=" + JSON.stringify(currentPage - 1)
-			+ "&size=" + JSON.stringify(pageSize)
-			+ "&sortAscending=" + JSON.stringify(searchSorted)
-			+ filterString
-		);
-		return ("http://localhost:8080/parkingSpots?"
-			+ "name=parking"
-			+ "&page=" + JSON.stringify(currentPage - 1)
-			+ "&size=" + JSON.stringify(pageSize)
-			+ "&sortAscending=" + JSON.stringify(searchSorted)
-			+ filterString
-		);
-	}
-
-	const fetchData = () => {
-		console.log("fetching data");
-		setLoading(true);
-		fetch(urlToFetch)
-			.then((response) => response.json())
-			.then((json) => {
-				setOverviewInfo(json);
-				setParkingSpots(json["data"]);
-				setPageCount(json["pageCount"]);
-				console.log(json);
-			})
-			.catch((error) => console.error(error))
-			.finally(() => setLoading(false));
-	};
-	useEffect(() => {
-		fetchData();
-	}, [urlToFetch]);
+	const [ItemsCount, setItemsCount] = useState(0);
+	const [bookedCount,setBookedCount]=useState(0);
+	const [unbookedCount, setUnbookedCount] = useState(0);
 
 	const onPressLeftOne = () => setCurrentPage(currentPage => currentPage - 1);
 	const onPressLeftAll = () => setCurrentPage(1);
 	const onPressRightOne = () => setCurrentPage(currentPage => currentPage + 1);
 	const onPressRightAll = () => setCurrentPage(currentPage => pageCount);
+
 	useEffect(() => {
+		if(currentPage!=1) setCurrentPage(1);
+		setLoading(true);
 		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
 		const spots = fetchData(props.securityToken,"/parkingSpots?",(currentPage-1).toString(),"4",searchSorted,searchFilter2);
 		const bookedCount = getBookingsCount(props.securityToken,true);
@@ -109,26 +80,22 @@ function CountryList() {
 		setLoading(false);
 	}, [currentPage])
 
+
+
 	const onPressAll = () => {
-		setSearchFilter(SearchFilterType.All);
+		setSearchFilter2("");
+
 	}
 	const onPressAvailable = () => {
-		setSearchFilter(SearchFilterType.Available);
+		setSearchFilter2("false");
 	}
 	const onPressBooked = () => {
-		setSearchFilter(SearchFilterType.Booked);
+		setSearchFilter2("true");
 	}
 	const onPressSort = () => {
 		setSearchSorted(!searchSorted);
 	}
-	useEffect(() => {
-		console.log('searchFilter or searchSorted changed - useEffect');
 
-		if (currentPage != 1)
-			setCurrentPage(1);
-		else
-			setUrlToFetch(makeUrlToFetch());
-	}, [searchFilter, searchSorted])
 
 	const renderItem = ({ item }) => {
 		return (
@@ -168,21 +135,21 @@ function CountryList() {
 					style={styles.button11}
 					onPress={onPressAll}
 				>
-					<Text>25 all</Text>
+					<Text>{bookedCount+unbookedCount} all</Text>
 				</TouchableOpacity>
 
 				<TouchableOpacity
 					style={styles.button1}
 					onPress={onPressAvailable}
 				>
-					<Text>3 avilable</Text>
+					<Text>{unbookedCount} available</Text>
 				</TouchableOpacity>
 
 				<TouchableOpacity
 					style={styles.button2}
 					onPress={onPressBooked}
 				>
-					<Text>17 booked</Text>
+					<Text>{bookedCount} booked</Text>
 				</TouchableOpacity>
 
 
@@ -203,7 +170,7 @@ function CountryList() {
 							data={parkingSpots}
 							renderItem={renderItem}
 							keyExtractor={(item) => item.id}
-							//onRefresh={handleRefresh}
+							onRefresh={handleRefresh}
 							refreshing={isLoading}
 						/>
 						{/* buttons at the end:
