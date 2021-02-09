@@ -9,6 +9,7 @@ export default function ParkingSpotAdder({ token }) {
     const [street, setStreet] = useState('');
     const [longitude, setLongitude] = useState('');
     const [latitude, setLatitude] = useState('');
+    const [uploadedFiles, setUploadedFiles] = useState([]);
     const [cachedPictures, setCachedPictures] = useState([]);
     const [addingPicture, setAddingPicture] = useState(false);
     const [pictureURL, setPictureURL] = useState('');
@@ -16,28 +17,17 @@ export default function ParkingSpotAdder({ token }) {
     const [redirectToOV, setRedirectToOV] = useState(false);
 
     const altpostPhoto = (image, id) => {
-        
-        const files = Array.from(image)
+
         //this.setState({ uploading: true })
 
         const formData = new FormData()
 
-        formData.append(
-            "image",
-            image
-        );
+        // console.log("Form data: ");
+        // for (var [key, value] of formData.entries()) {
+        //     console.log("Form data: " + key, value);
+        // }
 
-        console.log("Form data: ");
-        for (var [key, value] of formData.entries()) { 
-            console.log( "Form data: " + key, value);
-          }
-
-        
-        //console.log("imaz:" + image);
-
-        // files.forEach((file, i) => {
-        // formData.append(i, file)
-        // })
+        formData.append('image', image);
 
         console.log("posting photo for parking id: " + id);
         fetch("http://localhost:8080/parkingSpots/" + id + "/photos", {
@@ -57,14 +47,15 @@ export default function ParkingSpotAdder({ token }) {
 
     const onImageChange = (event) => {
         if (event.target.files && event.target.files[0]) {
-          let reader = new FileReader();
-          reader.onload = (e) => {
-            setCachedPictures(cachedPictures.concat(e.target.result));
-            setAddingPicture(false);
-          };
-          reader.readAsDataURL(event.target.files[0]);
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                setCachedPictures(cachedPictures.concat(e.target.result));
+                setAddingPicture(false);
+            };
+            reader.readAsDataURL(event.target.files[0]);
+            setUploadedFiles(uploadedFiles.concat(Array.from(event.target.files)));
         }
-      }
+    }
 
     const ImageGridView = () => {
         const images = cachedPictures.map((pic) => {
@@ -119,10 +110,9 @@ export default function ParkingSpotAdder({ token }) {
             })
         })
             .then((response) => response.json())
-            .then((id) =>
-            {
+            .then((id) => {
                 console.log(id);
-                cachedPictures.forEach(photo => {
+                uploadedFiles.forEach(photo => {
                     altpostPhoto(photo, id);
                 });
             })
@@ -175,8 +165,8 @@ export default function ParkingSpotAdder({ token }) {
     }
 
     useEffect(() => {
-		console.log("cached pics: " + cachedPictures);
-	}, [cachedPictures]);
+        console.log("cached pics: " + cachedPictures);
+    }, [cachedPictures]);
 
     function onCancelPictureClick() {
         setAddingPicture(false);
@@ -185,16 +175,15 @@ export default function ParkingSpotAdder({ token }) {
 
 
 
-    if(redirectToOV)
-    {
+    if (redirectToOV) {
         return <Redirect to="" />
     }
     else
         return (
             <div className="add-flex">
-                <input className="add-input" name="name" placeholder="name" value={name}  onChange={handleNameChange} />
-                <input className="add-input" name="city" placeholder="city" value={city}  onChange={handleCityChange} />
-                <input className="add-input" name="street" placeholder="street" value={street}  onChange={handleStreetChange} />
+                <input className="add-input" name="name" placeholder="name" value={name} onChange={handleNameChange} />
+                <input className="add-input" name="city" placeholder="city" value={city} onChange={handleCityChange} />
+                <input className="add-input" name="street" placeholder="street" value={street} onChange={handleStreetChange} />
                 <input className="add-input" name="longitude" placeholder="longitude" value={longitude} onChange={handleLongitudeChange} />
                 <input className="add-input" name="latitude" placeholder="latitude" value={latitude} onChange={handleLatitudeChange} />
                 <div className="inner-horizontal">
@@ -203,7 +192,7 @@ export default function ParkingSpotAdder({ token }) {
                     </Link>
                     <button disabled={addingPicture} className="overview-top-button" onClick={onSaveClick}>Save and add</button>
                 </div>
-                <input className="inputfile" type="file" accept="image/*"  id="InputFiled3" name="InputFiled3" onChange={onImageChange}/>
+                <input className="inputfile" type="file" accept="image/*" id="InputFiled3" name="InputFiled3" onChange={onImageChange} multiple />
                 <label for="InputFiled3">Choose a photo</label>
 
                 {/* {addingPicture 
