@@ -1,5 +1,5 @@
 :root {
-  font-size: 16px;
+  font-size: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--bg-color);
   --font-fam: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -113,7 +113,6 @@ input:focus {
 }
 .page-n-of {
   color: var(--accents-color);
-  padding: 1px 0px 0px 0px;
   margin: 0px 1rem 0px 1rem;
 }
 .change-page {
@@ -132,7 +131,7 @@ input:focus {
 }
 .parking-spots-list-item {
   display: flex;
-  height: 100px;
+  height: 6.25rem;
   gap: 1rem;
   width: 100%;
   cursor: pointer;
@@ -209,7 +208,7 @@ a {
   flex-grow: 1;
   border: none;
   border-radius: 0.25rem;
-  height: 35px;
+  height: 2rem;
   padding: 0.5rem 0.5rem 0px 0.5rem ;
   margin-top: 1rem;
   background-color: var(--accents-color);
@@ -246,8 +245,8 @@ a {
   width: 100%;
 }
 .image-list-flex img {
-  max-width: 250px;
-  max-height: 150px;
+  width: auto;
+  max-height: 10rem;
 }
 
 .addpic {

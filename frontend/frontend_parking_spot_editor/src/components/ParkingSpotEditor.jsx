@@ -39,14 +39,14 @@ export default function ParkingSpotEditor({ token, id }) {
     }, [])
 
 
-    const altpostPhoto = (image, parkingid) => {
+    const postPhoto = (image) => {
 
         const formData = new FormData()
 
         formData.append('image', image);
 
-        console.log("posting photo for parking id: " + parkingid);
-        fetch(parklyBackendUrl + "/parkingSpots/" + parkingid + "/photos", {
+        console.log("posting photo for parking id: " + id);
+        fetch(parklyBackendUrl + "/parkingSpots/" + id + "/photos", {
             method: "POST",
             headers: {
                 'security-header': token,
@@ -101,10 +101,10 @@ export default function ParkingSpotEditor({ token, id }) {
             })
         })
             .then((response) => response.json())
-            .then((id) => {
-                console.log(id);
+            .then((json) => {
+                console.log(json);
                 uploadedFiles.forEach(photo => {
-                    altpostPhoto(photo, id);
+                    postPhoto(photo);
                 });
             })
             .catch((error) => console.error(error))
