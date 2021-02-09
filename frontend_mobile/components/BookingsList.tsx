@@ -27,12 +27,13 @@ const BookingsList = ({itemId,securityToken}) => {
 
 	}, [oneTime])
   
-  const Delete = (Id) => 
+  const Delete = async (Id) => 
   {
     console.log(Id);
     console.log(securityToken);
-    deleteBooking(securityToken,Id);
-    setOneTime(!oneTime);
+    await deleteBooking(securityToken,Id);
+    const DATA = await getSpotBookings(securityToken,itemId);
+    setBookings(DATA);
   }
   const renderItem = ({ item }) => (
     <BookingsListItem item={item} securityToken={securityToken} Delete={()=>Delete(item.id)}/>
