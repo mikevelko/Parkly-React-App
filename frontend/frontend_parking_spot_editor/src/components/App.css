@@ -39,7 +39,7 @@
 .overview-button {
   width: calc(100% / 5.5);
   border: none;
-  height: 30px;
+  height: 30;
   background-color: lightgray;
   color: black;
   cursor: pointer;

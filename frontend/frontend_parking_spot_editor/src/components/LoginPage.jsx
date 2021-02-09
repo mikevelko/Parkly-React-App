@@ -3,7 +3,7 @@ import { fetchData } from '../FetchUtils';
 import { useHistory } from 'react-router-dom';
 import './style.css'
 
-const bcrypt = require('bcryptjs');
+const CryptoJS = require("crypto-js");
 
 export default function LoginPage(props) {
     const [login, setLogin] = useState();
@@ -17,8 +17,7 @@ export default function LoginPage(props) {
     }, [props.token]);
 
     const onSubmitHandler = () => {
-        const salt = "$2a$10$izu4Vqz1ynE4UeFKDqz3K.";
-        const encrypted = bcrypt.hashSync(password, salt);
+        const encrypted = CryptoJS.SHA1(password).toString(CryptoJS.enc.Base64);
         fetchData("/authorization/login", {
             login: login,
             password: encrypted

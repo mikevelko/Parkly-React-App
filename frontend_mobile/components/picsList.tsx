@@ -1,39 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, Image } from 'react-native';
-import {getSpotPics} from './FetchUtils';
-import {getSpotPic} from './FetchUtils';
+import { getSpotPics } from './FetchUtils';
+import { getSpotPic } from './FetchUtils';
 
 
-const DATA = ['https://reactnative.dev/img/tiny_logo.png', 'https://reactnative.dev/img/tiny_logo.png','https://reactnative.dev/img/tiny_logo.png','https://reactnative.dev/img/tiny_logo.png','https://reactnative.dev/img/tiny_logo.png']
+const DATA = ['https://reactnative.dev/img/tiny_logo.png', 'https://reactnative.dev/img/tiny_logo.png', 'https://reactnative.dev/img/tiny_logo.png', 'https://reactnative.dev/img/tiny_logo.png', 'https://reactnative.dev/img/tiny_logo.png']
 
 const Item = ({ url }) => {
   return (
-  <View >
-    <Image 
-    style={styles.tinyLogo}
-    source={{
-      uri: url,
-    }}></Image>
-  </View>)
+    <View >
+      <Image
+        style={styles.tinyLogo}
+        source={{
+          uri: url,
+        }}></Image>
+    </View>)
 };
- 
-const PicsList = ({itemId, securityToken}) => {
-  
-  const [pics,setPics] = useState([]);
+
+const PicsList = ({ itemId, securityToken }) => {
+
+  const [pics, setPics] = useState([]);
   const [oneTime, setOneTime] = useState();
 
   useEffect(() => {
-		const DATA2 = getSpotPics(securityToken,itemId);
+    const DATA2 = getSpotPics(securityToken, itemId);
     console.log(DATA2);
     const createData = async () => {
-    const a = await DATA2;
-    setPics(a);
-  };
-  
-  createData();
+      const a = await DATA2;
+      setPics(a);
+    };
 
-	}, [oneTime])
-  
+    createData();
+
+  }, [oneTime])
+
   console.log(pics);
   const renderItem = ({ item }) => (
     <Item url={item.fileDownloadUri} />
@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
     margin: 10,
-   //to do from backend 
-   resizeMethod: 'scale',
+    //to do from backend 
+    //resizeMethod: 'scale',
   },
 });
 

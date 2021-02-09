@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import styles from '../styles/styles';
 import CountryListItem from './CountryListItem';
-import {fetchData, getBookingsCount} from './FetchUtils';
+import { fetchData, getBookingsCount } from './FetchUtils';
 
 function CountryList(props) {
 
@@ -23,13 +23,13 @@ function CountryList(props) {
 	const [searchString, setSearchString] = useState('');
 	const [overviewInfo, setOverviewInfo] = useState('');
 
-	const [searchFilter2,setSearchFilter2] = useState("");
+	const [searchFilter2, setSearchFilter2] = useState("");
 	const [searchSorted, setSearchSorted] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [pageSize, setPageSize] = useState(4);
 	const [pageCount, setPageCount] = useState(0);
 	const [ItemsCount, setItemsCount] = useState(0);
-	const [bookedCount,setBookedCount]=useState(0);
+	const [bookedCount, setBookedCount] = useState(0);
 	const [unbookedCount, setUnbookedCount] = useState(0);
 
 	const onPressLeftOne = () => setCurrentPage(currentPage => currentPage - 1);
@@ -38,14 +38,16 @@ function CountryList(props) {
 	const onPressRightAll = () => setCurrentPage(currentPage => pageCount);
 
 	useEffect(() => {
-		if(currentPage!=1) setCurrentPage(1);
+		if (currentPage != 1) setCurrentPage(1);
 		setLoading(true);
 		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
-		const spots = fetchData(props.securityToken,"/parkingSpots?",(currentPage-1).toString(),"4",searchSorted,searchFilter2);
-		const bookedCount = getBookingsCount(props.securityToken,true);
-		const unbookedCount = getBookingsCount(props.securityToken,false);
+		console.log("token:  " + props.securityToken);
+		const spots = fetchData(props.securityToken, "/parkingSpots?", (currentPage - 1).toString(), "4", searchSorted, searchFilter2);
+		const bookedCount = 0 //getBookingsCount(props.securityToken, true);
+		const unbookedCount = 0//getBookingsCount(props.securityToken, false);
 		const printSpots = async () => {
 			const a = await spots;
+			console.log("awaited spots");
 			const b = await bookedCount;
 			const ub = await unbookedCount;
 			setBookedCount(b);
@@ -54,17 +56,17 @@ function CountryList(props) {
 			setPageCount(a.pageCount);
 			console.log(a);
 		};
-		  
+
 		printSpots();
 		setLoading(false);
-	}, [searchFilter2,searchSorted])
+	}, [searchFilter2, searchSorted])
 
 	useEffect(() => {
 		setLoading(true);
 		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
-		const spots = fetchData(props.securityToken,"/parkingSpots?",(currentPage-1).toString(),"4",searchSorted,searchFilter2);
-		const bookedCount = getBookingsCount(props.securityToken,true);
-		const unbookedCount = getBookingsCount(props.securityToken,false);
+		const spots = fetchData(props.securityToken, "/parkingSpots?", (currentPage - 1).toString(), "4", searchSorted, searchFilter2);
+		const bookedCount = getBookingsCount(props.securityToken, true);
+		const unbookedCount = getBookingsCount(props.securityToken, false);
 		const printSpots = async () => {
 			const a = await spots;
 			const b = await bookedCount;
@@ -75,7 +77,7 @@ function CountryList(props) {
 			setPageCount(a.pageCount);
 			console.log(a);
 		};
-		  
+
 		printSpots();
 		setLoading(false);
 	}, [currentPage])
@@ -108,12 +110,12 @@ function CountryList(props) {
 			/>
 		);
 	};
-	const handleRefresh = () =>{
+	const handleRefresh = () => {
 		setLoading(true);
 		let sorted = "false";
-		if(searchSorted) sorted="true";
+		if (searchSorted) sorted = "true";
 		console.log('currentPage changed - useEffect, page: ' + JSON.stringify(currentPage));
-		const spots = fetchData(props.securityToken,"/parkingSpots?",(currentPage-1).toString(),"4",sorted,searchFilter2);
+		const spots = fetchData(props.securityToken, "/parkingSpots?", (currentPage - 1).toString(), "4", sorted, searchFilter2);
 
 		const printSpots = async () => {
 			const a = await spots;
@@ -121,21 +123,21 @@ function CountryList(props) {
 			setPageCount(a.pageCount);
 			console.log(a);
 		};
-		  
+
 		printSpots();
 		setLoading(false);
 	}
 	return (
 		<SafeAreaView style={styles.container}>
 
-			<View style={{ flex: 0, flexDirection: 'row', justifyContent: 'space-between', margin: '30px' }}>
+			<View style={{ flex: 0, flexDirection: 'row', justifyContent: 'space-between' }}>
 				{/* margin jest do webu tylko do testu */}
 
 				<TouchableOpacity
 					style={styles.button11}
 					onPress={onPressAll}
 				>
-					<Text>{bookedCount+unbookedCount} all</Text>
+					<Text>{bookedCount + unbookedCount} all</Text>
 				</TouchableOpacity>
 
 				<TouchableOpacity
@@ -197,7 +199,7 @@ function CountryList(props) {
 								<Text style={styles.title}>&#8592;</Text>
 							</TouchableOpacity>
 
-							<Text style={{ fontSize:20, marginTop:10}}>page {currentPage} of {pageCount}</Text>
+							<Text style={{ fontSize: 20, marginTop: 10 }}>page {currentPage} of {pageCount}</Text>
 
 							<TouchableOpacity
 								disabled={currentPage == pageCount}
