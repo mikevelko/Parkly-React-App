@@ -136,7 +136,7 @@ export default function ParkingSpotEditor({ token, id }) {
     }, [cachedPictures]);
 
     if (redirectToOV) {
-        return <Redirect to="" />
+        return <Redirect to={"/Details/:" + id}/>
     }
     else
         return (

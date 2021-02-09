@@ -18,7 +18,7 @@ export default function Overview({ token, onClickOverViewItem }) {
 	const [parkingSpots, setParkingSpots] = useState([]);
 	const [searchString, setSearchString] = useState('');
 	const [overviewInfo, setOverviewInfo] = useState('');
-	const defaultUrlToFetch = parklyBackendUrl + '/parkingSpots?name=parking&page=0&size=4';
+	const defaultUrlToFetch = parklyBackendUrl + '/parkingSpots?page=0&size=4';
 	const [urlToFetch, setUrlToFetch] = useState(defaultUrlToFetch);
 	const [searchFilter, setSearchFilter] = useState(0);
 	const [searchSorted, setSearchSorted] = useState(true);
@@ -77,31 +77,6 @@ export default function Overview({ token, onClickOverViewItem }) {
 	useEffect(() => {
 		fetchData();
 	}, [urlToFetch]);
-
-	// const [imgList, setImgList] = useState([[]]);
-	// const [pagePhotos, setPagePhotos] = useState([[]]);
-	// const fetchItemPhotos = (id) => {
-	// 	console.log("fetching photos through Overview");
-	//     fetch("http://localhost:8080/parkingSpots/" + id + "/photos", {  
-	//         headers: {
-	//             'security-header': token,
-	//           }
-	//       })
-	// 		.then((response) => response.json())
-	//         .then((json) => {setImgList(json); console.log(json); return json;})
-	// 		.catch((error) => console.error(error));
-	// };
-	// const updateOverviewItems = () => {
-	// 	parkingSpots.forEach(spot => {
-	// 		pagePhotos.concat([spot.id, fetchItemPhotos(spot.id)])
-	// 	});
-	// }
-	// useEffect(() => {
-	// 	updateOverviewItems();
-	// }, []);
-	// useEffect(() => {
-	// 	updateOverviewItems();
-	// }, [parkingSpots]);
 
 	// filtering by search
 	const handleChangeSearchString = (e) => { setSearchString(e.target.value) }
