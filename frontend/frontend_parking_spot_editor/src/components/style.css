@@ -202,6 +202,40 @@ a {
   caret-color: var(--bg-color);
 }
 
+.inputfile + label {
+  font: var(--font-fam);
+  flex-grow: 1;
+  border: none;
+  border-radius: 0.25rem;
+  height: 35px;
+  padding: 0.5rem 0.5rem 0px 0.5rem ;
+  margin-top: 1rem;
+  background-color: var(--accents-color);
+  color: var(--bg-color);
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.inputfile:focus + label,
+.inputfile + label:hover {
+  filter: brightness(80%);
+  transition: var(--transition-speed) ;
+}
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
 .image-list-flex{
   display: flex;
   flex-wrap: wrap;
