@@ -15,6 +15,57 @@ export default function ParkingSpotAdder({ token }) {
     const [validURL, setValidURL] = useState(false);
     const [redirectToOV, setRedirectToOV] = useState(false);
 
+    const altpostPhoto = (image, id) => {
+        
+        const files = Array.from(image)
+        //this.setState({ uploading: true })
+
+        const formData = new FormData()
+
+        formData.append(
+            "image",
+            image
+        );
+
+        console.log("Form data: ");
+        for (var [key, value] of formData.entries()) { 
+            console.log( "Form data: " + key, value);
+          }
+
+        
+        //console.log("imaz:" + image);
+
+        // files.forEach((file, i) => {
+        // formData.append(i, file)
+        // })
+
+        console.log("posting photo for parking id: " + id);
+        fetch("http://localhost:8080/parkingSpots/" + id + "/photos", {
+            method: "POST",
+            headers: {
+                'security-header': token,
+                'Accept': '*/*',
+                // "type": "formData"
+            }
+            , body: formData
+        })
+            .then((response) => response.json())
+            .then((json) => console.log(json))
+            .catch((error) => console.error(error))
+            .finally(() => setRedirectToOV(true));
+    };
+
+    const onImageChange = (event) => {
+        if (event.target.files && event.target.files[0]) {
+          let reader = new FileReader();
+          reader.onload = (e) => {
+            setCachedPictures(cachedPictures.concat(e.target.result));
+            setAddingPicture(false);
+          };
+          reader.readAsDataURL(event.target.files[0]);
+        }
+      }
+
     const ImageGridView = () => {
         const images = cachedPictures.map((pic) => {
             return <img src={pic} />;
@@ -23,46 +74,27 @@ export default function ParkingSpotAdder({ token }) {
         return <div className="image-list-flex">{images}</div>;
     };
 
-    const postPhoto = (photoURL, id) => {
-        console.log("posting photo for parking id: " + id);
-        fetch("http://localhost:8080/parkingSpots/" + id + "/photos", {
-            method: "POST",
-            headers: {
-                'security-header': token,
-                'Accept': '*/*',
-                'Content-Type': 'application/json'
-            }
-            , body: JSON.stringify({
-                "fileName": "6d8f36c5-2c14-4069-8a63-33a2ac26a169",
-                "fileDownloadUri": photoURL,
-                "fileType": "image/jpeg",
-                "size": 470423
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => console.log(json))
-            .catch((error) => console.error(error))
-            .finally(() => setRedirectToOV(true));
-    };
-
-    const altpostPhoto = (path, id) => {
-        console.log("posting photo for parking id: " + id);
-        fetch("http://localhost:8080/parkingSpots/" + id + "/photos", {
-            method: "POST",
-            headers: {
-                'security-header': token,
-                'Accept': '*/*',
-                'Content-Type': 'application/json'
-            }
-            , body: JSON.stringify({
-                "image": path,
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => console.log(json))
-            .catch((error) => console.error(error))
-            .finally(() => setRedirectToOV(true));
-    };
+    // const postPhoto = (photoURL, id) => {
+    //     console.log("posting photo for parking id: " + id);
+    //     fetch("http://localhost:8080/parkingSpots/" + id + "/photos", {
+    //         method: "POST",
+    //         headers: {
+    //             'security-header': token,
+    //             'Accept': '*/*',
+    //             'Content-Type': 'application/json'
+    //         }
+    //         , body: JSON.stringify({
+    //             "fileName": "6d8f36c5-2c14-4069-8a63-33a2ac26a169",
+    //             "fileDownloadUri": photoURL,
+    //             "fileType": "image/jpeg",
+    //             "size": 470423
+    //         })
+    //     })
+    //         .then((response) => response.json())
+    //         .then((json) => console.log(json))
+    //         .catch((error) => console.error(error))
+    //         .finally(() => setRedirectToOV(true));
+    // };
 
 
     const postParkingSpot = () => {
@@ -90,9 +122,8 @@ export default function ParkingSpotAdder({ token }) {
             .then((id) =>
             {
                 console.log(id);
-                cachedPictures.forEach(photoURL => {
-                    postPhoto(photoURL, id);
-                    //altpostPhoto("C:/Users/Jaśnie Panicz/Desktop/tapety spotlight/tapety spotlight 1-95/80/16c9df9e4410ff9d9aa9cca832ed9e62097633af3b1fb566e1d790e6722d59bc.jpg", id);
+                cachedPictures.forEach(photo => {
+                    altpostPhoto(photo, id);
                 });
             })
             .catch((error) => console.error(error))
@@ -143,11 +174,6 @@ export default function ParkingSpotAdder({ token }) {
         return !!pattern.test(str);
     }
 
-    function onConfirmPictureClick() {
-        setCachedPictures(cachedPictures.concat(pictureURL));
-        setPictureURL(''); // moze tak byc, ale nie musi
-        setAddingPicture(false);
-    }
     useEffect(() => {
 		console.log("cached pics: " + cachedPictures);
 	}, [cachedPictures]);
@@ -155,6 +181,9 @@ export default function ParkingSpotAdder({ token }) {
     function onCancelPictureClick() {
         setAddingPicture(false);
     }
+
+
+
 
     if(redirectToOV)
     {
@@ -174,16 +203,19 @@ export default function ParkingSpotAdder({ token }) {
                     </Link>
                     <button disabled={addingPicture} className="overview-top-button" onClick={onSaveClick}>Save and add</button>
                 </div>
-                {addingPicture 
+                <input className="inputfile" type="file" accept="image/*"  id="InputFiled3" name="InputFiled3" onChange={onImageChange}/>
+                <label for="InputFiled3">Choose a photo</label>
+
+                {/* {addingPicture 
                     ? <div className="inner-vertical addpic">
-                        <input className="add-input" name="InputFiled3" placeholder="image URL" value={pictureURL} onChange={handleNewURLChange} />
+                        <input className="overview-top-button addpic" type="file" name="InputFiled3" onChange={onImageChange}/>
                         <div className="inner-horizontal">
                             <button className="overview-top-button" onClick={onCancelPictureClick}>Cancel</button>
                             <button disabled={validURL} className="overview-top-button" onClick={onConfirmPictureClick} disabled={!validURL}>Confirm</button>
                         </div>
                     </div>
                     : <button className="overview-top-button addpic" onClick={onAddPictureClick}>Add Picture</button>
-                }
+                } */}
                 <ImageGridView images={cachedPictures} />
             </div>
         )
